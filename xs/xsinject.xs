@@ -7,7 +7,8 @@
 // Request:          [request id][call count], then per call [function id][argument count],
 //                   then per argument [tag][payload]. Tag 0 = literal, encoded as the parameter's
 //                   declared type: int, float, bool as int, vector as 3 floats, string as a uint32
-//                   byte length then raw bytes.
+//                   byte length then raw bytes. Tag 1 = reference, an int call number of an
+//                   earlier call in the same request whose return type is the parameter's type.
 // Response section: [body][body byte length][magic], body = [magic][request id][status]
 //                   [failed call #][failed argument #][entry count] ...entries
 // Entry:            [entry status], then the value when OK and the function is non-void, written
@@ -27,10 +28,13 @@ const int cXsInjectTruncated = 2;
 const int cXsInjectUnknownFunction = 3;
 const int cXsInjectBadArgCount = 4;
 const int cXsInjectBadTag = 5;
+const int cXsInjectBadReference = 6;
+const int cXsInjectReferenceTypeMismatch = 7;
 const int cXsInjectTrailingBytes = 9;
 
 const int cXsInjectEntryOK = 0;
 const int cXsInjectTagLiteral = 0;
+const int cXsInjectTagReference = 1;
 
 bool gXsInjectInitDone = false;
 bool gXsInjectStarted = false;
@@ -50,6 +54,7 @@ int gXsInjectCallCount = 0;
 int gXsInjectCallFn = -1;
 int gXsInjectCallArgc = -1;
 int gXsInjectCallArgBase = -1;
+int gXsInjectArgRef = -1;  // per argument: the referenced call #, or -1 for a literal
 
 int gXsInjectVectorArrays = 0;  // replacement vector arrays made so far; names each one uniquely
 
@@ -72,6 +77,7 @@ void xsInjectInit() {
     gXsInjectCallFn = xsArrayCreateInt(1, -1, "xsInjectCallFn");
     gXsInjectCallArgc = xsArrayCreateInt(1, 0, "xsInjectCallArgc");
     gXsInjectCallArgBase = xsArrayCreateInt(1, 0, "xsInjectCallArgBase");
+    gXsInjectArgRef = xsArrayCreateInt(1, -1, "xsInjectArgRef");
     gXsInjectInitDone = true;
 }
 
@@ -107,6 +113,7 @@ void xsInjectResizeStaging(int calls = 0, int args = 0) {
     xsArrayResizeString(gXsInjectResString, calls);
     gXsInjectResVector = xsInjectVectorArrayAtLeast(gXsInjectResVector, calls);
     xsArrayResizeInt(gXsInjectArgInt, args);
+    xsArrayResizeInt(gXsInjectArgRef, args);
     xsArrayResizeFloat(gXsInjectArgFloat, args);
     xsArrayResizeBool(gXsInjectArgBool, args);
     xsArrayResizeString(gXsInjectArgString, args);
@@ -161,6 +168,8 @@ int xsInjectParse(int size = 0) {
     int arg = 0;
     int argBase = 0;
     int tag = 0;
+    int ref = -1;
+    int paramType = 0;
     gXsInjectParseCall = -1;
     gXsInjectParseArg = -1;
     gXsInjectCallCount = 0;
@@ -207,12 +216,29 @@ int xsInjectParse(int size = 0) {
             }
             tag = xsReadInt();
             pos = pos + 4;
-            if (tag != cXsInjectTagLiteral) {
+            paramType = xsInjectParamType(fid, arg);
+            if (tag == cXsInjectTagLiteral) {
+                xsArraySetInt(gXsInjectArgRef, argBase, -1);
+                pos = xsInjectReadLiteral(paramType, argBase, pos, size);
+                if (pos < 0) {
+                    return (cXsInjectTruncated);
+                }
+            } else if (tag == cXsInjectTagReference) {
+                // A backstop for the driver's checks: only an earlier call of the same type.
+                if (pos + 4 > size) {
+                    return (cXsInjectTruncated);
+                }
+                ref = xsReadInt();
+                pos = pos + 4;
+                if ((ref < 0) || (ref >= call)) {
+                    return (cXsInjectBadReference);
+                }
+                if (xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, ref)) != paramType) {
+                    return (cXsInjectReferenceTypeMismatch);
+                }
+                xsArraySetInt(gXsInjectArgRef, argBase, ref);
+            } else {
                 return (cXsInjectBadTag);
-            }
-            pos = xsInjectReadLiteral(xsInjectParamType(fid, arg), argBase, pos, size);
-            if (pos < 0) {
-                return (cXsInjectTruncated);
             }
             argBase++;
             arg++;
@@ -228,11 +254,58 @@ int xsInjectParse(int size = 0) {
     return (cXsInjectOK);
 }
 
-// Runs every staged call in order; call #n's result lands at index n of its return type's array.
-// A return of -1 or false is a value: the module never judges one, and every call runs.
-void xsInjectRunCalls() {
+// Clears the result slots of the staged calls, so no value outlives its request.
+void xsInjectClearResults() {
     int call = 0;
     while (call < gXsInjectCallCount) {
+        xsArraySetInt(gXsInjectResInt, call, 0);
+        xsArraySetFloat(gXsInjectResFloat, call, 0.0);
+        xsArraySetBool(gXsInjectResBool, call, false);
+        xsArraySetString(gXsInjectResString, call, "");
+        xsArraySetVector(gXsInjectResVector, call, vector(0.0, 0.0, 0.0));
+        call++;
+    }
+}
+
+// Copies the referenced results into call #`call`'s argument slots. Parsing already checked each
+// reference points to an earlier call whose return type is the parameter's type.
+void xsInjectResolveReferences(int call = 0) {
+    int fid = xsArrayGetInt(gXsInjectCallFn, call);
+    int argc = xsArrayGetInt(gXsInjectCallArgc, call);
+    int argBase = xsArrayGetInt(gXsInjectCallArgBase, call);
+    int arg = 0;
+    int index = 0;
+    int ref = -1;
+    int paramType = 0;
+    while (arg < argc) {
+        index = argBase + arg;
+        ref = xsArrayGetInt(gXsInjectArgRef, index);
+        if (ref >= 0) {
+            paramType = xsInjectParamType(fid, arg);
+            if (paramType == cXsInjectTypeInt) {
+                xsArraySetInt(gXsInjectArgInt, index, xsArrayGetInt(gXsInjectResInt, ref));
+            } else if (paramType == cXsInjectTypeFloat) {
+                xsArraySetFloat(gXsInjectArgFloat, index, xsArrayGetFloat(gXsInjectResFloat, ref));
+            } else if (paramType == cXsInjectTypeBool) {
+                xsArraySetBool(gXsInjectArgBool, index, xsArrayGetBool(gXsInjectResBool, ref));
+            } else if (paramType == cXsInjectTypeString) {
+                xsArraySetString(gXsInjectArgString, index, xsArrayGetString(gXsInjectResString, ref));
+            } else if (paramType == cXsInjectTypeVector) {
+                xsArraySetVector(gXsInjectArgVector, index, xsArrayGetVector(gXsInjectResVector, ref));
+            }
+        }
+        arg++;
+    }
+}
+
+// Runs every staged call in order; call #n's result lands at index n of its return type's array,
+// and a reference reads it from there when a later call runs. A return of -1 or false is a value:
+// the module never judges one, and every call runs.
+void xsInjectRunCalls() {
+    int call = 0;
+    xsInjectClearResults();
+    while (call < gXsInjectCallCount) {
+        xsInjectResolveReferences(call);
         xsInjectDispatch(xsArrayGetInt(gXsInjectCallFn, call), xsArrayGetInt(gXsInjectCallArgc, call),
             xsArrayGetInt(gXsInjectCallArgBase, call), call);
         call++;

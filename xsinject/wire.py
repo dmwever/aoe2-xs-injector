@@ -27,7 +27,12 @@ RUNNING = 1  # stored before call #0; a section stuck here means a call stopped 
 ENTRY_STATUS = {0: "OK", 1: "NotRun"}  # NotRun is reserved; no module path produces it yet
 ENTRY_OK = 0
 
-LITERAL = 0  # argument tag; tag 1 (reference) arrives with references
+LITERAL = 0  # argument tags
+REFERENCE = 1
+
+
+class Ref(int):
+    """A reference argument: the number of an earlier call in the same request."""
 
 _INT = struct.Struct("<i")
 _UINT = struct.Struct("<I")
@@ -56,12 +61,18 @@ def encode_value(xs_type, value):
 
 
 def encode_request(request_id, calls):
-    """Request bytes for `calls`, a list of (function id, [(param type, literal), ...])."""
+    """Request bytes for `calls`, a list of (function id, [(param type, argument), ...]).
+
+    An argument is a literal, or a Ref sent as tag 1 plus the call number.
+    """
     out = [_INT.pack(request_id), _INT.pack(len(calls))]
     for fid, args in calls:
         out.append(_INT.pack(fid) + _INT.pack(len(args)))
         for xs_type, value in args:
-            out.append(_INT.pack(LITERAL) + encode_value(xs_type, value))
+            if isinstance(value, Ref):
+                out.append(_INT.pack(REFERENCE) + _INT.pack(value))
+            else:
+                out.append(_INT.pack(LITERAL) + encode_value(xs_type, value))
     return b"".join(out)
 
 

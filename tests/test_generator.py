@@ -37,10 +37,11 @@ def test_pinned_ids_survive_catalog_reordering():
 
 
 def test_new_function_takes_the_next_free_id_and_never_a_retired_one():
-    pinned = {"functions": {"a": 0}, "retired": {"gone": 5}}
+    gone = {"id": 5, "reason": "removed"}
+    pinned = {"functions": {"a": 0}, "retired": {"gone": gone}}
     result = generate([fn("new"), fn("a")], renames=[], pinned=pinned)
     assert ids(result) == {"a": 0, "new": 6}
-    assert result.pinned == {"functions": {"a": 0, "new": 6}, "retired": {"gone": 5}}
+    assert result.pinned == {"functions": {"a": 0, "new": 6}, "retired": {"gone": gone}}
 
 
 def test_a_pinned_function_leaving_the_catalog_without_a_rename_fails_naming_it():
@@ -66,8 +67,8 @@ def test_renames_chain_across_several_updates():
 
 def test_a_removal_named_for_retirement_retires_its_id_for_good():
     pinned = {"functions": {"a": 0, "gone": 1}, "retired": {}}
-    result = generate([fn("a")], renames=[], pinned=pinned, retire=["gone"])
-    assert result.pinned == {"functions": {"a": 0}, "retired": {"gone": 1}}
+    result = generate([fn("a")], renames=[], pinned=pinned, retire={"gone": "removed in update 999"})
+    assert result.pinned == {"functions": {"a": 0}, "retired": {"gone": {"id": 1, "reason": "removed in update 999"}}}
     assert ids(result) == {"a": 0}
 
     later = generate([fn("a"), fn("fresh")], renames=[], pinned=result.pinned)
@@ -76,23 +77,29 @@ def test_a_removal_named_for_retirement_retires_its_id_for_good():
 
 def test_retiring_a_function_still_in_the_catalog_excludes_it_from_signatures_and_dispatch():
     pinned = {"functions": {"a": 0, "xsTask": 1}, "retired": {}}
-    result = generate([fn("a"), fn("xsTask", returns="void")], renames=[], pinned=pinned, retire=["xsTask"])
+    result = generate([fn("a"), fn("xsTask", returns="void")], renames=[], pinned=pinned, retire={"xsTask": "deprecated"})
     assert ids(result) == {"a": 0}
-    assert result.pinned == {"functions": {"a": 0}, "retired": {"xsTask": 1}}
+    assert result.pinned == {"functions": {"a": 0}, "retired": {"xsTask": {"id": 1, "reason": "deprecated"}}}
     assert "case 1:" not in result.dispatch
     assert "xsTask(" not in result.dispatch
 
 
 def test_retiring_a_name_without_a_pinned_id_fails():
     with pytest.raises(GeneratorError, match="'nope'"):
-        generate([fn("a")], renames=[], pinned={"functions": {"a": 0}, "retired": {}}, retire=["nope"])
+        generate([fn("a")], renames=[], pinned={"functions": {"a": 0}, "retired": {}}, retire={"nope": "why"})
 
 
 def test_a_retired_function_still_in_the_catalog_stays_excluded_on_later_runs():
-    pinned = {"functions": {"a": 0}, "retired": {"xsTask": 1}}
+    pinned = {"functions": {"a": 0}, "retired": {"xsTask": {"id": 1, "reason": "deprecated"}}}
     result = generate([fn("a"), fn("xsTask"), fn("fresh")], renames=[], pinned=pinned)
     assert ids(result) == {"a": 0, "fresh": 2}
-    assert result.pinned["retired"] == {"xsTask": 1}
+    assert result.pinned["retired"] == {"xsTask": {"id": 1, "reason": "deprecated"}}
+
+
+def test_retiring_without_a_reason_fails_naming_the_function():
+    pinned = {"functions": {"a": 0, "gone": 1}, "retired": {}}
+    with pytest.raises(GeneratorError, match="'gone'.*reason"):
+        generate([fn("a")], renames=[], pinned=pinned, retire={"gone": "  "})
 
 
 def test_signatures_carry_types_argument_range_and_return_type_in_id_order():
@@ -221,7 +228,7 @@ def test_the_parameter_type_table_defines_every_function_and_leaves_retired_ids_
         fn("round", ["float", "int"], returns="float", min_count=1),
         fn("xsChatData", ["string", "bool", "vector"], returns="void"),
     ]
-    pinned = {"functions": {"round": 0}, "retired": {"gone": 1}}
+    pinned = {"functions": {"round": 0}, "retired": {"gone": {"id": 1, "reason": "removed"}}}
     dispatch = generate(catalog, renames=[], pinned=pinned).dispatch
     assert type_table(dispatch) == {
         0: (1, 2, "Float", ["Float", "Int"]),
@@ -264,8 +271,11 @@ def test_cli_writes_signatures_pinned_table_and_dispatch_and_rereads_the_table(f
     assert "case 1: {" in paths["dispatch"].read_text()
 
     write_kb(paths["kb"], [fn("c"), fn("b", ["float"], returns="void")])
-    assert main(args + ["--retire", "a"]) == 0
-    assert json.loads(paths["pinned"].read_text()) == {"functions": {"b": 1, "c": 2}, "retired": {"a": 0}}
+    assert main(args + ["--retire", "a", "left the catalog"]) == 0
+    assert json.loads(paths["pinned"].read_text()) == {
+        "functions": {"b": 1, "c": 2},
+        "retired": {"a": {"id": 0, "reason": "left the catalog"}},
+    }
 
 
 def test_cli_failure_names_the_function_and_writes_nothing(files, capsys):
@@ -289,7 +299,7 @@ def test_the_handles_the_core_assigns_are_extern():
 
 
 def test_a_rename_onto_a_retired_name_fails_rather_than_giving_one_name_two_ids():
-    pinned = {"functions": {"old": 0}, "retired": {"new": 1}}
+    pinned = {"functions": {"old": 0}, "retired": {"new": {"id": 1, "reason": "removed"}}}
     with pytest.raises(GeneratorError, match="'new'"):
         generate([fn("new")], renames=[{"old_name": "old", "new_name": "new"}], pinned=pinned)
 

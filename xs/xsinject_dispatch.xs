@@ -25,8 +25,8 @@ const int cXsInjectTypeVector = 4;
 const int cXsInjectTypeVoid = 5;
 
 // Function ids run 0..cXsInjectFunctionIdLimit-1; a retired or unused id is unknown (max args -1).
-const int cXsInjectFunctionIdLimit = 274;
-const int cXsInjectParamTotal = 475;
+const int cXsInjectFunctionIdLimit = 289;
+const int cXsInjectParamTotal = 476;
 
 int gXsInjectFnMinArgs = -1;
 int gXsInjectFnMaxArgs = -1;
@@ -73,11 +73,11 @@ int xsInjectParamType(int fid = -1, int argIndex = 0) {
 
 // Builds the parameter-type table; the core calls this once before parsing any request.
 void xsInjectSignaturesInit() {
-    gXsInjectFnMinArgs = xsArrayCreateInt(274, -1, "xsInjectFnMinArgs");
-    gXsInjectFnMaxArgs = xsArrayCreateInt(274, -1, "xsInjectFnMaxArgs");
-    gXsInjectFnReturn = xsArrayCreateInt(274, -1, "xsInjectFnReturn");
-    gXsInjectFnParamStart = xsArrayCreateInt(274, -1, "xsInjectFnParamStart");
-    gXsInjectParamTypes = xsArrayCreateInt(475, -1, "xsInjectParamTypes");
+    gXsInjectFnMinArgs = xsArrayCreateInt(289, -1, "xsInjectFnMinArgs");
+    gXsInjectFnMaxArgs = xsArrayCreateInt(289, -1, "xsInjectFnMaxArgs");
+    gXsInjectFnReturn = xsArrayCreateInt(289, -1, "xsInjectFnReturn");
+    gXsInjectFnParamStart = xsArrayCreateInt(289, -1, "xsInjectFnParamStart");
+    gXsInjectParamTypes = xsArrayCreateInt(476, -1, "xsInjectParamTypes");
     gXsInjectParamCount = 0;
     xsInjectDefine(0, 1, 1, cXsInjectTypeVoid);  // xsDisableRule
     xsInjectParam(cXsInjectTypeString);
@@ -105,7 +105,7 @@ void xsInjectSignaturesInit() {
     xsInjectParam(cXsInjectTypeString);
     xsInjectDefine(11, 1, 1, cXsInjectTypeVoid);  // xsDisableRuleGroup
     xsInjectParam(cXsInjectTypeString);
-    xsInjectDefine(12, 1, 1, cXsInjectTypeBool);  // xsIsRuleGroupEnabled
+    xsInjectDefine(12, 1, 1, cXsInjectTypeVoid);  // xsIsRuleGroupEnabled
     xsInjectParam(cXsInjectTypeString);
     xsInjectDefine(13, 1, 1, cXsInjectTypeFloat);  // xsVectorGetX
     xsInjectParam(cXsInjectTypeVector);
@@ -555,17 +555,17 @@ void xsInjectSignaturesInit() {
     xsInjectDefine(168, 1, 3, cXsInjectTypeBool);  // xsFlashUnit
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeInt);
-    xsInjectParam(cXsInjectTypeInt);
+    xsInjectParam(cXsInjectTypeString);
     xsInjectDefine(169, 1, 1, cXsInjectTypeBool);  // xsStopUnit
     xsInjectParam(cXsInjectTypeInt);
-    xsInjectDefine(170, 3, 6, cXsInjectTypeBool);  // xsBuildUnit
+    xsInjectDefine(170, 3, 6, cXsInjectTypeInt);  // xsBuildUnit
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeVector);
     xsInjectParam(cXsInjectTypeVector);
     xsInjectParam(cXsInjectTypeBool);
     xsInjectParam(cXsInjectTypeBool);
-    xsInjectDefine(171, 2, 8, cXsInjectTypeBool);  // xsTaskUnits
+    xsInjectDefine(171, 2, 8, cXsInjectTypeVoid);  // xsTaskUnits
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeVector);
@@ -710,16 +710,6 @@ void xsInjectSignaturesInit() {
     xsInjectDefine(230, 1, 1, cXsInjectTypeInt);  // xsGetDataTypeSize
     xsInjectParam(cXsInjectTypeInt);
     xsInjectDefine(231, 0, 0, cXsInjectTypeInt);  // xsGetFileSize
-    xsInjectDefine(232, 1, 1, cXsInjectTypeInt);  // xsGetGoal
-    xsInjectParam(cXsInjectTypeInt);
-    xsInjectDefine(233, 1, 1, cXsInjectTypeInt);  // xsGetStrategicNumber
-    xsInjectParam(cXsInjectTypeInt);
-    xsInjectDefine(234, 2, 2, cXsInjectTypeVoid);  // xsSetGoal
-    xsInjectParam(cXsInjectTypeInt);
-    xsInjectParam(cXsInjectTypeInt);
-    xsInjectDefine(235, 2, 2, cXsInjectTypeVoid);  // xsSetStrategicNumber
-    xsInjectParam(cXsInjectTypeInt);
-    xsInjectParam(cXsInjectTypeInt);
     xsInjectDefine(236, 1, 2, cXsInjectTypeInt);  // xsGetAiSignal
     xsInjectParam(cXsInjectTypeInt);
     xsInjectParam(cXsInjectTypeBool);
@@ -826,6 +816,28 @@ void xsInjectSignaturesInit() {
     xsInjectParam(cXsInjectTypeInt);
     xsInjectDefine(273, 1, 1, cXsInjectTypeString);  // fstr
     xsInjectParam(cXsInjectTypeString);
+    xsInjectDefine(274, 0, 0, cXsInjectTypeVoid);  // xsResetNetData
+    xsInjectDefine(275, 1, 1, cXsInjectTypeInt);  // xsWriteNetInt
+    xsInjectParam(cXsInjectTypeInt);
+    xsInjectDefine(276, 1, 1, cXsInjectTypeInt);  // xsWriteNetFloat
+    xsInjectParam(cXsInjectTypeFloat);
+    xsInjectDefine(277, 1, 1, cXsInjectTypeInt);  // xsWriteNetVector
+    xsInjectParam(cXsInjectTypeVector);
+    xsInjectDefine(278, 1, 1, cXsInjectTypeInt);  // xsWriteNetString
+    xsInjectParam(cXsInjectTypeString);
+    xsInjectDefine(279, 1, 1, cXsInjectTypeBool);  // xsSendNetData
+    xsInjectParam(cXsInjectTypeString);
+    xsInjectDefine(280, 0, 0, cXsInjectTypeString);  // xsReadNetString
+    xsInjectDefine(281, 0, 0, cXsInjectTypeInt);  // xsReadNetInt
+    xsInjectDefine(282, 0, 0, cXsInjectTypeFloat);  // xsReadNetFloat
+    xsInjectDefine(283, 0, 0, cXsInjectTypeVector);  // xsReadNetVector
+    xsInjectDefine(284, 1, 1, cXsInjectTypeBool);  // xsSetWriteNetDataPosition
+    xsInjectParam(cXsInjectTypeInt);
+    xsInjectDefine(285, 1, 1, cXsInjectTypeBool);  // xsSetReadNetDataPosition
+    xsInjectParam(cXsInjectTypeInt);
+    xsInjectDefine(286, 0, 0, cXsInjectTypeInt);  // xsGetWriteNetDataPosition
+    xsInjectDefine(287, 0, 0, cXsInjectTypeInt);  // xsGetReadNetDataPosition
+    xsInjectDefine(288, 0, 0, cXsInjectTypeBool);  // xsUnsyncIsSandboxMode
 }
 
 // Runs call `fid` with `argc` arguments staged at argBase.. in the typed argument arrays;
@@ -894,7 +906,7 @@ void xsInjectDispatch(int fid = -1, int argc = 0, int argBase = 0, int slot = 0)
         }
         case 12: {  // xsIsRuleGroupEnabled
             if (argc == 1) {
-                xsArraySetBool(gXsInjectResBool, slot, xsIsRuleGroupEnabled(xsArrayGetString(gXsInjectArgString, argBase + 0)));
+                xsIsRuleGroupEnabled(xsArrayGetString(gXsInjectArgString, argBase + 0));
             }
         }
         case 13: {  // xsVectorGetX
@@ -1778,7 +1790,7 @@ void xsInjectDispatch(int fid = -1, int argc = 0, int argBase = 0, int slot = 0)
                 xsArraySetBool(gXsInjectResBool, slot, xsFlashUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1)));
             }
             if (argc == 3) {
-                xsArraySetBool(gXsInjectResBool, slot, xsFlashUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetInt(gXsInjectArgInt, argBase + 2)));
+                xsArraySetBool(gXsInjectResBool, slot, xsFlashUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetString(gXsInjectArgString, argBase + 2)));
             }
         }
         case 169: {  // xsStopUnit
@@ -1788,39 +1800,39 @@ void xsInjectDispatch(int fid = -1, int argc = 0, int argBase = 0, int slot = 0)
         }
         case 170: {  // xsBuildUnit
             if (argc == 3) {
-                xsArraySetBool(gXsInjectResBool, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2)));
+                xsArraySetInt(gXsInjectResInt, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2)));
             }
             if (argc == 4) {
-                xsArraySetBool(gXsInjectResBool, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3)));
+                xsArraySetInt(gXsInjectResInt, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3)));
             }
             if (argc == 5) {
-                xsArraySetBool(gXsInjectResBool, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4)));
+                xsArraySetInt(gXsInjectResInt, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4)));
             }
             if (argc == 6) {
-                xsArraySetBool(gXsInjectResBool, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5)));
+                xsArraySetInt(gXsInjectResInt, slot, xsBuildUnit(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetVector(gXsInjectArgVector, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5)));
             }
         }
         case 171: {  // xsTaskUnits
             if (argc == 2) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1));
             }
             if (argc == 3) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2));
             }
             if (argc == 4) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3));
             }
             if (argc == 5) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4));
             }
             if (argc == 6) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5));
             }
             if (argc == 7) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5), xsArrayGetBool(gXsInjectArgBool, argBase + 6)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5), xsArrayGetBool(gXsInjectArgBool, argBase + 6));
             }
             if (argc == 8) {
-                xsArraySetBool(gXsInjectResBool, slot, xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5), xsArrayGetBool(gXsInjectArgBool, argBase + 6), xsArrayGetInt(gXsInjectArgInt, argBase + 7)));
+                xsTaskUnits(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1), xsArrayGetVector(gXsInjectArgVector, argBase + 2), xsArrayGetInt(gXsInjectArgInt, argBase + 3), xsArrayGetBool(gXsInjectArgBool, argBase + 4), xsArrayGetBool(gXsInjectArgBool, argBase + 5), xsArrayGetBool(gXsInjectArgBool, argBase + 6), xsArrayGetInt(gXsInjectArgInt, argBase + 7));
             }
         }
         case 172: {  // xsGetMapName
@@ -2237,26 +2249,6 @@ void xsInjectDispatch(int fid = -1, int argc = 0, int argBase = 0, int slot = 0)
                 xsArraySetInt(gXsInjectResInt, slot, xsGetFileSize());
             }
         }
-        case 232: {  // xsGetGoal
-            if (argc == 1) {
-                xsArraySetInt(gXsInjectResInt, slot, xsGetGoal(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
-            }
-        }
-        case 233: {  // xsGetStrategicNumber
-            if (argc == 1) {
-                xsArraySetInt(gXsInjectResInt, slot, xsGetStrategicNumber(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
-            }
-        }
-        case 234: {  // xsSetGoal
-            if (argc == 2) {
-                xsSetGoal(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1));
-            }
-        }
-        case 235: {  // xsSetStrategicNumber
-            if (argc == 2) {
-                xsSetStrategicNumber(xsArrayGetInt(gXsInjectArgInt, argBase + 0), xsArrayGetInt(gXsInjectArgInt, argBase + 1));
-            }
-        }
         case 236: {  // xsGetAiSignal
             if (argc == 1) {
                 xsArraySetInt(gXsInjectResInt, slot, xsGetAiSignal(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
@@ -2472,6 +2464,81 @@ void xsInjectDispatch(int fid = -1, int argc = 0, int argBase = 0, int slot = 0)
         case 273: {  // fstr
             if (argc == 1) {
                 xsArraySetString(gXsInjectResString, slot, fstr(xsArrayGetString(gXsInjectArgString, argBase + 0)));
+            }
+        }
+        case 274: {  // xsResetNetData
+            if (argc == 0) {
+                xsResetNetData();
+            }
+        }
+        case 275: {  // xsWriteNetInt
+            if (argc == 1) {
+                xsArraySetInt(gXsInjectResInt, slot, xsWriteNetInt(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
+            }
+        }
+        case 276: {  // xsWriteNetFloat
+            if (argc == 1) {
+                xsArraySetInt(gXsInjectResInt, slot, xsWriteNetFloat(xsArrayGetFloat(gXsInjectArgFloat, argBase + 0)));
+            }
+        }
+        case 277: {  // xsWriteNetVector
+            if (argc == 1) {
+                xsArraySetInt(gXsInjectResInt, slot, xsWriteNetVector(xsArrayGetVector(gXsInjectArgVector, argBase + 0)));
+            }
+        }
+        case 278: {  // xsWriteNetString
+            if (argc == 1) {
+                xsArraySetInt(gXsInjectResInt, slot, xsWriteNetString(xsArrayGetString(gXsInjectArgString, argBase + 0)));
+            }
+        }
+        case 279: {  // xsSendNetData
+            if (argc == 1) {
+                xsArraySetBool(gXsInjectResBool, slot, xsSendNetData(xsArrayGetString(gXsInjectArgString, argBase + 0)));
+            }
+        }
+        case 280: {  // xsReadNetString
+            if (argc == 0) {
+                xsArraySetString(gXsInjectResString, slot, xsReadNetString());
+            }
+        }
+        case 281: {  // xsReadNetInt
+            if (argc == 0) {
+                xsArraySetInt(gXsInjectResInt, slot, xsReadNetInt());
+            }
+        }
+        case 282: {  // xsReadNetFloat
+            if (argc == 0) {
+                xsArraySetFloat(gXsInjectResFloat, slot, xsReadNetFloat());
+            }
+        }
+        case 283: {  // xsReadNetVector
+            if (argc == 0) {
+                xsArraySetVector(gXsInjectResVector, slot, xsReadNetVector());
+            }
+        }
+        case 284: {  // xsSetWriteNetDataPosition
+            if (argc == 1) {
+                xsArraySetBool(gXsInjectResBool, slot, xsSetWriteNetDataPosition(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
+            }
+        }
+        case 285: {  // xsSetReadNetDataPosition
+            if (argc == 1) {
+                xsArraySetBool(gXsInjectResBool, slot, xsSetReadNetDataPosition(xsArrayGetInt(gXsInjectArgInt, argBase + 0)));
+            }
+        }
+        case 286: {  // xsGetWriteNetDataPosition
+            if (argc == 0) {
+                xsArraySetInt(gXsInjectResInt, slot, xsGetWriteNetDataPosition());
+            }
+        }
+        case 287: {  // xsGetReadNetDataPosition
+            if (argc == 0) {
+                xsArraySetInt(gXsInjectResInt, slot, xsGetReadNetDataPosition());
+            }
+        }
+        case 288: {  // xsUnsyncIsSandboxMode
+            if (argc == 0) {
+                xsArraySetBool(gXsInjectResBool, slot, xsUnsyncIsSandboxMode());
             }
         }
     }

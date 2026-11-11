@@ -2,7 +2,7 @@
 
 Parent: [01: Spec: XS function injector](01-xs-function-injector-spec.md)
 
-**What to build:** The maintainer runs the generator over the KB function catalog, the KB renames file and the pinned name-to-id table, and gets a checked-in `signatures.json`, an updated pinned table, and a generated XS dispatch (with its per-function parameter-type table) that the core module will include. Id stability is enforced at generation time.
+**What to build:** The maintainer runs the generator over the repo's function catalog (`catalog/functions.json`), its renames file (`catalog/renames.json`) and the pinned name-to-id table, and gets a checked-in `signatures.json`, an updated pinned table, and a generated XS dispatch (with its per-function parameter-type table) that the core module will include. Id stability is enforced at generation time.
 
 **Blocked by:** None (can start immediately)
 

@@ -174,7 +174,7 @@
       ],
       "min_args": 1,
       "max_args": 1,
-      "returns": "bool"
+      "returns": "void"
     },
     {
       "name": "xsVectorGetX",
@@ -2732,7 +2732,7 @@
         },
         {
           "name": "soundName",
-          "type": "int"
+          "type": "string"
         }
       ],
       "min_args": 1,
@@ -2783,7 +2783,7 @@
       ],
       "min_args": 3,
       "max_args": 6,
-      "returns": "bool"
+      "returns": "int"
     },
     {
       "name": "xsTaskUnits",
@@ -2824,7 +2824,7 @@
       ],
       "min_args": 2,
       "max_args": 8,
-      "returns": "bool"
+      "returns": "void"
     },
     {
       "name": "xsGetMapName",
@@ -3645,66 +3645,6 @@
       "returns": "int"
     },
     {
-      "name": "xsGetGoal",
-      "id": 232,
-      "params": [
-        {
-          "name": "id",
-          "type": "int"
-        }
-      ],
-      "min_args": 1,
-      "max_args": 1,
-      "returns": "int"
-    },
-    {
-      "name": "xsGetStrategicNumber",
-      "id": 233,
-      "params": [
-        {
-          "name": "id",
-          "type": "int"
-        }
-      ],
-      "min_args": 1,
-      "max_args": 1,
-      "returns": "int"
-    },
-    {
-      "name": "xsSetGoal",
-      "id": 234,
-      "params": [
-        {
-          "name": "id",
-          "type": "int"
-        },
-        {
-          "name": "value",
-          "type": "int"
-        }
-      ],
-      "min_args": 2,
-      "max_args": 2,
-      "returns": "void"
-    },
-    {
-      "name": "xsSetStrategicNumber",
-      "id": 235,
-      "params": [
-        {
-          "name": "id",
-          "type": "int"
-        },
-        {
-          "name": "value",
-          "type": "int"
-        }
-      ],
-      "min_args": 2,
-      "max_args": 2,
-      "returns": "void"
-    },
-    {
       "name": "xsGetAiSignal",
       "id": 236,
       "params": [
@@ -4314,6 +4254,161 @@
       "min_args": 1,
       "max_args": 1,
       "returns": "string"
+    },
+    {
+      "name": "xsResetNetData",
+      "id": 274,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "void"
+    },
+    {
+      "name": "xsWriteNetInt",
+      "id": 275,
+      "params": [
+        {
+          "name": "value",
+          "type": "int"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "int"
+    },
+    {
+      "name": "xsWriteNetFloat",
+      "id": 276,
+      "params": [
+        {
+          "name": "value",
+          "type": "float"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "int"
+    },
+    {
+      "name": "xsWriteNetVector",
+      "id": 277,
+      "params": [
+        {
+          "name": "value",
+          "type": "vector"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "int"
+    },
+    {
+      "name": "xsWriteNetString",
+      "id": 278,
+      "params": [
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "int"
+    },
+    {
+      "name": "xsSendNetData",
+      "id": 279,
+      "params": [
+        {
+          "name": "callback",
+          "type": "string"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "bool"
+    },
+    {
+      "name": "xsReadNetString",
+      "id": 280,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "string"
+    },
+    {
+      "name": "xsReadNetInt",
+      "id": 281,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "int"
+    },
+    {
+      "name": "xsReadNetFloat",
+      "id": 282,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "float"
+    },
+    {
+      "name": "xsReadNetVector",
+      "id": 283,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "vector"
+    },
+    {
+      "name": "xsSetWriteNetDataPosition",
+      "id": 284,
+      "params": [
+        {
+          "name": "position",
+          "type": "int"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "bool"
+    },
+    {
+      "name": "xsSetReadNetDataPosition",
+      "id": 285,
+      "params": [
+        {
+          "name": "position",
+          "type": "int"
+        }
+      ],
+      "min_args": 1,
+      "max_args": 1,
+      "returns": "bool"
+    },
+    {
+      "name": "xsGetWriteNetDataPosition",
+      "id": 286,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "int"
+    },
+    {
+      "name": "xsGetReadNetDataPosition",
+      "id": 287,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "int"
+    },
+    {
+      "name": "xsUnsyncIsSandboxMode",
+      "id": 288,
+      "params": [],
+      "min_args": 0,
+      "max_args": 0,
+      "returns": "bool"
     }
   ]
 }

@@ -27,12 +27,18 @@ class Result:
     dispatch: str
 
 
-def generate(catalog, renames, pinned, retire=()):
-    """Raises GeneratorError on anything that would let an id shift or a signature go unexpressed."""
+def generate(catalog, renames, pinned, retire=None):
+    """Raises GeneratorError on anything that would let an id shift or a signature go unexpressed.
+
+    `retire` maps each name to retire on this run to the reason it is retired.
+    """
     for f in catalog:
         _check_signature(f)
-    assigned, retired = _assign_ids([f["name"] for f in catalog], renames, pinned, retire)
-    pinned_out = {"functions": _by_id(assigned), "retired": _by_id(retired)}
+    assigned, retired = _assign_ids([f["name"] for f in catalog], renames, pinned, retire or {})
+    pinned_out = {
+        "functions": _by_id(assigned),
+        "retired": dict(sorted(retired.items(), key=lambda kv: kv[1]["id"])),
+    }
     live = [f for f in catalog if f["name"] in assigned]
     sigs = sorted((_signature(f, assigned[f["name"]]) for f in live), key=lambda s: s["id"])
     return Result({"functions": sigs}, pinned_out, _dispatch(sigs))
@@ -48,9 +54,9 @@ def build_parser():
     p.add_argument("--pinned", type=Path, default=REPO / "xsinject" / "function_ids.json")
     p.add_argument("--signatures", type=Path, default=REPO / "xsinject" / "signatures.json")
     p.add_argument("--dispatch", type=Path, default=REPO / "xs" / "xsinject_dispatch.xs")
-    p.add_argument("--retire", action="append", default=[], metavar="NAME",
-                   help="retire a pinned function: its id is never reused and it is left out of the dispatch, "
-                        "whether it left the catalog or is still listed (e.g. deprecated). Repeatable")
+    p.add_argument("--retire", action="append", nargs=2, default=[], metavar=("NAME", "REASON"),
+                   help="retire a pinned function, recording why: its id is never reused and it is left out of "
+                        "the dispatch, whether it left the catalog or is still listed (e.g. deprecated). Repeatable")
     return p
 
 
@@ -61,7 +67,7 @@ def main(argv=None):
         catalog = json.loads(a.catalog.read_text(encoding="utf-8"))
         renames = json.loads(a.renames.read_text(encoding="utf-8"))
         pinned = json.loads(a.pinned.read_text(encoding="utf-8")) if a.pinned.exists() else None
-        result = generate(catalog, renames, pinned, retire=a.retire)
+        result = generate(catalog, renames, pinned, retire=dict(a.retire))
     except (GeneratorError, OSError, ValueError, KeyError) as e:
         print(f"generate: {e}", file=sys.stderr)
         return 1
@@ -258,7 +264,7 @@ def _assign_ids(names, renames, pinned, retire):
     """
     pinned = pinned or {"functions": {}, "retired": {}}
     assigned = dict(pinned["functions"])
-    retired = dict(pinned["retired"])
+    retired = dict(pinned["retired"])  # name -> {"id", "reason"}
     in_catalog = set(names)
 
     # Renames apply in file order, so a chain old -> mid -> new carries the id all the way.
@@ -269,20 +275,22 @@ def _assign_ids(names, renames, pinned, retire):
                 raise GeneratorError(f"rename {old!r} -> {new!r}: {new!r} already has an id (pinned or retired)")
             assigned[new] = assigned.pop(old)
 
-    for name in retire:
+    for name, reason in retire.items():
         if name not in assigned:
             raise GeneratorError(f"cannot retire {name!r}: it has no pinned id")
-        retired[name] = assigned.pop(name)
+        if not reason.strip():
+            raise GeneratorError(f"cannot retire {name!r}: give a reason")
+        retired[name] = {"id": assigned.pop(name), "reason": reason.strip()}
 
     missing = [n for n in assigned if n not in in_catalog]
     if missing:
         raise GeneratorError(
             "pinned functions left the catalog without a rename entry: "
             + ", ".join(missing)
-            + ". Add a rename to xs_renames.json, or retire them with --retire."
+            + ". Add a rename to catalog/renames.json, or retire them with --retire NAME REASON."
         )
 
-    next_id = max([*assigned.values(), *retired.values()], default=-1) + 1
+    next_id = max([*assigned.values(), *(r["id"] for r in retired.values())], default=-1) + 1
     for name in names:
         if name in assigned:
             continue

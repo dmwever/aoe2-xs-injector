@@ -230,10 +230,6 @@
     "xsGetFilePosition": 229,
     "xsGetDataTypeSize": 230,
     "xsGetFileSize": 231,
-    "xsGetGoal": 232,
-    "xsGetStrategicNumber": 233,
-    "xsSetGoal": 234,
-    "xsSetStrategicNumber": 235,
     "xsGetAiSignal": 236,
     "xsSetAiSignal": 237,
     "xsGetAiScriptGoal": 238,
@@ -271,10 +267,47 @@
     "strToFloat": 270,
     "hex": 271,
     "bin": 272,
-    "fstr": 273
+    "fstr": 273,
+    "xsResetNetData": 274,
+    "xsWriteNetInt": 275,
+    "xsWriteNetFloat": 276,
+    "xsWriteNetVector": 277,
+    "xsWriteNetString": 278,
+    "xsSendNetData": 279,
+    "xsReadNetString": 280,
+    "xsReadNetInt": 281,
+    "xsReadNetFloat": 282,
+    "xsReadNetVector": 283,
+    "xsSetWriteNetDataPosition": 284,
+    "xsSetReadNetDataPosition": 285,
+    "xsGetWriteNetDataPosition": 286,
+    "xsGetReadNetDataPosition": 287,
+    "xsUnsyncIsSandboxMode": 288
   },
   "retired": {
-    "xsTask": 114,
-    "xsRemoveTask": 115
+    "xsTask": {
+      "id": 114,
+      "reason": "Deprecated: ugc.aoe2.rocks marks it \"Deprecated. Use xsModifyObjectTasks instead.\" (ticket 03 ruling, 2026-11-11)"
+    },
+    "xsRemoveTask": {
+      "id": 115,
+      "reason": "Deprecated: ugc.aoe2.rocks marks it \"Deprecated. Use xsModifyObjectTasks instead.\" (ticket 03 ruling, 2026-11-11)"
+    },
+    "xsGetGoal": {
+      "id": 232,
+      "reason": "AI-script only: not callable from scenario XS (\"xsGetGoal is not a valid operator\", ticket 04 launch 4, 2026-11-11)"
+    },
+    "xsGetStrategicNumber": {
+      "id": 233,
+      "reason": "AI-script only: not callable from scenario XS (\"xsGetGoal is not a valid operator\", ticket 04 launch 4, 2026-11-11)"
+    },
+    "xsSetGoal": {
+      "id": 234,
+      "reason": "AI-script only: not callable from scenario XS (\"xsGetGoal is not a valid operator\", ticket 04 launch 4, 2026-11-11)"
+    },
+    "xsSetStrategicNumber": {
+      "id": 235,
+      "reason": "AI-script only: not callable from scenario XS (\"xsGetGoal is not a valid operator\", ticket 04 launch 4, 2026-11-11)"
+    }
   }
 }

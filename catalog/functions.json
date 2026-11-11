@@ -231,8 +231,8 @@
   {
     "name": "xsIsRuleGroupEnabled",
     "category": "rules",
-    "return_type": "bool",
-    "prototype": "bool xsIsRuleGroupEnabled(string ruleGroupName)",
+    "return_type": "void",
+    "prototype": "void xsIsRuleGroupEnabled(string ruleGroupName)",
     "param_count": 1,
     "min_param_count": 1,
     "params": [
@@ -244,7 +244,8 @@
         "default": null
       }
     ],
-    "desc": "Returns true, if all the rules in the given rule group are enabled"
+    "desc": "Checks whether all the rules in the given rule group are enabled. Returns nothing in the engine (void), so the answer cannot be read from XS.",
+    "source": "engine compile, live file I/O spike run B, 2026-11-10 (.scratch/xs-injector/issues/08-live-file-io-spike.md): return type corrected bool -> void (\"void syscall/function cannot be called here\")"
   },
   {
     "name": "xsVectorGetX",
@@ -4052,7 +4053,7 @@
     "name": "xsFlashUnit",
     "category": "Units and Objects",
     "return_type": "bool",
-    "prototype": "bool xsFlashUnit(int unitId, int playerId, int soundName)",
+    "prototype": "bool xsFlashUnit(int unitId, int playerId, string soundName)",
     "param_count": 3,
     "min_param_count": 1,
     "params": [
@@ -4072,13 +4073,14 @@
       },
       {
         "name": "soundName",
-        "type": "int",
+        "type": "string",
         "required": false,
         "desc": "Defaults to \"?capture_complete\"",
         "default": null
       }
     ],
-    "desc": "Flashes the given unit. Same as the editor effect."
+    "desc": "Flashes the given unit. Same as the editor effect.",
+    "source": "engine compile, live file I/O spike run B, 2026-11-10 (.scratch/xs-injector/issues/08-live-file-io-spike.md): soundName corrected int -> string (\"expression does not match expression type\"; string compiles)"
   },
   {
     "name": "xsStopUnit",
@@ -4101,8 +4103,8 @@
   {
     "name": "xsBuildUnit",
     "category": "Units and Objects",
-    "return_type": "bool",
-    "prototype": "bool xsBuildUnit(int unitIds, int objectId, vector location1, vector location2, bool isShiftQueue, bool isFormationCommand)",
+    "return_type": "int",
+    "prototype": "int xsBuildUnit(int unitIds, int objectId, vector location1, vector location2, bool isShiftQueue, bool isFormationCommand)",
     "param_count": 6,
     "min_param_count": 3,
     "params": [
@@ -4149,13 +4151,14 @@
         "default": null
       }
     ],
-    "desc": "Tasks the selected units to build the given object at the specified location. The target location must be visible, the building must be available to the selected units, and the player must have sufficient resources to construct the building. Resources are deducted upon building. Same as the editor effect"
+    "desc": "Tasks the selected units to build the given object at the specified location. The target location must be visible, the building must be available to the selected units, and the player must have sufficient resources to construct the building. Resources are deducted upon building. Same as the editor effect",
+    "source": "engine compile, ticket 04 probe .scratch/xs-injector-build/probes/xsBuildUnit.xs, 2026-11-11: return type corrected bool -> int (int assignment compiles, bool assignment fails with \"expression type does not match expected type\"; all six parameter types compile as catalogued)"
   },
   {
     "name": "xsTaskUnits",
     "category": "Units and Objects",
-    "return_type": "bool",
-    "prototype": "bool xsTaskUnits(int unitIds, int actionType, vector location, int locationUnitId, bool isShiftQueue, bool isFormationCommand, bool shouldPlayUnloadSound, int patrolPoints)",
+    "return_type": "void",
+    "prototype": "void xsTaskUnits(int unitIds, int actionType, vector location, int locationUnitId, bool isShiftQueue, bool isFormationCommand, bool shouldPlayUnloadSound, int patrolPoints)",
     "param_count": 8,
     "min_param_count": 2,
     "params": [
@@ -4216,7 +4219,8 @@
         "default": null
       }
     ],
-    "desc": "Tasks the selected units to perform the given action. Same as the editor effect."
+    "desc": "Tasks the selected units to perform the given action. Same as the editor effect.",
+    "source": "engine compile, ticket 04 launches 2-3, 2026-11-11: return type corrected bool -> void. Stored as bool it failed with \"expression type does not match expected type\"; stored as int it failed with \"void syscall/function cannot be called here\". Matches the help signature embedded in AoE2DE_s.exe."
   },
   {
     "name": "xsGetMapName",
@@ -6360,5 +6364,226 @@
       }
     ],
     "desc": "Formats the given string like a Python f-string. Note that Expressions are not allowed, and it is limited to variable names only.\n\nExample:\n```xs\nxsChatData(fstr(\"{colourTag}{player}: {msg}\")); // assuming that colourTag, player, and msg are valid variables here.\n```\n\nSimilar to Python, you may use `{{` and `}}` to escape the brackets themselves when passing a string to `fstr` when interpolation is not desired.\n\nThe strings passed to `fstr` do not need to be literal strings. This allows creating multi-language template strings in language files that can be fetched via `xsGetString` and then passed to `fstr` for interpretation.\n\nThe variable names used inside the `{}` must be valid identifiers and in scope, or the `{}` will be left unmodified in the output."
+  },
+  {
+    "name": "xsResetNetData",
+    "category": "network",
+    "return_type": "void",
+    "prototype": "void xsResetNetData()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Resets the network data buffer",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsWriteNetInt",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsWriteNetInt(int value)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The value to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a int value in the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsWriteNetFloat",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsWriteNetFloat(float value)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a float value in the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsWriteNetVector",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsWriteNetVector(vector value)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "value",
+        "type": "vector",
+        "required": true,
+        "desc": "The value to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a vector value in the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsWriteNetString",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsWriteNetString(string value)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "desc": "The value to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a string value in the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsSendNetData",
+    "category": "network",
+    "return_type": "bool",
+    "prototype": "bool xsSendNetData(string callback)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "callback",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the function to call. The signature of this callback must be void(int)",
+        "default": null
+      }
+    ],
+    "desc": "Calls the given function with the current network data buffer, and passes the ID of the local player issuing this command as an argument. Note that the data that can be sent at once is limited to 256B, and up to a maximum of 4 times per second per player. Note that this function should be used even in single player contexts where unsync XS functions are used, such as xsReadInt();. Unsync functions will otherwise desync replays!",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsReadNetString",
+    "category": "network",
+    "return_type": "string",
+    "prototype": "string xsReadNetString()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads a string value from the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsReadNetInt",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsReadNetInt()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads a int value from the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsReadNetFloat",
+    "category": "network",
+    "return_type": "float",
+    "prototype": "float xsReadNetFloat()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads a float value from the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsReadNetVector",
+    "category": "network",
+    "return_type": "vector",
+    "prototype": "vector xsReadNetVector()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads a vector value from the network data buffer.",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsSetWriteNetDataPosition",
+    "category": "network",
+    "return_type": "bool",
+    "prototype": "bool xsSetWriteNetDataPosition(int position)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "position",
+        "type": "int",
+        "required": true,
+        "desc": "The position to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the write position in the network data buffer",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsSetReadNetDataPosition",
+    "category": "network",
+    "return_type": "bool",
+    "prototype": "bool xsSetReadNetDataPosition(int position)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "position",
+        "type": "int",
+        "required": true,
+        "desc": "The position to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the read position in the network data buffer",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsGetWriteNetDataPosition",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsGetWriteNetDataPosition()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the write position in the network data buffer",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsGetReadNetDataPosition",
+    "category": "network",
+    "return_type": "int",
+    "prototype": "int xsGetReadNetDataPosition()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the read position in the network data buffer",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
+  },
+  {
+    "name": "xsUnsyncIsSandboxMode",
+    "category": "network",
+    "return_type": "bool",
+    "prototype": "bool xsUnsyncIsSandboxMode()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns true in replays and in campaigns where the user chooses sandbox mode",
+    "source": "ugc.aoe2.rocks, XS functions section 17 (Network), fetched 2026-11-11"
   }
 ]

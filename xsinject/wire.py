@@ -31,8 +31,9 @@ LITERAL = 0  # argument tags
 REFERENCE = 1
 
 
-class Ref(int):
+class Reference(int):
     """A reference argument: the number of an earlier call in the same request."""
+
 
 _INT = struct.Struct("<i")
 _UINT = struct.Struct("<I")
@@ -63,13 +64,13 @@ def encode_value(xs_type, value):
 def encode_request(request_id, calls):
     """Request bytes for `calls`, a list of (function id, [(param type, argument), ...]).
 
-    An argument is a literal, or a Ref sent as tag 1 plus the call number.
+    An argument is a literal, or a Reference sent as tag 1 plus the call number.
     """
     out = [_INT.pack(request_id), _INT.pack(len(calls))]
     for fid, args in calls:
         out.append(_INT.pack(fid) + _INT.pack(len(args)))
         for xs_type, value in args:
-            if isinstance(value, Ref):
+            if isinstance(value, Reference):
                 out.append(_INT.pack(REFERENCE) + _INT.pack(value))
             else:
                 out.append(_INT.pack(LITERAL) + encode_value(xs_type, value))

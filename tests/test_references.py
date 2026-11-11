@@ -52,8 +52,8 @@ VEC = {"fn": "xsVectorSet", "args": [1, 2, 3]}
 @pytest.mark.parametrize(
     "calls, at, words",
     [
-        ([{"fn": "xsVectorGetX", "args": [{"ref": 0}]}], (0, 0), "itself"),
-        ([VEC, {"fn": "xsVectorGetX", "args": [{"ref": 1}]}], (1, 0), "itself"),
+        ([{"fn": "xsVectorGetX", "args": [{"ref": 0}]}], (0, 0), "own call"),
+        ([VEC, {"fn": "xsVectorGetX", "args": [{"ref": 1}]}], (1, 0), "own call"),
         ([VEC, {"fn": "xsVectorGetX", "args": [{"ref": 2}]}, VEC], (1, 0), "later call"),
         ([VEC, {"fn": "xsVectorGetX", "args": [{"ref": 5}]}], (1, 0), "no call #5"),
         ([VEC, {"fn": "xsVectorGetX", "args": [{"ref": -1}]}], (1, 0), "no call #-1"),

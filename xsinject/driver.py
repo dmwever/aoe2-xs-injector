@@ -86,14 +86,14 @@ def _literal_problem(xs_type, value):
 
 
 def _reference_problem(n, arg, xs_type, checked, call_count):
-    """(wire.Ref, None) for a valid reference `arg` in call #n, or (None, why it isn't)."""
+    """(wire.Reference, None) for a valid reference `arg` in call #n, or (None, why it isn't)."""
     if set(arg) != {"ref"}:
         return None, f'a reference is {{"ref": <call #>}}, got {json.dumps(arg)}'
     target = arg["ref"]
     if isinstance(target, bool) or not isinstance(target, int):
         return None, f'the "ref" of a reference is a call number, got {json.dumps(target)}'
     if target == n:
-        return None, "a reference can't point to its own call (itself)"
+        return None, "a reference can't point to its own call"
     if not 0 <= target < call_count:
         return None, f"a reference to no call #{target}; the request has calls #0..#{call_count - 1}"
     if target > n:
@@ -103,13 +103,13 @@ def _reference_problem(n, arg, xs_type, checked, call_count):
         return None, f"call #{target} ({sig['name']}) is void, so it has no result to reference"
     if sig["returns"] != xs_type:
         return None, f"call #{target} ({sig['name']}) returns {sig['returns']}, but the parameter is {xs_type}"
-    return wire.Ref(target), None
+    return wire.Reference(target), None
 
 
 def _validate(calls):
     """[(signature, [(param type, argument), ...])] for a JSON request, or raise InvalidRequest naming the mistake.
 
-    An argument is the JSON literal, or a wire.Ref for {"ref": N}: N must be an earlier call whose
+    An argument is the JSON literal, or a wire.Reference for {"ref": N}: N must be an earlier call whose
     return type is exactly the parameter's type.
     """
     if not isinstance(calls, list):
@@ -125,7 +125,7 @@ def _validate(calls):
         if not sig["min_args"] <= len(args) <= sig["max_args"]:
             want = str(sig["min_args"]) if sig["min_args"] == sig["max_args"] else f"{sig['min_args']}..{sig['max_args']}"
             raise InvalidRequest(f"call #{n} ({name}): takes {want} arguments, got {len(args)}", n)
-        typed = []
+        arguments = []
         for k, (arg, param) in enumerate(zip(args, sig["params"])):
             if isinstance(arg, dict) and "ref" in arg:
                 arg, problem = _reference_problem(n, arg, param["type"], checked, len(calls))
@@ -133,8 +133,8 @@ def _validate(calls):
                 problem = _literal_problem(param["type"], arg)
             if problem is not None:
                 raise InvalidRequest(f"call #{n} ({name}), argument #{k} ({param['name']}): {problem}", n, k)
-            typed.append((param["type"], arg))
-        checked.append((sig, typed))
+            arguments.append((param["type"], arg))
+        checked.append((sig, arguments))
     return checked
 
 

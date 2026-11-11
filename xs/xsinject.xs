@@ -254,16 +254,23 @@ int xsInjectParse(int size = 0) {
     return (cXsInjectOK);
 }
 
-// Clears the result slots of the staged calls, so no value outlives its request.
+// Clears every result slot, so no value outlives its request.
 void xsInjectClearResults() {
-    int call = 0;
-    while (call < gXsInjectCallCount) {
-        xsArraySetInt(gXsInjectResInt, call, 0);
-        xsArraySetFloat(gXsInjectResFloat, call, 0.0);
-        xsArraySetBool(gXsInjectResBool, call, false);
-        xsArraySetString(gXsInjectResString, call, "");
-        xsArraySetVector(gXsInjectResVector, call, vector(0.0, 0.0, 0.0));
-        call++;
+    int slot = 0;
+    for (slot = 0; < xsArrayGetSize(gXsInjectResInt)) {
+        xsArraySetInt(gXsInjectResInt, slot, 0);
+    }
+    for (slot = 0; < xsArrayGetSize(gXsInjectResFloat)) {
+        xsArraySetFloat(gXsInjectResFloat, slot, 0.0);
+    }
+    for (slot = 0; < xsArrayGetSize(gXsInjectResBool)) {
+        xsArraySetBool(gXsInjectResBool, slot, false);
+    }
+    for (slot = 0; < xsArrayGetSize(gXsInjectResString)) {
+        xsArraySetString(gXsInjectResString, slot, "");
+    }
+    for (slot = 0; < xsArrayGetSize(gXsInjectResVector)) {
+        xsArraySetVector(gXsInjectResVector, slot, vector(0.0, 0.0, 0.0));
     }
 }
 
@@ -303,7 +310,6 @@ void xsInjectResolveReferences(int call = 0) {
 // the module never judges one, and every call runs.
 void xsInjectRunCalls() {
     int call = 0;
-    xsInjectClearResults();
     while (call < gXsInjectCallCount) {
         xsInjectResolveReferences(call);
         xsInjectDispatch(xsArrayGetInt(gXsInjectCallFn, call), xsArrayGetInt(gXsInjectCallArgc, call),
@@ -422,6 +428,7 @@ void xsInjectTick() {
         return;
     }
 
+    xsInjectClearResults();
     // Running marks the request before call #0, so a call that kills the rule stays visible.
     xsInjectRespond(requestId, cXsInjectRunning, -1, -1, 0);
     xsInjectRunCalls();

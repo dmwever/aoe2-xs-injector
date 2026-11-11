@@ -1,0 +1,85 @@
+{"t": 1.806, "wall": "11:59:41", "kind": "boot_seen", "file": "XsTesting", "rows": [["boot", 18, "XsTesting"]]}
+{"t": 1.808, "wall": "11:59:41", "kind": "ctl", "step": 1, "attempts": 1}
+{"t": 3.646, "wall": "11:59:43", "kind": "ack", "label": "step", "value": 1, "file": "XsTesting", "rows": 23}
+{"t": 3.648, "wall": "11:59:43", "kind": "snapshot", "tag": "step01", "name": "XsTesting", "size": 671, "mtime": 1794333581.8611062}
+{"t": 3.65, "wall": "11:59:43", "kind": "snapshot", "tag": "step01", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 3.652, "wall": "11:59:43", "kind": "ctl", "step": 2, "attempts": 1}
+{"t": 5.027, "wall": "11:59:44", "kind": "ack", "label": "step", "value": 2, "file": "XsTesting", "rows": 61}
+{"t": 5.028, "wall": "11:59:44", "kind": "snapshot", "tag": "step02", "name": "XsTesting", "size": 1421, "mtime": 1794333583.5899365}
+{"t": 5.029, "wall": "11:59:44", "kind": "snapshot", "tag": "step02", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 5.032, "wall": "11:59:44", "kind": "ctl", "step": 3, "attempts": 1}
+{"t": 6.48, "wall": "11:59:46", "kind": "ack", "label": "step", "value": 3, "file": "XsTesting", "rows": 86}
+{"t": 6.484, "wall": "11:59:46", "kind": "snapshot", "tag": "step03", "name": "XsTesting", "size": 1936, "mtime": 1794333585.0004892}
+{"t": 6.487, "wall": "11:59:46", "kind": "snapshot", "tag": "step03", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 6.489, "wall": "11:59:46", "kind": "ctl", "step": 4, "attempts": 1}
+{"t": 7.74, "wall": "11:59:47", "kind": "ack", "label": "step", "value": 4, "file": "XsTesting", "rows": 118}
+{"t": 7.742, "wall": "11:59:47", "kind": "snapshot", "tag": "step04", "name": "XsTesting", "size": 2700, "mtime": 1794333586.4176571}
+{"t": 7.743, "wall": "11:59:47", "kind": "snapshot", "tag": "step04", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 7.745, "wall": "11:59:47", "kind": "ctl", "step": 5, "attempts": 1}
+{"t": 10.747, "wall": "11:59:50", "kind": "snapshot", "tag": "step05_before_rewrite", "name": "XsTesting", "size": 18, "mtime": 1794333587.6696615}
+{"t": 10.749, "wall": "11:59:50", "kind": "snapshot", "tag": "step05_before_rewrite", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 10.75, "wall": "11:59:50", "kind": "op", "op": "ext.rewrite_XsTesting", "ok": true, "result": 8}
+{"t": 10.753, "wall": "11:59:50", "kind": "snapshot", "tag": "step05", "name": "XsTesting", "size": 8, "mtime": 1794333590.643632}
+{"t": 10.755, "wall": "11:59:50", "kind": "snapshot", "tag": "step05", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 10.757, "wall": "11:59:50", "kind": "ctl", "step": 6, "attempts": 1}
+{"t": 12.703, "wall": "11:59:52", "kind": "ack", "label": "step", "value": 6, "file": "XsTesting", "rows": 144}
+{"t": 12.705, "wall": "11:59:52", "kind": "snapshot", "tag": "step06", "name": "XsTesting", "size": 3255, "mtime": 1794333590.668058}
+{"t": 12.706, "wall": "11:59:52", "kind": "snapshot", "tag": "step06", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 12.708, "wall": "11:59:52", "kind": "ctl", "step": 7, "attempts": 1}
+{"t": 15.208, "wall": "11:59:55", "kind": "op", "op": "hold7.read", "ok": true, "result": {"size": 8, "head_hex": "bd020000be020000"}}
+{"t": 15.208, "wall": "11:59:55", "kind": "op", "op": "hold7.append", "ok": false, "error": "PermissionError(13, 'Permission denied')"}
+{"t": 21.942, "wall": "12:00:01", "kind": "ack", "label": "release", "value": 7, "file": "XsTesting", "rows": 165}
+{"t": 21.944, "wall": "12:00:01", "kind": "snapshot", "tag": "step07", "name": "XsTesting", "size": 3847, "mtime": 1794333600.0987003}
+{"t": 21.945, "wall": "12:00:01", "kind": "snapshot", "tag": "step07", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 21.947, "wall": "12:00:01", "kind": "ctl", "step": 8, "attempts": 1}
+{"t": 24.447, "wall": "12:00:04", "kind": "op", "op": "hold8.overwrite", "ok": false, "error": "PermissionError(13, 'Permission denied')"}
+{"t": 30.394, "wall": "12:00:10", "kind": "ack", "label": "release", "value": 8, "file": "XsTesting", "rows": 186}
+{"t": 30.395, "wall": "12:00:10", "kind": "snapshot", "tag": "step08", "name": "XsTesting", "size": 4439, "mtime": 1794333609.3975854}
+{"t": 30.396, "wall": "12:00:10", "kind": "snapshot", "tag": "step08", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 30.398, "wall": "12:00:10", "kind": "ctl", "step": 9, "attempts": 1}
+{"t": 32.9, "wall": "12:00:12", "kind": "op", "op": "hold9.replace", "ok": false, "error": "PermissionError(13, 'Access is denied')"}
+{"t": 39.501, "wall": "12:00:19", "kind": "ack", "label": "release", "value": 9, "file": "XsTesting", "rows": 207}
+{"t": 39.503, "wall": "12:00:19", "kind": "snapshot", "tag": "step09", "name": "XsTesting", "size": 5031, "mtime": 1794333617.698637}
+{"t": 39.504, "wall": "12:00:19", "kind": "snapshot", "tag": "step09", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 39.506, "wall": "12:00:19", "kind": "ctl", "step": 10, "attempts": 1}
+{"t": 42.006, "wall": "12:00:21", "kind": "op", "op": "hold10.remove", "ok": false, "error": "PermissionError(13, 'The process cannot access the file because it is being used by another process')"}
+{"t": 48.609, "wall": "12:00:28", "kind": "ack", "label": "release", "value": 10, "file": "XsTesting", "rows": 228}
+{"t": 48.611, "wall": "12:00:28", "kind": "snapshot", "tag": "step10", "name": "XsTesting", "size": 5642, "mtime": 1794333626.729506}
+{"t": 48.613, "wall": "12:00:28", "kind": "snapshot", "tag": "step10", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 48.615, "wall": "12:00:28", "kind": "ctl", "step": 11, "attempts": 1}
+{"t": 51.115, "wall": "12:00:31", "kind": "op", "op": "hw.read_own", "ok": false, "error": "PermissionError(13, 'Permission denied')"}
+{"t": 57.349, "wall": "12:00:37", "kind": "ack", "label": "release", "value": 11, "file": "XsTesting", "rows": 242}
+{"t": 57.351, "wall": "12:00:37", "kind": "snapshot", "tag": "step11", "name": "XsTesting", "size": 5916, "mtime": 1794333635.951991}
+{"t": 57.352, "wall": "12:00:37", "kind": "snapshot", "tag": "step11", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 57.354, "wall": "12:00:37", "kind": "ctl", "step": 12, "attempts": 1}
+{"t": 58.422, "wall": "12:00:38", "kind": "ack", "label": "step", "value": 12, "file": "XsTesting", "rows": 275}
+{"t": 58.424, "wall": "12:00:38", "kind": "snapshot", "tag": "step12", "name": "XsTesting", "size": 6741, "mtime": 1794333637.356097}
+{"t": 58.426, "wall": "12:00:38", "kind": "snapshot", "tag": "step12", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 58.428, "wall": "12:00:38", "kind": "ctl", "step": 13, "attempts": 1}
+{"t": 59.485, "wall": "12:00:39", "kind": "ack", "label": "step", "value": 13, "file": "XsTesting", "rows": 282}
+{"t": 59.486, "wall": "12:00:39", "kind": "snapshot", "tag": "step13", "name": "XsTesting", "size": 6884, "mtime": 1794333638.4581182}
+{"t": 59.488, "wall": "12:00:39", "kind": "snapshot", "tag": "step13", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 59.49, "wall": "12:00:39", "kind": "ctl", "step": 14, "attempts": 1}
+{"t": 60.552, "wall": "12:00:40", "kind": "ack", "label": "step", "value": 14, "file": "XsTesting", "rows": 292}
+{"t": 60.555, "wall": "12:00:40", "kind": "snapshot", "tag": "step14", "name": "XsTesting", "size": 7103, "mtime": 1794333639.845527}
+{"t": 60.556, "wall": "12:00:40", "kind": "snapshot", "tag": "step14", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 60.558, "wall": "12:00:40", "kind": "ctl", "step": 15, "attempts": 1}
+{"t": 64.356, "wall": "12:00:44", "kind": "ack", "label": "step", "value": 15, "file": "XsTesting", "rows": 302}
+{"t": 64.358, "wall": "12:00:44", "kind": "snapshot", "tag": "step15", "name": "XsTesting", "size": 7322, "mtime": 1794333642.41679}
+{"t": 64.359, "wall": "12:00:44", "kind": "snapshot", "tag": "step15", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 64.36, "wall": "12:00:44", "kind": "ctl", "step": 16, "attempts": 1}
+{"t": 65.439, "wall": "12:00:45", "kind": "ack", "label": "step", "value": 16, "file": "XsTesting", "rows": 309}
+{"t": 65.441, "wall": "12:00:45", "kind": "snapshot", "tag": "step16", "name": "XsTesting", "size": 7465, "mtime": 1794333644.3685465}
+{"t": 65.442, "wall": "12:00:45", "kind": "snapshot", "tag": "step16", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 65.444, "wall": "12:00:45", "kind": "ctl", "step": 17, "attempts": 1}
+{"t": 66.51, "wall": "12:00:46", "kind": "ack", "label": "step", "value": 17, "file": "XsTesting", "rows": 316}
+{"t": 66.511, "wall": "12:00:46", "kind": "snapshot", "tag": "step17", "name": "XsTesting", "size": 7608, "mtime": 1794333645.495134}
+{"t": 66.513, "wall": "12:00:46", "kind": "snapshot", "tag": "step17", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 66.514, "wall": "12:00:46", "kind": "ctl", "step": 18, "attempts": 1}
+{"t": 67.625, "wall": "12:00:47", "kind": "ack", "label": "step", "value": 18, "file": "XsTesting", "rows": 323}
+{"t": 67.626, "wall": "12:00:47", "kind": "snapshot", "tag": "step18", "name": "XsTesting", "size": 7753, "mtime": 1794333646.4283497}
+{"t": 67.627, "wall": "12:00:47", "kind": "snapshot", "tag": "step18", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}
+{"t": 67.629, "wall": "12:00:47", "kind": "ctl", "step": 99, "attempts": 1}
+{"t": 68.748, "wall": "12:00:48", "kind": "ack", "label": "step", "value": 99, "file": "XsTesting", "rows": 326}
+{"t": 68.75, "wall": "12:00:48", "kind": "snapshot", "tag": "step99", "name": "XsTesting", "size": 7798, "mtime": 1794333647.7088127}
+{"t": 68.751, "wall": "12:00:48", "kind": "snapshot", "tag": "step99", "name": "default1", "size": 8231, "mtime": 1794146076.1405911}

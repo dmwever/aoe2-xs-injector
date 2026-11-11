@@ -1,0 +1,55 @@
+import json
+import subprocess
+import sys
+
+from conftest import FakeModule, i32, section
+
+from xsinject.cli import main
+
+FAST_ARGS = ["--timeout", "2", "--poll", "0.02", "--lock-timeout", "0.3"]
+
+
+def test_ping_prints_the_result_and_exits_0_on_ok(profile, capsys):
+    with FakeModule(profile, lambda rid: {"default1": section(rid)}):
+        code = main(["ping", "--profile", str(profile), *FAST_ARGS])
+    out = json.loads(capsys.readouterr().out)
+    assert code == 0
+    assert (out["request_id"], out["status"], out["entries"]) == (1, "OK", [])
+
+
+def test_ping_exits_nonzero_on_timeout(profile, capsys):
+    (profile / "default1.xsdat").write_bytes(i32(1))
+    code = main(["ping", "--profile", str(profile), "--timeout", "0.2", "--poll", "0.02"])
+    out = json.loads(capsys.readouterr().out)
+    assert code == 1
+    assert (out["status"], out["diagnosis"]) == ("Timeout", "no-section")
+
+
+def test_ping_exits_nonzero_on_a_wire_failure(profile, capsys):
+    with FakeModule(profile, lambda rid: {"default1": section(rid, status=9)}):
+        code = main(["ping", "--profile", str(profile), *FAST_ARGS])
+    assert code == 1
+    assert json.loads(capsys.readouterr().out)["status"] == "TrailingBytes"
+
+
+def test_map_option_pins_the_response_file(profile, capsys):
+    both = lambda rid: {"default1": section(rid), "XsTesting": section(rid)}
+    with FakeModule(profile, both):
+        code = main(["ping", "--profile", str(profile), "--map", "default1", *FAST_ARGS])
+    assert code == 0
+
+
+def test_profile_from_environment(profile, capsys, monkeypatch):
+    monkeypatch.setenv("XSINJECT_PROFILE", str(profile))
+    with FakeModule(profile, lambda rid: {"default1": section(rid)}):
+        code = main(["ping", *FAST_ARGS])
+    assert code == 0
+
+
+def test_runs_as_a_module(profile):
+    proc = subprocess.run(
+        [sys.executable, "-m", "xsinject", "ping", "--profile", str(profile), "--timeout", "0.2"],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 1
+    assert json.loads(proc.stdout)["diagnosis"] == "no-section"

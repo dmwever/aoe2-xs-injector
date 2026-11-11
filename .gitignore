@@ -1,0 +1,5 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+# xs-check (Alian713) is not vendored: copy v0.2.30+ into tools/
+tools/xs-check*

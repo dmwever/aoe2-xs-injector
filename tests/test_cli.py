@@ -1,3 +1,4 @@
+import io
 import json
 import subprocess
 import sys
@@ -53,3 +54,42 @@ def test_runs_as_a_module(profile):
     )
     assert proc.returncode == 1
     assert json.loads(proc.stdout)["diagnosis"] == "no-section"
+
+
+def int_entries(rid):
+    return {"default1": section(rid, entries=i32(0, 8), entry_count=1)}
+
+
+def test_run_reads_the_request_from_a_file(profile, tmp_path, capsys):
+    req = tmp_path / "req.json"
+    req.write_text(json.dumps([{"fn": "bitAnd", "args": [12, 10]}]))
+    with FakeModule(profile, int_entries):
+        code = main(["run", str(req), "--profile", str(profile), *FAST_ARGS])
+    out = json.loads(capsys.readouterr().out)
+    assert code == 0
+    assert out["entries"] == [{"call": 0, "fn": "bitAnd", "status": "OK", "value": 8}]
+
+
+def test_run_reads_the_request_from_stdin(profile, capsys, monkeypatch):
+    monkeypatch.setattr(sys, "stdin", io.StringIO('[{"fn": "bitAnd", "args": [12, 10]}]'))
+    with FakeModule(profile, int_entries):
+        code = main(["run", "-", "--profile", str(profile), *FAST_ARGS])
+    assert code == 0
+    assert json.loads(capsys.readouterr().out)["entries"][0]["value"] == 8
+
+
+def test_run_exits_nonzero_on_an_invalid_request(profile, capsys):
+    proc = subprocess.run(
+        [sys.executable, "-m", "xsinject", "run", "-", "--profile", str(profile)],
+        input='[{"fn": "xsNoSuchThing"}]', capture_output=True, text=True,
+    )
+    assert proc.returncode == 1
+    assert json.loads(proc.stdout)["status"] == "Invalid"
+
+
+def test_run_reports_malformed_json_as_invalid(profile, capsys, monkeypatch):
+    monkeypatch.setattr(sys, "stdin", io.StringIO("[{"))
+    code = main(["run", "-", "--profile", str(profile), *FAST_ARGS])
+    out = json.loads(capsys.readouterr().out)
+    assert (code, out["status"]) == (1, "Invalid")
+    assert not (profile / "xsinject.xsdat").exists()

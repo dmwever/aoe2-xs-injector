@@ -1,2 +1,2 @@
-from .driver import ping, send
+from .driver import ping, run
 from .profile import ProfileError, resolve_profile

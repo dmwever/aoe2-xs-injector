@@ -19,14 +19,44 @@ REQUEST_STATUS = {
 }
 RUNNING = 1  # stored before call #0; a section stuck here means a call stopped the rule
 
+ENTRY_STATUS = {0: "OK", 1: "NotRun"}  # NotRun is reserved; no module path produces it yet
+ENTRY_OK = 0
+
+LITERAL = 0  # argument tag; tag 1 (reference) arrives with references
+
 _INT = struct.Struct("<i")
 _HEADER = struct.Struct("<6i")  # magic, request id, status, failed call, failed arg, entry count
 
 
 def encode_request(request_id, calls):
-    if calls:
-        raise NotImplementedError("calls are not encoded yet; only ping is supported")
-    return _INT.pack(request_id) + _INT.pack(0)
+    """Request bytes for `calls`, a list of (function id, [int literal, ...])."""
+    out = [_INT.pack(request_id), _INT.pack(len(calls))]
+    for fid, args in calls:
+        out.append(_INT.pack(fid) + _INT.pack(len(args)))
+        for value in args:
+            out.append(_INT.pack(LITERAL) + _INT.pack(value))
+    return b"".join(out)
+
+
+def decode_entries(data, return_types):
+    """[(entry status, value)] for one entry per return type, or None if `data` doesn't fit them.
+
+    A value follows the status only when the entry is OK and the function is non-void.
+    """
+    entries, pos = [], 0
+    for rtype in return_types:
+        if pos + 4 > len(data):
+            return None
+        status = _INT.unpack_from(data, pos)[0]
+        pos += 4
+        value = None
+        if status == ENTRY_OK and rtype != "void":
+            if rtype != "int" or pos + 4 > len(data):
+                return None
+            value = _INT.unpack_from(data, pos)[0]
+            pos += 4
+        entries.append((status, value))
+    return entries if pos == len(data) else None
 
 
 def read_request_id(data):

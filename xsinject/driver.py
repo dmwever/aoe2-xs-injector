@@ -15,6 +15,10 @@ DEFAULT_TIMEOUT = 10.0
 DEFAULT_POLL = 0.25
 DEFAULT_LOCK_TIMEOUT = 5.0
 
+SIGNATURES_PATH = Path(__file__).resolve().parent / "signatures.json"
+INT32 = range(-(2**31), 2**31)
+SUPPORTED_TYPES = {"int"}  # literal and return types the driver encodes and decodes so far
+
 
 def _result(request_id, status, message, failed_call=None, failed_argument=None, entries=None, **extra):
     return {
@@ -26,6 +30,58 @@ def _result(request_id, status, message, failed_call=None, failed_argument=None,
         "entries": entries or [],
         **extra,
     }
+
+
+_signatures = None
+
+
+def signatures():
+    """name -> signature, from the generated signatures.json the module's dispatch was built from."""
+    global _signatures
+    if _signatures is None:
+        data = json.loads(SIGNATURES_PATH.read_text(encoding="utf-8"))
+        _signatures = {s["name"]: s for s in data["functions"]}
+    return _signatures
+
+
+class _Invalid(Exception):
+    def __init__(self, message, call=None, argument=None):
+        super().__init__(message)
+        self.call, self.argument = call, argument
+
+
+def _validate(calls):
+    """[(signature, [int literal, ...])] for a JSON request, or raise _Invalid naming the mistake."""
+    if not isinstance(calls, list):
+        raise _Invalid("a request is a JSON array of calls")
+    sigs, checked = signatures(), []
+    for n, call in enumerate(calls):
+        if not isinstance(call, dict) or not isinstance(call.get("fn"), str) or not isinstance(call.get("args", []), list):
+            raise _Invalid(f'call #{n} must be {{"fn": <name>, "args": [...]}}', n)
+        name, args = call["fn"], call.get("args", [])
+        sig = sigs.get(name)
+        if sig is None:
+            raise _Invalid(f"call #{n}: unknown function {name!r}", n)
+        if not sig["min_args"] <= len(args) <= sig["max_args"]:
+            want = str(sig["min_args"]) if sig["min_args"] == sig["max_args"] else f"{sig['min_args']}..{sig['max_args']}"
+            raise _Invalid(f"call #{n} ({name}): takes {want} arguments, got {len(args)}", n)
+        if sig["returns"] not in SUPPORTED_TYPES:
+            raise _Invalid(f"call #{n} ({name}): {sig['returns']} returns are not supported yet", n)
+        for k, (arg, param) in enumerate(zip(args, sig["params"])):
+            where = f"call #{n} ({name}), argument #{k} ({param['name']})"
+            if param["type"] not in SUPPORTED_TYPES:
+                raise _Invalid(f"{where}: {param['type']} parameters are not supported yet", n, k)
+            if isinstance(arg, bool) or not isinstance(arg, int):
+                raise _Invalid(f"{where}: expected an int literal, got {json.dumps(arg)}", n, k)
+            if arg not in INT32:
+                raise _Invalid(f"{where}: {arg} does not fit a 32-bit int", n, k)
+        checked.append((sig, list(args)))
+    return checked
+
+
+def invalid(message, call=None, argument=None):
+    """The Invalid result: the request was rejected before anything was sent."""
+    return _result(None, "Invalid", message, call, argument)
 
 
 def next_request_id(profile):
@@ -93,22 +149,37 @@ def _sections(profile, map_name, before_send):
     return found
 
 
-def _from_section(request_id, sec):
+def _from_section(request_id, sec, checked):
     status = wire.REQUEST_STATUS.get(sec["status"], f"Unknown({sec['status']})")
     failed_call = None if sec["failed_call"] == -1 else sec["failed_call"]
     failed_arg = None if sec["failed_argument"] == -1 else sec["failed_argument"]
-    if status == "OK":
-        message = "OK"
-    else:
+    if status != "OK":
         message = status
         if failed_call is not None:
             message += f" at call #{failed_call}"
+            if 0 <= failed_call < len(checked):
+                message += f" ({checked[failed_call][0]['name']})"
             if failed_arg is not None:
                 message += f", argument #{failed_arg}"
-    return _result(request_id, status, message, failed_call, failed_arg)
+        return _result(request_id, status, message, failed_call, failed_arg)
+
+    decoded = None
+    if sec["entry_count"] == len(checked):
+        decoded = wire.decode_entries(sec["entries_bytes"], [sig["returns"] for sig, _ in checked])
+    if decoded is None:
+        return _result(
+            request_id, "Undecodable",
+            f"the response to request {request_id} does not fit the {len(checked)} calls sent; "
+            "the module's core is likely stale: re-include xs/xsinject.xs in the host",
+        )
+    entries = [
+        {"call": n, "fn": sig["name"], "status": wire.ENTRY_STATUS.get(st, f"Unknown({st})"), "value": value}
+        for n, ((sig, _), (st, value)) in enumerate(zip(checked, decoded))
+    ]
+    return _result(request_id, "OK", "OK", entries=entries)
 
 
-def _await_response(profile, request_id, before_send, map_name, timeout, poll):
+def _await_response(profile, request_id, checked, before_send, map_name, timeout, poll):
     deadline = time.monotonic() + timeout
     while True:
         found = _sections(profile, map_name, before_send)
@@ -122,7 +193,7 @@ def _await_response(profile, request_id, before_send, map_name, timeout, poll):
                 f"several .xsdat files carry a response to request {request_id} ({names}); pass --map to pick one",
             )
         if final:
-            return _from_section(request_id, final[0][1])
+            return _from_section(request_id, final[0][1], checked)
         if time.monotonic() >= deadline:
             return _timeout(request_id, found, timeout)
         time.sleep(poll)
@@ -138,12 +209,21 @@ def _timeout(request_id, found, timeout):
     return _result(request_id, "Timeout", f"no response after {timeout:g} s: {why}", diagnosis=diagnosis)
 
 
-def send(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_POLL,
-         lock_timeout=DEFAULT_LOCK_TIMEOUT):
+def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_POLL,
+        lock_timeout=DEFAULT_LOCK_TIMEOUT):
+    """Send a request (a JSON list of {"fn", "args"} calls) and wait for its response.
+
+    The request is validated against signatures.json first; a mistake returns Invalid and
+    nothing is sent.
+    """
+    try:
+        checked = _validate(calls)
+    except _Invalid as e:
+        return invalid(str(e), e.call, e.argument)
     try:
         profile = resolve_profile(profile)
     except ProfileError as e:
-        return _result(None, "Invalid", str(e))
+        return invalid(str(e))
 
     request_id = next_request_id(profile)
     last = json.dumps({"request_id": request_id, "calls": calls}, indent=2).encode("utf-8")
@@ -151,15 +231,15 @@ def send(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT
         return _result(request_id, "FileHeld", f"could not write {LAST_NAME} within {lock_timeout:g} s")
 
     before_send = _mtimes(profile, map)
-    data = wire.encode_request(request_id, calls)
+    data = wire.encode_request(request_id, [(sig["id"], args) for sig, args in checked])
     if not _replace_with_retry(profile / REQUEST_NAME, data, lock_timeout, poll):
         return _result(
             request_id, "FileHeld",
             f"the game held {REQUEST_NAME} for {lock_timeout:g} s; nothing was sent",
         )
-    return _await_response(profile, request_id, before_send, map, timeout, poll)
+    return _await_response(profile, request_id, checked, before_send, map, timeout, poll)
 
 
 def ping(**options):
     """Send a zero-call request: OK means the module is live and answering."""
-    return send([], **options)
+    return run([], **options)

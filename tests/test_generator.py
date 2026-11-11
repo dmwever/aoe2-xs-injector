@@ -234,8 +234,8 @@ def test_the_parameter_type_table_defines_every_function_and_leaves_retired_ids_
         0: (1, 2, "Float", ["Float", "Int"]),
         2: (3, 3, "Void", ["String", "Bool", "Vector"]),
     }
-    assert re.search(r"const int cXsInjectFunctionIdLimit = 3;", dispatch)
-    assert re.search(r"const int cXsInjectParamTotal = 5;", dispatch)
+    assert re.search(r"^extern const int cXsInjectFunctionIdLimit = 3;$", dispatch, re.M)
+    assert re.search(r"^extern const int cXsInjectParamTotal = 5;$", dispatch, re.M)
 
 
 @pytest.fixture
@@ -290,12 +290,14 @@ def test_cli_failure_names_the_function_and_writes_nothing(files, capsys):
     assert {k: paths[k].read_bytes() for k in before} == before
 
 
-def test_the_handles_the_core_assigns_are_extern():
-    """XS globals are private to their file; the core sets these handles, so they must be extern."""
+def test_every_top_level_constant_and_global_is_extern():
+    """XS constants and globals are private to their file unless extern; the core includes the
+    dispatch and reads its type constants and sets its handles, so all of them must be extern."""
     dispatch = generate([fn("a")], renames=[], pinned=None).dispatch
-    declared = re.findall(r"^(extern )?int (gXsInject(?:Arg|Res)\w+) = -1;$", dispatch, re.M)
-    assert len(declared) == 10
-    assert all(ext for ext, _ in declared)
+    declared = re.findall(r"^(?:\w+ )*(?:int|bool|float|string|vector) \w+ = .*;$", dispatch, re.M)
+    names = [re.search(r"(\w+) = ", d).group(1) for d in declared]
+    assert {"cXsInjectTypeInt", "cXsInjectTypeVoid", "gXsInjectArgInt", "gXsInjectResVector"} <= set(names)
+    assert [d for d in declared if not d.startswith("extern ")] == []
 
 
 def test_a_rename_onto_a_retired_name_fails_rather_than_giving_one_name_two_ids():

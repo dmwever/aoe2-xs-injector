@@ -233,7 +233,7 @@ _WHY = {
     "BadTag": f"the argument's tag is neither 0 (literal) nor 1 (reference); {_MISREAD}",
     "BadReference": "the reference does not point to an earlier call in the request",
     "ReferenceTypeMismatch": f"the referenced call's return type is not the parameter's type; {_DISAGREES}",
-    "TooLarge": "the calls ran, but the response would push the .xsdat past the game's 1,048,575-byte "
+    "TooLarge": f"the calls ran, but the response would push the .xsdat past the game's {wire.WRITE_LIMIT:,}-byte "
                 "write limit; split the request into smaller reads",
     "TrailingBytes": f"bytes were left in the request file after the last call; {_MISREAD}",
 }

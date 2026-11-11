@@ -13,6 +13,12 @@ def i32(*vals):
     return b"".join(struct.pack("<i", v) for v in vals)
 
 
+def xs_string(text):
+    """A string as XS writes it: a uint32 byte length, then the raw UTF-8 bytes."""
+    raw = text.encode("utf-8")
+    return struct.pack("<I", len(raw)) + raw
+
+
 def section(request_id, status=0, failed_call=-1, failed_arg=-1, entries=b"", entry_count=0):
     """A response section exactly as the spec lays it out: [body][body length][magic]."""
     body = i32(MAGIC, request_id, status, failed_call, failed_arg, entry_count) + entries

@@ -6,7 +6,7 @@ import struct
 
 import pytest
 
-from conftest import FAST, FakeModule, i32, section
+from conftest import FAST, FakeModule, i32, section, xs_string
 
 from xsinject import InvalidRequest, encode, run
 
@@ -16,11 +16,6 @@ IS_RULE_ENABLED, VECTOR_GET_X, VECTOR_SET, ARRAY_CREATE_BOOL, CHAT_DATA, GET_STR
 
 def f32(*vals):
     return b"".join(struct.pack("<f", v) for v in vals)
-
-
-def xs_string(text):
-    raw = text.encode("utf-8")
-    return struct.pack("<I", len(raw)) + raw
 
 
 def sent(profile, calls, *entries):

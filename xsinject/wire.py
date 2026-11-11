@@ -23,6 +23,9 @@ REQUEST_STATUS = {
     9: "TrailingBytes",
 }
 RUNNING = 1  # stored before call #0; a section stuck here means a call stopped the rule
+TOO_LARGE = 8  # sent with no entries when the section would pass WRITE_LIMIT
+
+WRITE_LIMIT = 1_048_575  # the game's .xsdat write cap in bytes; the host's bytes count against it
 
 ENTRY_STATUS = {0: "OK", 1: "NotRun"}  # NotRun is reserved; no module path produces it yet
 ENTRY_OK = 0

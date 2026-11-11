@@ -16,6 +16,12 @@
 // Ints are int32 and floats IEEE 32-bit, little-endian. -1 is a legal read value, so every read
 // is bounded by xsGetFileSize(), and a string's length is checked before the string is read.
 //
+// Standalone (the default): the module writes the section alone into the game's own .xsdat,
+// once per stored response. Host mode: a scenario or mod that rewrites the game's .xsdat itself
+// calls xsInjectUseHostWriter() from main(), and xsInjectWriteSection() just before each of its own
+// xsCloseFile() calls; the module keeps its last response and appends it on every host write.
+// Writing that file without opting in wipes the response.
+//
 // The generated dispatch (xsinject_dispatch.xs) must sit next to this file; this file includes it.
 include "./xsinject_dispatch.xs";
 
@@ -30,7 +36,12 @@ const int cXsInjectBadArgCount = 4;
 const int cXsInjectBadTag = 5;
 const int cXsInjectBadReference = 6;
 const int cXsInjectReferenceTypeMismatch = 7;
+const int cXsInjectTooLarge = 8;
 const int cXsInjectTrailingBytes = 9;
+
+// The game's .xsdat write cap in bytes; a host's own bytes count against it.
+const int cXsInjectWriteLimit = 1048575;
+const int cXsInjectSectionFixedBytes = 32;  // 6 header ints, then the body length and the magic
 
 const int cXsInjectEntryOK = 0;
 const int cXsInjectTagLiteral = 0;
@@ -40,13 +51,16 @@ bool gXsInjectInitDone = false;
 bool gXsInjectStarted = false;
 bool gXsInjectHaveSeenId = false;
 int gXsInjectSeenId = -1;
+bool gXsInjectHosted = false;  // set by xsInjectUseHostWriter(); otherwise standalone
 
-// The last stored response; standalone writes it out, a host (later) carries it on its own writes.
+// The last stored response; standalone writes it out once, a host carries it on every write.
+bool gXsInjectHaveResp = false;
 int gXsInjectRespId = -1;
 int gXsInjectRespStatus = -1;
 int gXsInjectRespFailedCall = -1;
 int gXsInjectRespFailedArg = -1;
 int gXsInjectRespEntryCount = 0;  // entries come from the staged calls and their result slots
+int gXsInjectRespSize = 0;  // the whole section's byte size, trailer included
 
 // The staged request: per call its function id, argument count and the index of its first
 // argument in the gXsInjectArg* arrays (one shared index across types).
@@ -318,16 +332,41 @@ void xsInjectRunCalls() {
     }
 }
 
+// Byte size of call #`call`'s entry as written: its status, then its value by return type. strLen
+// counts bytes (observed live), matching xsWriteString's uint32 length plus raw bytes.
+int xsInjectEntrySize(int call = 0) {
+    int returnType = xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, call));
+    if (returnType == cXsInjectTypeVoid) {
+        return (4);
+    }
+    if (returnType == cXsInjectTypeString) {
+        return (8 + strLen(xsArrayGetString(gXsInjectResString, call)));
+    }
+    if (returnType == cXsInjectTypeVector) {
+        return (16);
+    }
+    return (8);
+}
+
 void xsInjectStoreResponse(int requestId = -1, int status = -1, int failedCall = -1, int failedArg = -1,
     int entryCount = 0) {
+    int call = 0;
+    gXsInjectHaveResp = true;
     gXsInjectRespId = requestId;
     gXsInjectRespStatus = status;
     gXsInjectRespFailedCall = failedCall;
     gXsInjectRespFailedArg = failedArg;
     gXsInjectRespEntryCount = entryCount;
+    // Measured once here, so a host write each tick costs no string scans.
+    gXsInjectRespSize = cXsInjectSectionFixedBytes;
+    while (call < entryCount) {
+        gXsInjectRespSize = gXsInjectRespSize + xsInjectEntrySize(call);
+        call++;
+    }
 }
 
 // Writes call #`call`'s result from its return type's array; a void call writes nothing.
+// xsInjectEntrySize mirrors this layout; change both together.
 void xsInjectWriteResult(int call = 0) {
     int returnType = xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, call));
     if (returnType == cXsInjectTypeInt) {
@@ -363,23 +402,51 @@ void xsInjectWriteSectionBody() {
     }
 }
 
-// Standalone: the module owns the game's .xsdat and writes the section alone.
+// Host mode: call once from main(). The module then never writes the game's .xsdat itself; the
+// host carries the response by calling xsInjectWriteSection() on each of its writes.
+void xsInjectUseHostWriter() {
+    gXsInjectHosted = true;
+}
+
+// The write hook: appends the last stored response section to the file open for writing, at its
+// current position. A host calls it just before its own xsCloseFile(). Writes nothing before the
+// first response. A section that would push the file past the write limit (the host's bytes
+// included) goes out as TooLarge with no entries; the calls have already run. If the host's own
+// bytes leave no room even for that 32-byte section, it is still written: the host is over the
+// limit either way.
+void xsInjectWriteSection() {
+    if (gXsInjectHaveResp == false) {
+        return;
+    }
+    int bodyStart = xsGetFilePosition();
+    if (bodyStart < 0) {
+        return;  // no file open for writing
+    }
+    if (bodyStart + gXsInjectRespSize > cXsInjectWriteLimit) {
+        // Kept as TooLarge, so every later host write agrees with the first.
+        xsInjectStoreResponse(gXsInjectRespId, cXsInjectTooLarge, -1, -1, 0);
+    }
+    xsInjectWriteSectionBody();
+    xsWriteInt(xsGetFilePosition() - bodyStart);
+    xsWriteInt(cXsInjectMagic);
+}
+
+// Standalone: the module owns the game's .xsdat and writes the section alone, measured from 0.
 void xsInjectWriteStandalone() {
     if (xsCreateFile(false) == false) {
         return;
     }
-    // A string's byte length isn't knowable in XS, so the body length is measured as written.
-    int bodyStart = xsGetFilePosition();
-    xsInjectWriteSectionBody();
-    xsWriteInt(xsGetFilePosition() - bodyStart);
-    xsWriteInt(cXsInjectMagic);
+    xsInjectWriteSection();
     xsCloseFile();
 }
 
+// Stores a response; standalone writes it now, a host carries it on its next write.
 void xsInjectRespond(int requestId = -1, int status = -1, int failedCall = -1, int failedArg = -1,
     int entryCount = 0) {
     xsInjectStoreResponse(requestId, status, failedCall, failedArg, entryCount);
-    xsInjectWriteStandalone();
+    if (gXsInjectHosted == false) {
+        xsInjectWriteStandalone();
+    }
 }
 
 void xsInjectTick() {
@@ -429,7 +496,8 @@ void xsInjectTick() {
     }
 
     xsInjectClearResults();
-    // Running marks the request before call #0, so a call that kills the rule stays visible.
+    // Running marks the request before call #0, so a call that kills the rule stays visible (a host
+    // carries it only if a call stops the rule before the final response is stored).
     xsInjectRespond(requestId, cXsInjectRunning, -1, -1, 0);
     xsInjectRunCalls();
     xsInjectRespond(requestId, cXsInjectOK, -1, -1, gXsInjectCallCount);

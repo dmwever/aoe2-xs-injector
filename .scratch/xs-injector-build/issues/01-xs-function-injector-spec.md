@@ -241,3 +241,7 @@ Each slice cuts end to end (generator → XS module → wire → driver → docs
 - Prerequisites 1–2 are slice 7; slices 1–6 can proceed on the unlevelled catalog, using functions already known to compile (catalog ids 0–169 with the two known overrides).
 - Accepted risks: XS silently converting a mis-catalogued type (e.g. int↔float) can give a wrong-typed response value, and a stale vendored core can misread corrected literals silently.
 - Glossary terms used here (Request, Call, Result slot, Literal/Reference argument, Driver, Function id, Response, Entry, Response section, Host, Standalone, Driver status) are defined in the repo glossary.
+
+## Rulings
+
+- 2026-11-11: The toolkit is standalone: nothing outside this repo is required. The KB catalog and renames file were copied once into `catalog/functions.json` and `catalog/renames.json`, which this repo now owns; the generator reads only those. Signature corrections and the UGC levelling land in `catalog/functions.json`, not in AoE2_AI_Modder (reporting them upstream is optional courtesy). xs-check stays an optional dev aid; nothing requires it.

@@ -1,0 +1,6364 @@
+[
+  {
+    "name": "xsDisableRule",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsDisableRule(string ruleName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to disable",
+        "default": null
+      }
+    ],
+    "desc": "Disables the given rule."
+  },
+  {
+    "name": "xsDisableSelf",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsDisableSelf()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Disables the rule this function is called inside. Cannot be used outside of a rule's body!"
+  },
+  {
+    "name": "xsEnableRule",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsEnableRule(string ruleName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to enable",
+        "default": null
+      }
+    ],
+    "desc": "Enables the given rule."
+  },
+  {
+    "name": "xsIsRuleEnabled",
+    "category": "rules",
+    "return_type": "bool",
+    "prototype": "bool xsIsRuleEnabled(string ruleName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to check",
+        "default": null
+      }
+    ],
+    "desc": "Returns true if the rule is enabled, else returns false."
+  },
+  {
+    "name": "xsSetRulePriority",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRulePriority(string ruleName, int rulePriority)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to set the priority of",
+        "default": null
+      },
+      {
+        "name": "rulePriority",
+        "type": "int",
+        "required": true,
+        "desc": "The new priority of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the priority of the given rule."
+  },
+  {
+    "name": "xsSetRulePrioritySelf",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRulePrioritySelf(int rulePriority)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "rulePriority",
+        "type": "int",
+        "required": true,
+        "desc": "The new priority of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the priority of the rule this function is called inside. Cannot be used outside of a rule's body!"
+  },
+  {
+    "name": "xsSetRuleMinInterval",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRuleMinInterval(string ruleName, int interval)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to set the min interval of",
+        "default": null
+      },
+      {
+        "name": "interval",
+        "type": "int",
+        "required": true,
+        "desc": "The new min interval of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the min interval of the given rule."
+  },
+  {
+    "name": "xsSetRuleMinIntervalSelf",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRuleMinIntervalSelf(int interval)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "interval",
+        "type": "int",
+        "required": true,
+        "desc": "The new min interval of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the min interval of the rule this function is called inside. Cannot be used outside of a rule's body!"
+  },
+  {
+    "name": "xsSetRuleMaxInterval",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRuleMaxInterval(string ruleName, int interval)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "ruleName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule to set the max interval of",
+        "default": null
+      },
+      {
+        "name": "interval",
+        "type": "int",
+        "required": true,
+        "desc": "The new max interval of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the max interval of the given rule."
+  },
+  {
+    "name": "xsSetRuleMaxIntervalSelf",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsSetRuleMaxIntervalSelf(int interval)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "interval",
+        "type": "int",
+        "required": true,
+        "desc": "The new max interval of the rule",
+        "default": null
+      }
+    ],
+    "desc": "Sets the max interval of the rule this function is called inside. Cannot be used outside of a rule's body!"
+  },
+  {
+    "name": "xsEnableRuleGroup",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsEnableRuleGroup(string ruleGroupName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleGroupName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule group to enable",
+        "default": null
+      }
+    ],
+    "desc": "Enables all the rules in the given rule group"
+  },
+  {
+    "name": "xsDisableRuleGroup",
+    "category": "rules",
+    "return_type": "void",
+    "prototype": "void xsDisableRuleGroup(string ruleGroupName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleGroupName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule group to disable",
+        "default": null
+      }
+    ],
+    "desc": "Disables all the rules in the given rule group"
+  },
+  {
+    "name": "xsIsRuleGroupEnabled",
+    "category": "rules",
+    "return_type": "bool",
+    "prototype": "bool xsIsRuleGroupEnabled(string ruleGroupName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "ruleGroupName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the rule group to check",
+        "default": null
+      }
+    ],
+    "desc": "Returns true, if all the rules in the given rule group are enabled"
+  },
+  {
+    "name": "xsVectorGetX",
+    "category": "vectors",
+    "return_type": "float",
+    "prototype": "float xsVectorGetX(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to get the X coordinate of",
+        "default": null
+      }
+    ],
+    "desc": "The X coordinate of the vector given."
+  },
+  {
+    "name": "xsVectorGetY",
+    "category": "vectors",
+    "return_type": "float",
+    "prototype": "float xsVectorGetY(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to get the Y coordinate of",
+        "default": null
+      }
+    ],
+    "desc": "The Y coordinate of the vector given."
+  },
+  {
+    "name": "xsVectorGetZ",
+    "category": "vectors",
+    "return_type": "float",
+    "prototype": "float xsVectorGetZ(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to get the Z coordinate of",
+        "default": null
+      }
+    ],
+    "desc": "The Z coordinate of the vector given."
+  },
+  {
+    "name": "xsVectorSetX",
+    "category": "vectors",
+    "return_type": "vector",
+    "prototype": "vector xsVectorSetX(vector v, float x)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to modify the X coordinate of",
+        "default": null
+      },
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the X coordinate to",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new vector with the X component of the given vector changed to the given value. Note: This function DOES NOT modify the vector given as the parameter!"
+  },
+  {
+    "name": "xsVectorSetY",
+    "category": "vectors",
+    "return_type": "vector",
+    "prototype": "vector xsVectorSetY(vector v, float y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to modify the Y coordinate of",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the Y coordinate to",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new vector with the Y component of the given vector changed to the given value. Note: This function DOES NOT modify the vector given as the parameter!"
+  },
+  {
+    "name": "xsVectorSetZ",
+    "category": "vectors",
+    "return_type": "vector",
+    "prototype": "vector xsVectorSetZ(vector v, float z)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to modify the Z coordinate of",
+        "default": null
+      },
+      {
+        "name": "z",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the Z coordinate to",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new vector with the Z component of the given vector changed to the given value. Note: This function DOES NOT modify the vector given as the parameter!"
+  },
+  {
+    "name": "xsVectorSet",
+    "category": "vectors",
+    "return_type": "vector",
+    "prototype": "vector xsVectorSet(float x, float y, float z)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the X coordinate to",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the Y coordinate to",
+        "default": null
+      },
+      {
+        "name": "z",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the Z coordinate to",
+        "default": null
+      }
+    ],
+    "desc": "Returns a vector with the given X, Y and Z components."
+  },
+  {
+    "name": "xsVectorLength",
+    "category": "vectors",
+    "return_type": "float",
+    "prototype": "float xsVectorLength(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to calculate the length of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the length of the given vector."
+  },
+  {
+    "name": "xsVectorNormalize",
+    "category": "vectors",
+    "return_type": "vector",
+    "prototype": "vector xsVectorNormalize(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to normalise",
+        "default": null
+      }
+    ],
+    "desc": "Returns the normalised vector in the direction of the given vector."
+  },
+  {
+    "name": "xsArrayCreateInt",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayCreateInt(int size, int defaultValue, string uniqueName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "size",
+        "type": "int",
+        "required": true,
+        "desc": "The length of the array to create",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "int",
+        "required": false,
+        "desc": "The default value to initialise all the values in the array to. If not set all array values will be 0",
+        "default": null
+      },
+      {
+        "name": "uniqueName",
+        "type": "string",
+        "required": false,
+        "desc": "A unique name of the created array. Note that when set, this name cannot be reused, and subsequent array creation attempts with the same name will fail (e.g. in loops)",
+        "default": null
+      }
+    ],
+    "desc": "Creates an array of type int and returns its ID. Created arrays never go out of scope so be careful when creating them inside repeated code patterns as that can introduce memory leaks."
+  },
+  {
+    "name": "xsArrayCreateFloat",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayCreateFloat(int size, float defaultValue, string uniqueName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "size",
+        "type": "int",
+        "required": true,
+        "desc": "The length of the array to create",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "float",
+        "required": false,
+        "desc": "The default value to initialise all the values in the array to. If not set all array values will be 0.0",
+        "default": null
+      },
+      {
+        "name": "uniqueName",
+        "type": "string",
+        "required": false,
+        "desc": "A unique name of the created array. Note that when set, this name cannot be reused, and subsequent array creation attempts with the same name will fail (e.g. in loops)",
+        "default": null
+      }
+    ],
+    "desc": "Creates an array of type float and returns its ID. Created arrays never go out of scope so be careful when creating them inside repeated code patterns as that can introduce memory leaks."
+  },
+  {
+    "name": "xsArrayCreateBool",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayCreateBool(int size, bool defaultValue, string uniqueName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "size",
+        "type": "int",
+        "required": true,
+        "desc": "The length of the array to create",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "bool",
+        "required": false,
+        "desc": "The default value to initialise all the values in the array to. If not set all array values will be false",
+        "default": null
+      },
+      {
+        "name": "uniqueName",
+        "type": "string",
+        "required": false,
+        "desc": "A unique name of the created array. Note that when set, this name cannot be reused, and subsequent array creation attempts with the same name will fail (e.g. in loops)",
+        "default": null
+      }
+    ],
+    "desc": "Creates an array of type bool and returns its ID. Created arrays never go out of scope so be careful when creating them inside repeated code patterns as that can introduce memory leaks."
+  },
+  {
+    "name": "xsArrayCreateString",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayCreateString(int size, string defaultValue, string uniqueName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "size",
+        "type": "int",
+        "required": true,
+        "desc": "The length of the array to create",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "string",
+        "required": false,
+        "desc": "The default value to initialise all the values in the array to. If not set all array values will be \"<default string>\"",
+        "default": null
+      },
+      {
+        "name": "uniqueName",
+        "type": "string",
+        "required": false,
+        "desc": "A unique name of the created array. Note that when set, this name cannot be reused, and subsequent array creation attempts with the same name will fail (e.g. in loops)",
+        "default": null
+      }
+    ],
+    "desc": "Creates an array of type String and returns its ID. Created arrays never go out of scope so be careful when creating them inside repeated code patterns as that can introduce memory leaks."
+  },
+  {
+    "name": "xsArrayCreateVector",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayCreateVector(int size, vector defaultValue, string uniqueName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "size",
+        "type": "int",
+        "required": true,
+        "desc": "The length of the array to create",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "vector",
+        "required": false,
+        "desc": "The default value to initialise all the values in the array to. If not set all array values will be vector(-1.0, -1.0, -1.0)",
+        "default": null
+      },
+      {
+        "name": "uniqueName",
+        "type": "string",
+        "required": false,
+        "desc": "A unique name of the created array. Note that when set, this name cannot be reused, and subsequent array creation attempts with the same name will fail (e.g. in loops)",
+        "default": null
+      }
+    ],
+    "desc": "Creates an array of type Vector and returns its ID. Created arrays never go out of scope so be careful when creating them inside repeated code patterns as that can introduce memory leaks."
+  },
+  {
+    "name": "xsArraySetInt",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArraySetInt(int arrayId, int index, int value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to set the value in",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The new value to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value at the specified index of the given int array to the provided value and returns 1."
+  },
+  {
+    "name": "xsArraySetFloat",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArraySetFloat(int arrayId, int index, float value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to set the value in",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The new value to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value at the specified index of the given float array to the provided value and returns 1."
+  },
+  {
+    "name": "xsArraySetBool",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArraySetBool(int arrayId, int index, bool value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to set the value in",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "bool",
+        "required": true,
+        "desc": "The new value to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value at the specified index of the given bool array to the provided value and returns 1."
+  },
+  {
+    "name": "xsArraySetString",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArraySetString(int arrayId, int index, string value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to set the value in",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "desc": "The new value to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value at the specified index of the given string array to the provided value and returns 1."
+  },
+  {
+    "name": "xsArraySetVector",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArraySetVector(int arrayId, int index, vector value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to set the value in",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "vector",
+        "required": true,
+        "desc": "The new value to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value at the specified index of the given vector array to the provided value and returns 1."
+  },
+  {
+    "name": "xsArrayGetInt",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayGetInt(int arrayId, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the value from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Gets and returns the value of the given int array at the specified index."
+  },
+  {
+    "name": "xsArrayGetFloat",
+    "category": "arrays",
+    "return_type": "float",
+    "prototype": "float xsArrayGetFloat(int arrayId, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the value from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Gets and returns the value of the given float array at the specified index."
+  },
+  {
+    "name": "xsArrayGetBool",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayGetBool(int arrayId, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the value from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Gets and returns the value of the given bool array at the specified index."
+  },
+  {
+    "name": "xsArrayGetString",
+    "category": "arrays",
+    "return_type": "string",
+    "prototype": "string xsArrayGetString(int arrayId, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the value from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Gets and returns the value of the given string array at the specified index."
+  },
+  {
+    "name": "xsArrayGetVector",
+    "category": "arrays",
+    "return_type": "vector",
+    "prototype": "vector xsArrayGetVector(int arrayId, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the value from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Gets and returns the value of the given vector array at the specified index."
+  },
+  {
+    "name": "xsArrayResizeInt",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayResizeInt(int arrayId, int newSize)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to resize",
+        "default": null
+      },
+      {
+        "name": "newSize",
+        "type": "int",
+        "required": true,
+        "desc": "The new size of the array",
+        "default": null
+      }
+    ],
+    "desc": "Resizes the the given int array to the specified size and returns 1."
+  },
+  {
+    "name": "xsArrayResizeFloat",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayResizeFloat(int arrayId, int newSize)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to resize",
+        "default": null
+      },
+      {
+        "name": "newSize",
+        "type": "int",
+        "required": true,
+        "desc": "The new size of the array",
+        "default": null
+      }
+    ],
+    "desc": "Resizes the the given float array to the specified size and returns 1."
+  },
+  {
+    "name": "xsArrayResizeBool",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayResizeBool(int arrayId, int newSize)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to resize",
+        "default": null
+      },
+      {
+        "name": "newSize",
+        "type": "int",
+        "required": true,
+        "desc": "The new size of the array",
+        "default": null
+      }
+    ],
+    "desc": "Resizes the the given bool array to the specified size and returns 1."
+  },
+  {
+    "name": "xsArrayResizeString",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayResizeString(int arrayId, int newSize)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to resize",
+        "default": null
+      },
+      {
+        "name": "newSize",
+        "type": "int",
+        "required": true,
+        "desc": "The new size of the array",
+        "default": null
+      }
+    ],
+    "desc": "Resizes the the given string array to the specified size and returns 1."
+  },
+  {
+    "name": "xsArrayResizeVector",
+    "category": "arrays",
+    "return_type": "bool",
+    "prototype": "bool xsArrayResizeVector(int arrayId, int newSize)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to resize",
+        "default": null
+      },
+      {
+        "name": "newSize",
+        "type": "int",
+        "required": true,
+        "desc": "The new size of the array",
+        "default": null
+      }
+    ],
+    "desc": "Resizes the the given vector array to the specified size and returns 1."
+  },
+  {
+    "name": "xsArrayGetSize",
+    "category": "arrays",
+    "return_type": "int",
+    "prototype": "int xsArrayGetSize(int arrayId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the array to get the length of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the length of the given array."
+  },
+  {
+    "name": "abs",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float abs(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The number to find the absolute value of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the absolute value (magnitude) of the given number."
+  },
+  {
+    "name": "sqrt",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float sqrt(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The number to find the square root of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the square root of the given number."
+  },
+  {
+    "name": "pow",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float pow(float x, float y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The base value",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "float",
+        "required": true,
+        "desc": "The exponent to raise the base value to",
+        "default": null
+      }
+    ],
+    "desc": "Returns x raised to the power y (x**y)."
+  },
+  {
+    "name": "sin",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float sin(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The angle (in radians) to find the sine of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the sine of the angle in radians."
+  },
+  {
+    "name": "cos",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float cos(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The angle (in radians) to find the cosine of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the cosine of the angle in radians"
+  },
+  {
+    "name": "tan",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float tan(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The angle (in radians) to find the tangent of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the tangent of the angle in radians"
+  },
+  {
+    "name": "asin",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float asin(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the inverse sine of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the inverse sine (arcsin) of the given value"
+  },
+  {
+    "name": "acos",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float acos(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the inverse cosine of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the inverse cosine (arccos) of the given value"
+  },
+  {
+    "name": "atan",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float atan(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the inverse tangent of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the inverse tangent (arctan) of the given value"
+  },
+  {
+    "name": "atan2",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float atan2(float y, float x)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "y",
+        "type": "float",
+        "required": true,
+        "desc": "The Y coordinate of the point to find the X+ angle of",
+        "default": null
+      },
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The X coordinate of the point to find the X+ angle of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the angle of the given point (x, y) made from the X+ axis, in the range $[-\\pi, \\pi]$"
+  },
+  {
+    "name": "atan2v",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float atan2v(vector v)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "v",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to get the atan2 from",
+        "default": null
+      }
+    ],
+    "desc": "Returns the angle of the given vector from the X+ axis, in the range $[-\\pi, \\pi]$. Ignores the Z component"
+  },
+  {
+    "name": "exp",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float exp(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the exp of",
+        "default": null
+      }
+    ],
+    "desc": "Returns $e^x$"
+  },
+  {
+    "name": "ceil",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float ceil(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the ceil of",
+        "default": null
+      }
+    ],
+    "desc": "Returns $\\left \\lceil{x}\\right \\rceil$"
+  },
+  {
+    "name": "floor",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float floor(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the floor of",
+        "default": null
+      }
+    ],
+    "desc": "Returns $\\left \\lfloor{x}\\right \\rfloor$"
+  },
+  {
+    "name": "bitCastToFloat",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float bitCastToFloat(int number)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "number",
+        "type": "int",
+        "required": true,
+        "desc": "The value to `reinterpret/bit_cast` to `float`",
+        "default": null
+      }
+    ],
+    "desc": "Reinterprets/Bit casts the given `int` value to `float`. Equivalent to `#!rs std::mem::transmute::<i32, f32>(number)`"
+  },
+  {
+    "name": "bitCastToInt",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitCastToInt(float number)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "number",
+        "type": "float",
+        "required": true,
+        "desc": "The value to `reinterpret/bit_cast` to `int`",
+        "default": null
+      }
+    ],
+    "desc": "Reinterprets/Bit casts the given `float` value to `int`. Equivalent to `#!rs std::mem::transmute::<f32, i32>(number)`"
+  },
+  {
+    "name": "xsCeilToInt",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int xsCeilToInt(float value)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to determine the ceil of",
+        "default": null
+      }
+    ],
+    "desc": "Rounds the number **up** to the next integer"
+  },
+  {
+    "name": "ln",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float ln(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the natural log of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the natural log"
+  },
+  {
+    "name": "log2",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float log2(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the log base 2 of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the log base 2"
+  },
+  {
+    "name": "log10",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float log10(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to find the log base 10 of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the log base 10"
+  },
+  {
+    "name": "round",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float round(float x, int places)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to round",
+        "default": null
+      },
+      {
+        "name": "places",
+        "type": "int",
+        "required": false,
+        "desc": "The number of decimal places to round to. Capped between 0-8, defaults to 2.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the rounded value"
+  },
+  {
+    "name": "radians",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float radians(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to convert to radians",
+        "default": null
+      }
+    ],
+    "desc": "Returns $\\cfrac{\\pi}{180} x$"
+  },
+  {
+    "name": "degrees",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float degrees(float x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "float",
+        "required": true,
+        "desc": "The value to convert to degrees",
+        "default": null
+      }
+    ],
+    "desc": "Returns $\\cfrac{180}{\\pi} x$"
+  },
+  {
+    "name": "dist",
+    "category": "maths",
+    "return_type": "float",
+    "prototype": "float dist(vector v1, vector v2)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "v1",
+        "type": "vector",
+        "required": true,
+        "desc": "The first vector",
+        "default": null
+      },
+      {
+        "name": "v2",
+        "type": "vector",
+        "required": true,
+        "desc": "The second vector",
+        "default": null
+      }
+    ],
+    "desc": "Returns the distance (norm-2) between the two vectors"
+  },
+  {
+    "name": "bitAnd",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitAnd(int x, int y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The first number",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The second number",
+        "default": null
+      }
+    ],
+    "desc": "Returns `x & y`"
+  },
+  {
+    "name": "bitOr",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitOr(int x, int y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The first number",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The second number",
+        "default": null
+      }
+    ],
+    "desc": "Returns `x | y`"
+  },
+  {
+    "name": "bitXor",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitXor(int x, int y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The first number",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The second number",
+        "default": null
+      }
+    ],
+    "desc": "Returns `x ^ y`"
+  },
+  {
+    "name": "bitLsh",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitLsh(int x, int y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The first number",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The second number",
+        "default": null
+      }
+    ],
+    "desc": "Returns `x << y`"
+  },
+  {
+    "name": "bitRsh",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitRsh(int x, int y)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The first number",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The second number",
+        "default": null
+      }
+    ],
+    "desc": "Returns `x >> y`"
+  },
+  {
+    "name": "bitNot",
+    "category": "maths",
+    "return_type": "int",
+    "prototype": "int bitNot(int x)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The number to get the 1's compliment for",
+        "default": null
+      }
+    ],
+    "desc": "Returns `~x`"
+  },
+  {
+    "name": "xsGetRandomNumber",
+    "category": "randomization",
+    "return_type": "int",
+    "prototype": "int xsGetRandomNumber()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns a random number between 0 and 32767."
+  },
+  {
+    "name": "xsGetRandomNumberLH",
+    "category": "randomization",
+    "return_type": "int",
+    "prototype": "int xsGetRandomNumberLH(int low, int high)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "low",
+        "type": "int",
+        "required": true,
+        "desc": "The lower bound for the range for the random number returned (included)",
+        "default": null
+      },
+      {
+        "name": "high",
+        "type": "int",
+        "required": true,
+        "desc": "The upper bound for the range for the random number returned (excluded)",
+        "default": null
+      }
+    ],
+    "desc": "Returns a random number between `low` and `high`"
+  },
+  {
+    "name": "xsGetRandomNumberMax",
+    "category": "randomization",
+    "return_type": "int",
+    "prototype": "int xsGetRandomNumberMax(int max)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "max",
+        "type": "int",
+        "required": true,
+        "desc": "The upper bound for the range for the random number returned (excluded)",
+        "default": null
+      }
+    ],
+    "desc": "Returns a random number between 0 and `max`."
+  },
+  {
+    "name": "xsResearchTechnology",
+    "category": "techs",
+    "return_type": "bool",
+    "prototype": "bool xsResearchTechnology(int techId, bool force, bool techAvailable, int playerId)",
+    "param_count": 4,
+    "min_param_count": 4,
+    "params": [
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The technology ID to research.",
+        "default": null
+      },
+      {
+        "name": "force",
+        "type": "bool",
+        "required": true,
+        "desc": "Force researching the tech even if it is not enabled. To force an unavailable tech, the argument `techAvailable` must be set to false",
+        "default": null
+      },
+      {
+        "name": "techAvailable",
+        "type": "bool",
+        "required": true,
+        "desc": "This flag determines if it is required to check if a tech is available before researching it",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to research the technology for",
+        "default": null
+      }
+    ],
+    "desc": "Returns a boolean based on whether the technology was researched or not."
+  },
+  {
+    "name": "xsGetTechName",
+    "category": "techs",
+    "return_type": "string",
+    "prototype": "string xsGetTechName(int techId, int playerId, bool internalName)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to get the name for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the tech's name for",
+        "default": null
+      },
+      {
+        "name": "internalName",
+        "type": "bool",
+        "required": false,
+        "desc": "Returns the internal name of the tech if set. `!#xs false` by default.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the current name of the given tech for the specified player."
+  },
+  {
+    "name": "xsGetTechState",
+    "category": "techs",
+    "return_type": "int",
+    "prototype": "int xsGetTechState(int techId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to get the state for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the tech's state for",
+        "default": null
+      }
+    ],
+    "desc": "Returns one of the [cTechState constants](../../constants/constants/#17-tech-state \"Jump To: XS > Constant Reference > 17. Tech State Constants\") based on the tech's status"
+  },
+  {
+    "name": "xsGetTechAttribute",
+    "category": "techs",
+    "return_type": "int",
+    "prototype": "int xsGetTechAttribute(int playerId, int techId, int techAttribute, int indexOrCostType)",
+    "param_count": 4,
+    "min_param_count": 4,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the tech's attribute for",
+        "default": null
+      },
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to get the attribute for",
+        "default": null
+      },
+      {
+        "name": "techAttribute",
+        "type": "int",
+        "required": true,
+        "desc": "The tech attribute to get. See the [cTech constants](../../constants/constants/#27-tech-attribute \\\"Jump To: XS > Constant Reference > 27. Tech Attribute\\\")",
+        "default": null
+      },
+      {
+        "name": "indexOrCostType",
+        "type": "int",
+        "required": true,
+        "desc": "The train location index when getting research location specific attributes or a resource ID when getting costs",
+        "default": null
+      }
+    ],
+    "desc": "Gets the specific tech attribute for the supplied tech for the given player."
+  },
+  {
+    "name": "xsSetTechName",
+    "category": "techs",
+    "return_type": "void",
+    "prototype": "void xsSetTechName(int techId, int playerId, string description)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to set the name for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the tech name for",
+        "default": null
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "desc": "The name to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the tech name for the supplied tech for the given player."
+  },
+  {
+    "name": "xsSetTechDescription",
+    "category": "techs",
+    "return_type": "void",
+    "prototype": "void xsSetTechDescription(int techId, int playerId, string description)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to set the description for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the tech description for",
+        "default": null
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "desc": "The description to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the tech description for the supplied tech for the given player."
+  },
+  {
+    "name": "xsInitiateResearch",
+    "category": "techs",
+    "return_type": "bool",
+    "prototype": "bool xsInitiateResearch(int buildingId, int techId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to initiate the research at",
+        "default": null
+      },
+      {
+        "name": "techId",
+        "type": "int",
+        "required": true,
+        "desc": "The tech to research",
+        "default": null
+      }
+    ],
+    "desc": "Same as the editor effect. Starts researching a technology at a specific building. The tech must be available/the player must have sufficient resources to research the tech. The resources are deducted from the player's stockpile on research."
+  },
+  {
+    "name": "xsHasResearchedLocalTechnology",
+    "category": "techs",
+    "return_type": "bool",
+    "prototype": "bool xsHasResearchedLocalTechnology(int buildingId, int localTechId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to check local techs at",
+        "default": null
+      },
+      {
+        "name": "localTechId",
+        "type": "int",
+        "required": true,
+        "desc": "The local tech to check",
+        "default": null
+      }
+    ],
+    "desc": "Checks if a local tech has been researched at the given building."
+  },
+  {
+    "name": "xsResearchLocalTechnology",
+    "category": "techs",
+    "return_type": "bool",
+    "prototype": "bool xsResearchLocalTechnology(int buildingId, int localTechId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to research a local tech at",
+        "default": null
+      },
+      {
+        "name": "localTechId",
+        "type": "int",
+        "required": true,
+        "desc": "The local tech to research",
+        "default": null
+      }
+    ],
+    "desc": "Researches the given local tech at the specified building if it is available. Same as the editor effect."
+  },
+  {
+    "name": "xsEffectAmount",
+    "category": "player",
+    "return_type": "void",
+    "prototype": "void xsEffectAmount(int effectId, int objectOrTechnologyId, int attributeOrOperation, float value, int playerId, int trainLocationIndex)",
+    "param_count": 6,
+    "min_param_count": 4,
+    "params": [
+      {
+        "name": "effectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the effect to use. See the [Effect Type](../../constants/constants/#8-effect-amount-effect-type \"Jump To: XS > Constant Reference > 8. Effect Amount Effect Type\") and [Technology Attribute](../../constants/constants/#10-effect-amount-technology-attribute \"Jump To: XS > Constant Reference > 10. Effect Amount Tech Attribute\") constants",
+        "default": null
+      },
+      {
+        "name": "objectOrTechnologyId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object, unit, or technology to effect",
+        "default": null
+      },
+      {
+        "name": "attributeOrOperation",
+        "type": "int",
+        "required": true,
+        "desc": "The attribute to modify or the operation to perform, See the [Effect Operation](../../constants/constants/#9-effectamount-effect-operations \"Jump To: XS > Constant Reference > 9. Effect Amount Effect Operation\") constants",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value of the effect",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "The player to apply the effect to. If unspecified, applies to all players except Gaia.",
+        "default": null
+      },
+      {
+        "name": "trainLocationIndex",
+        "type": "int",
+        "required": false,
+        "desc": "Specifies the train location entry mod when setting train location related attributes on techs and objects. When not set, defaults to using the train location entry mod value on the object itself",
+        "default": null
+      }
+    ],
+    "desc": "Change the specified attribute of the specified object or technology by the value for the specified player. Note that values for certain attributes such as [sound events](../../constants/constants/#1185-cselectionsoundevent) require to be passed after being converted using [bitCastToFloat](./#415-bitcasttofloat)."
+  },
+  {
+    "name": "xsGetPlayerUnitIds",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetPlayerUnitIds(int playerId, int objectOrClassId, int arrayId)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the unit IDs for",
+        "default": null
+      },
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object or class to get the unit reference IDs for",
+        "default": null
+      },
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": false,
+        "desc": "Reuse an existing array to save memory",
+        "default": null
+      }
+    ],
+    "desc": "Returns an array of unit IDs on the map for the given player and the specified object ID or class. The IDs here are the same as the `reference_id` used by the scenario editor"
+  },
+  {
+    "name": "xsGetHandicapMultiplier",
+    "category": "player",
+    "return_type": "float",
+    "prototype": "float xsGetHandicapMultiplier(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the handicap for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the handicap multiplier for the given player (a float between 1 and 2)"
+  },
+  {
+    "name": "xsGetWorldPlayerId",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetWorldPlayerId(int scxPlayerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "scxPlayerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the world index (lobby slot) for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the lobby slot corresponding to the player number (usually the same as color) in the scenario."
+  },
+  {
+    "name": "xsGetPlayerCivilization",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetPlayerCivilization(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the civilization of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the civilization ID of the given player. Refer to the [Constant Reference](../../constants/constants/#5-aoe2-civs \"Jump to: XS Scripting > Constant Reference > 5. AoE2 Civs\") for all the different civ IDs"
+  },
+  {
+    "name": "xsGetPlayerInGame",
+    "category": "player",
+    "return_type": "bool",
+    "prototype": "bool xsGetPlayerInGame(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "Check if this player is still alive",
+        "default": null
+      }
+    ],
+    "desc": "Returns true if the player given is still alive, and false otherwise."
+  },
+  {
+    "name": "xsGetPlayerNumberOfTechs",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetPlayerNumberOfTechs(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player whose technology count is being requested.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of technologies available to the player in the entire game."
+  },
+  {
+    "name": "xsPlayerAttribute",
+    "category": "player",
+    "return_type": "float",
+    "prototype": "float xsPlayerAttribute(int playerId, int resourceId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the resource of (0 for Gaia)",
+        "default": null
+      },
+      {
+        "name": "resourceId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the resource to get the amount of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the amount the specified resource of the given player."
+  },
+  {
+    "name": "xsSetPlayerAttribute",
+    "category": "player",
+    "return_type": "void",
+    "prototype": "void xsSetPlayerAttribute(int playerId, int resourceId, float value)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the resource of (0 for Gaia)",
+        "default": null
+      },
+      {
+        "name": "resourceId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the resource to set the amount of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The amount to set the resource to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the amount of the specified resource of the given player to the provided value."
+  },
+  {
+    "name": "xsGetPlayerName",
+    "category": "player",
+    "return_type": "string",
+    "prototype": "string xsGetPlayerName(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The lobby index of the player",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given player's name."
+  },
+  {
+    "name": "xsGetPlayerType",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetPlayerType(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the type for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the type of player. Refer to the [Constant Reference](../../constants/constants/#19-player-type \"Jump to: XS Scripting > Constant Reference > 19. Player Type\") for all the different player types"
+  },
+  {
+    "name": "xsGetDiplomacy",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetDiplomacy(int sourcePlayerId, int targetPlayerId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "sourcePlayerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the stance for",
+        "default": null
+      },
+      {
+        "name": "targetPlayerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the stance towards",
+        "default": null
+      }
+    ],
+    "desc": "Returns the source player's stance towards the target player"
+  },
+  {
+    "name": "xsSetDiplomacy",
+    "category": "player",
+    "return_type": "bool",
+    "prototype": "bool xsSetDiplomacy(int sourcePlayerId, int targetPlayerId, int diploStance, bool mirror)",
+    "param_count": 4,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "sourcePlayerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the stance for",
+        "default": null
+      },
+      {
+        "name": "targetPlayerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the stance towards",
+        "default": null
+      },
+      {
+        "name": "diploStance",
+        "type": "int",
+        "required": true,
+        "desc": "The stance to set",
+        "default": null
+      },
+      {
+        "name": "mirror",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, make the target player set their stance towards the source player to the same.",
+        "default": null
+      }
+    ],
+    "desc": "Sets the diplomacy of source player towards the target player"
+  },
+  {
+    "name": "xsGetDifficulty",
+    "category": "player",
+    "return_type": "int",
+    "prototype": "int xsGetDifficulty()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the difficulty setting for the game. Refer to the [Constant Reference](../../constants/constants/#22-difficulty \"Jump to: XS Scripting > Constant Reference > 22. Difficulty\") for all the different difficulty IDs"
+  },
+  {
+    "name": "xsDeclareVictory",
+    "category": "player",
+    "return_type": "void",
+    "prototype": "void xsDeclareVictory(int playerId, bool victory)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to make win",
+        "default": null
+      },
+      {
+        "name": "victory",
+        "type": "bool",
+        "required": false,
+        "desc": "If unset, defeat the player instead",
+        "default": null
+      }
+    ],
+    "desc": "Makes a player win or lose the game"
+  },
+  {
+    "name": "xsGetPlayerCivName",
+    "category": "player",
+    "return_type": "string",
+    "prototype": "string xsGetPlayerCivName(int playerId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the civ name for",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the civ name",
+        "default": null
+      }
+    ],
+    "desc": "Gets the given player's civ name"
+  },
+  {
+    "name": "xsSetPlayerCivName",
+    "category": "player",
+    "return_type": "bool",
+    "prototype": "bool xsSetPlayerCivName(int playerId, string name)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the civ name for",
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "desc": "The civ name to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given player's civ name to the specified value."
+  },
+  {
+    "name": "xsSetPlayerName",
+    "category": "player",
+    "return_type": "bool",
+    "prototype": "bool xsSetPlayerName(int playerId, string name)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the name for",
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "desc": "The name to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given player's name for the remainder of this game to the specified value"
+  },
+  {
+    "name": "xsSetPlayerColor",
+    "category": "player",
+    "return_type": "bool",
+    "prototype": "bool xsSetPlayerColor(int playerId, int colorId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the color for",
+        "default": null
+      },
+      {
+        "name": "colorId",
+        "type": "int",
+        "required": true,
+        "desc": "The color to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given player's color to the specified value"
+  },
+  {
+    "name": "xsSetChatToPlayer",
+    "category": "player",
+    "return_type": "void",
+    "prototype": "void xsSetChatToPlayer(int targetPlayer, bool enabled)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "targetPlayer",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the chat setting for",
+        "default": null
+      },
+      {
+        "name": "enabled",
+        "type": "bool",
+        "required": true,
+        "desc": "The value to set the chat setting to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the local player's chat setting towards the given player. To be used along with diplomacy-related effects"
+  },
+  {
+    "name": "xsTaskAmount",
+    "category": "tasks",
+    "return_type": "void",
+    "prototype": "void xsTaskAmount(int taskFieldId, float value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "taskFieldId",
+        "type": "int",
+        "required": true,
+        "desc": "Specifies which property of the task to change. Refer to [cTaskAttr constants](../../constants/constants/#15-task-attribute \"Jump To: XS > Constant Reference > 15. Task Type Constants\")",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the task field to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value of the given field of the global XS task struct to the provided value. See also [xsTask](./#8-xsmodifyobjecttasks). It is recommended to always set all values before inserting or updating a task otherwise the insert/update might fail."
+  },
+  {
+    "name": "xsResetTaskAmount",
+    "category": "tasks",
+    "return_type": "void",
+    "prototype": "void xsResetTaskAmount()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Resets all the values of the global XS task struct to their defaults. See also [xsTask](./#8-xsmodifyobjecttasks)."
+  },
+  {
+    "name": "xsGetObjectTaskCount",
+    "category": "tasks",
+    "return_type": "int",
+    "prototype": "int xsGetObjectTaskCount(int objectId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to get the number of tasks for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player whose object to get the number of tasks for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of tasks the specific object for the given player has"
+  },
+  {
+    "name": "xsGetUnitTaskCount",
+    "category": "tasks",
+    "return_type": "int",
+    "prototype": "int xsGetUnitTaskCount(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to get the number of tasks for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of tasks the given unit has"
+  },
+  {
+    "name": "xsObjectTaskAmount",
+    "category": "tasks",
+    "return_type": "bool",
+    "prototype": "bool xsObjectTaskAmount(int objectId, int playerId, int taskId)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to get the task for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player whose object to get the task for",
+        "default": null
+      },
+      {
+        "name": "taskId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID (index) of the task to get",
+        "default": null
+      }
+    ],
+    "desc": "Copies the provided task of the specific object from the given player into XS' global task struct"
+  },
+  {
+    "name": "xsUnitTaskAmount",
+    "category": "tasks",
+    "return_type": "bool",
+    "prototype": "bool xsUnitTaskAmount(int unitId, int taskId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the unit to get the task for",
+        "default": null
+      },
+      {
+        "name": "taskId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID (index) of the task to get",
+        "default": null
+      }
+    ],
+    "desc": "Copies the provided task of the specific unit into XS' global task struct"
+  },
+  {
+    "name": "xsGetTaskAmount",
+    "category": "tasks",
+    "return_type": "float",
+    "prototype": "float xsGetTaskAmount(int taskFieldId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "taskFieldId",
+        "type": "int",
+        "required": true,
+        "desc": "The task field to ge the value for. Refer to the [Constant Reference](../../constants/constants/#15-task-attribute \"Jump to: XS Scripting > Constant Reference > 15. Task Attribute\") for all the different task field IDs",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given task field from XS' global task struct."
+  },
+  {
+    "name": "xsModifyObjectTasks",
+    "category": "tasks",
+    "return_type": "bool",
+    "prototype": "bool xsModifyObjectTasks(int objectId, int playerId, int taskId, bool edit)",
+    "param_count": 4,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to modify the task for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player whose object to modify the task for",
+        "default": null
+      },
+      {
+        "name": "taskId",
+        "type": "int",
+        "required": true,
+        "desc": "The index to insert the task at",
+        "default": null
+      },
+      {
+        "name": "edit",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, edit the task at the given index instead of inserting (ignored with negative indices)",
+        "default": null
+      }
+    ],
+    "desc": "A copy of the global XS task struct is inserted at the provided index in the task list of the specified object for the given player.\n\n- ID `N` will insert the task at index N\n- When `#!xs edit = true`, edit an existing task instead of inserting one.\n- ID `-(N+1)` will remove the task at index N"
+  },
+  {
+    "name": "xsModifyUnitTasks",
+    "category": "tasks",
+    "return_type": "bool",
+    "prototype": "bool xsModifyUnitTasks(int unitId, int taskId, bool edit)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the unit on the map to modify the task for",
+        "default": null
+      },
+      {
+        "name": "taskId",
+        "type": "int",
+        "required": true,
+        "desc": "The index to insert the task at",
+        "default": null
+      },
+      {
+        "name": "edit",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, edit the task at the given index instead of inserting (ignored with negative indices)",
+        "default": null
+      }
+    ],
+    "desc": "A copy of the global XS task struct is inserted at the provided index in the task list of the specified unit.\n\n- ID `N` will insert the task at index N\n- When `#!xs edit = true`, edit an existing task instead of inserting one.\n- ID `-(N+1)` will remove the task at index N"
+  },
+  {
+    "name": "xsTask",
+    "category": "tasks",
+    "return_type": "void",
+    "prototype": "void xsTask(int objectOrClassId, int actionType, int targetObjectOrClassId, int playerId)",
+    "param_count": 4,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The object or class ID to add the task to",
+        "default": null
+      },
+      {
+        "name": "actionType",
+        "type": "int",
+        "required": true,
+        "desc": "Task type. Refer to [cTaskType constants](../../constants/constants/#16-task-type \"Jump To: XS > Constant Reference > 16. Task Type Constants\")",
+        "default": null
+      },
+      {
+        "name": "targetObjectOrClassId",
+        "type": "int",
+        "required": false,
+        "desc": "Target object or class ID for the task to filter by.",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "The player to whose objects the task will be inserted. If unspecified or -1, applies to all players except Gaia.",
+        "default": null
+      }
+    ],
+    "desc": "Adds a new (or edits an existing) task with the fields previously defined by calls to [xsTaskAmount](./#1-xstaskamount) for the specified object at the end of the task list (see A.G.E.). If a task with the specified `actionType`, `objectId`, and `Search Wait Time` (set by `xsTaskAmount`) already exists, it is edited instead of a new one being added.\n\nNote that `xsTaskAmount` modifies a global task struct which is re-used every time `#!xs xsTask` is called (For non programmers, this is similar to filling out a form once (the calls to [xsTaskAmount](./#1-xstaskamount)) and then submitting multiple copies of it for different people)"
+  },
+  {
+    "name": "xsRemoveTask",
+    "category": "tasks",
+    "return_type": "void",
+    "prototype": "void xsRemoveTask(int objectOrClassId, int actionType, int targetObjectOrClassId, int playerId)",
+    "param_count": 4,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The object or class ID to remove the task from.",
+        "default": null
+      },
+      {
+        "name": "actionType",
+        "type": "int",
+        "required": true,
+        "desc": "Task type. Refer to [cTaskType constants](../../constants/constants/#16-task-type \"Jump To: XS > Constant Reference > 16. Task Type Constants\")",
+        "default": null
+      },
+      {
+        "name": "targetObjectOrClassId",
+        "type": "int",
+        "required": false,
+        "desc": "Target object or class ID for the task to filter by.",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "The player from whose objects the task will be removed. If unspecified or -1, applies to all players except Gaia.",
+        "default": null
+      }
+    ],
+    "desc": "Removes a task from a object if the specified `actionType`, `objectId`, and `Search Wait Time` (set by [xsTaskAmount](./#1-xstaskamount)) match an existing task in a object. No other fields are used for filtering (same as when [xsTask](./#1-xstask) edits instead of adding a new task)"
+  },
+  {
+    "name": "xsCreateUnit",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsCreateUnit(int objectId, int playerId, vector location, bool foundation, bool playCreatedSound, bool checkCollision)",
+    "param_count": 6,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to create",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to create the unit for",
+        "default": null
+      },
+      {
+        "name": "location",
+        "type": "vector",
+        "required": true,
+        "desc": "The location to create the unit at",
+        "default": null
+      },
+      {
+        "name": "foundation",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, create a foundation (ignored for non buildings)",
+        "default": null
+      },
+      {
+        "name": "playCreatedSound",
+        "type": "bool",
+        "required": false,
+        "desc": "If false, don't play the unit creation sound",
+        "default": null
+      },
+      {
+        "name": "checkCollision",
+        "type": "bool",
+        "required": false,
+        "desc": "If false, don't check for collision before creating the unit",
+        "default": null
+      }
+    ],
+    "desc": "Creates a unit on the map and returns its ID, or -1 if creation failed"
+  },
+  {
+    "name": "xsRemoveUnit",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsRemoveUnit(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to remove",
+        "default": null
+      }
+    ],
+    "desc": "Removes the given unit from the map"
+  },
+  {
+    "name": "xsGetObjectAttribute",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetObjectAttribute(int playerId, int objectId, int attribute, int damageClass)",
+    "param_count": 4,
+    "min_param_count": 4,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player whose object to get the attribute for",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to get the attribute for",
+        "default": null
+      },
+      {
+        "name": "attribute",
+        "type": "int",
+        "required": true,
+        "desc": "The attribute to get",
+        "default": null
+      },
+      {
+        "name": "damageClass",
+        "type": "int",
+        "required": true,
+        "desc": "For use with armor/attack attributes - specifies which armor/attack class to get. Also specifies the train location entry mod when getting train location related attributes. When not set, defaults to using the train location entry mod value on the unit itself",
+        "default": null
+      }
+    ],
+    "desc": "Returns the attribute value for an object. Note that values for certain attributes such as [sound events](../../constants/constants/#1185-cselectionsoundevent) must be converted using [bitCastToInt](./#416-bitcasttoint) after being returned."
+  },
+  {
+    "name": "xsGetUnitAttribute",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitAttribute(int unitId, int attribute, int damageClassOrEntryMod)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the attribute for.",
+        "default": null
+      },
+      {
+        "name": "attribute",
+        "type": "int",
+        "required": true,
+        "desc": "The attribute to get",
+        "default": null
+      },
+      {
+        "name": "damageClassOrEntryMod",
+        "type": "int",
+        "required": true,
+        "desc": "For use with armor/attack attributes - specifies which armor/attack class to get. Also specifies the train location entry mod when getting train location related attributes. When not set, defaults to using the train location entry mod value on the unit itself",
+        "default": null
+      }
+    ],
+    "desc": "Returns the attribute value for a specific unit on the map. Note that values for certain attributes such as [sound events](../../constants/constants/#1185-cselectionsoundevent) must be converted using [bitCastToInt](./#416-bitcasttoint) after being returned."
+  },
+  {
+    "name": "xsDoesUnitExist",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsDoesUnitExist(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit ID to check",
+        "default": null
+      }
+    ],
+    "desc": "Returns true if a unit with the given ID exists on the map."
+  },
+  {
+    "name": "xsGetUnitOwner",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitOwner(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the owner ID for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the lobby index of the player owning this unit."
+  },
+  {
+    "name": "xsGetUnitPosition",
+    "category": "Units and Objects",
+    "return_type": "vector",
+    "prototype": "vector xsGetUnitPosition(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the position for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the current position of a unit."
+  },
+  {
+    "name": "xsSetUnitPosition",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitPosition(int unitId, vector position, bool checkCollision)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the position for",
+        "default": null
+      },
+      {
+        "name": "position",
+        "type": "vector",
+        "required": true,
+        "desc": "The position to set",
+        "default": null
+      },
+      {
+        "name": "checkCollision",
+        "type": "bool",
+        "required": false,
+        "desc": "If false, don't check for collision before moving the unit",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's position."
+  },
+  {
+    "name": "xsGetUnitName",
+    "category": "Units and Objects",
+    "return_type": "string",
+    "prototype": "string xsGetUnitName(int unitId, bool internalName)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit ID to check",
+        "default": null
+      },
+      {
+        "name": "internalName",
+        "type": "bool",
+        "required": false,
+        "desc": "Returns the internal name of the unit if set. `!#xs false` by default.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the current name of a given unit"
+  },
+  {
+    "name": "xsGetObjectName",
+    "category": "Units and Objects",
+    "return_type": "string",
+    "prototype": "string xsGetObjectName(int objectId, int playerId, bool internalName)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to get the name for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object's name for",
+        "default": null
+      },
+      {
+        "name": "internalName",
+        "type": "bool",
+        "required": false,
+        "desc": "Returns the internal name of the object if set. `!#xs false` by default.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the current name of the given object for the specified player."
+  },
+  {
+    "name": "xsGetUnitTargetUnitId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitTargetUnitId(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the target for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the ID of the currently targeted unit for this unit"
+  },
+  {
+    "name": "xsGetUnitMoveTarget",
+    "category": "Units and Objects",
+    "return_type": "vector",
+    "prototype": "vector xsGetUnitMoveTarget(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the movement target for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the location this unit is currently moving to"
+  },
+  {
+    "name": "xsGetUnitGroupId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitGroupId(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the group ID (formation) for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the ID of the group (formation) for this unit"
+  },
+  {
+    "name": "xsGetGroupMoveTarget",
+    "category": "Units and Objects",
+    "return_type": "vector",
+    "prototype": "vector xsGetGroupMoveTarget(int groupId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "groupId",
+        "type": "int",
+        "required": true,
+        "desc": "The group (formation) to get the movement target for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the location this group (formation) is currently moving to"
+  },
+  {
+    "name": "xsIsObjectAvailable",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsIsObjectAvailable(int objectId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to check the availability for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object's availability for",
+        "default": null
+      }
+    ],
+    "desc": "Returns true if this object can currently be trained or built."
+  },
+  {
+    "name": "xsGetUnitHitpoints",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitHitpoints(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the HP for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's HP"
+  },
+  {
+    "name": "xsSetUnitHitpoints",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitHitpoints(int unitId, float value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the HP for",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the HP to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's HP"
+  },
+  {
+    "name": "xsGetUnitBuildPoints",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitBuildPoints(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the Build Points for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's Built Points"
+  },
+  {
+    "name": "xsSetUnitBuildPoints",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitBuildPoints(int unitId, float value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the build points for",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the build points to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's Build Points"
+  },
+  {
+    "name": "xsGetUnitObjectId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitObjectId(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the object ID for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's ID in data"
+  },
+  {
+    "name": "xsGetUnitCopyId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitCopyId(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the copy ID for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's copy ID in data"
+  },
+  {
+    "name": "xsGetObjectCopyId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetObjectCopyId(int playerId, int objectId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object's copy ID for",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to get the copy ID for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given object's copy ID in data for the specified player"
+  },
+  {
+    "name": "xsGetUnitClass",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitClass(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the class for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's class See [cClass constants](../../constants/constants/#12-object-class \"Jump To: XS > Constant Reference > 12. Object Class\")"
+  },
+  {
+    "name": "xsGetObjectClass",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetObjectClass(int playerId, int objectId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object's class for",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to get the class for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given object's class for the specified player. See [cClass constants](../../constants/constants/#12-object-class \"Jump To: XS > Constant Reference > 12. Object Class\")"
+  },
+  {
+    "name": "xsGetUnitType",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitType(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the type for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's type. See [cObjectType constants](../../constants/constants/#18-object-type \"Jump To: XS > Constant Reference > 18. Object Type\")"
+  },
+  {
+    "name": "xsGetObjectType",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetObjectType(int playerId, int objectId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object's type for",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to get the type for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given object's type for the specified player. See [cObjectType constants](../../constants/constants/#18-object-type \"Jump To: XS > Constant Reference > 18. Object Type\")"
+  },
+  {
+    "name": "xsGetUnitAttributeTypesHeld",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetUnitAttributeTypesHeld(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the held resource types for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's type of resources held as an array of ints. The only unit that this currently returns multiple values for is the trade cart/cog."
+  },
+  {
+    "name": "xsGetUnitAttributeHeld",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitAttributeHeld(int unitId, int attributeId)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the resource held for",
+        "default": null
+      },
+      {
+        "name": "attributeId",
+        "type": "int",
+        "required": false,
+        "desc": "The ID of the resource to get. If unspecified, return the first resource which the unit holds",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's amount of the specified resource held."
+  },
+  {
+    "name": "xsSetUnitAttributeHeld",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitAttributeHeld(int unitId, float value, int attributeId)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the resource held for",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The amount to set the held resource to",
+        "default": null
+      },
+      {
+        "name": "attributeId",
+        "type": "int",
+        "required": false,
+        "desc": "The ID of the resource to set. If unspecified, sets the first resource which the unit holds",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's amount of the specified resource. The only unit this can currently add extra resources to is the trade cart/cog."
+  },
+  {
+    "name": "xsGetUnitCharge",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitCharge(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the charge for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the given unit's charge"
+  },
+  {
+    "name": "xsSetUnitCharge",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitCharge(int unitId, float value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the charge for",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the charge to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's charge"
+  },
+  {
+    "name": "xsGetGarrisonedInUnitId",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetGarrisonedInUnitId(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the garrisoned in",
+        "default": null
+      }
+    ],
+    "desc": "Returns the ID of the unit in which this unit is garrisoned in"
+  },
+  {
+    "name": "xsGetGarrisonedUnitIds",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetGarrisonedUnitIds(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the garrisoned objects for",
+        "default": null
+      }
+    ],
+    "desc": "Returns an int array which contains the IDs of all the units garrisoned inside this unit"
+  },
+  {
+    "name": "xsGetObjectCount",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetObjectCount(int playerId, int objectOrClassId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object count for",
+        "default": null
+      },
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object or class to get the count for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of currently alive objects with the given ID of the specified player"
+  },
+  {
+    "name": "xsGetObjectCountTotal",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetObjectCountTotal(int playerId, int objectOrClassId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the object count for",
+        "default": null
+      },
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object or class to get the count for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of currently alive/standing + queued/foundation objects with the given ID of the specified player"
+  },
+  {
+    "name": "xsObjectHasAction",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsObjectHasAction(int playerId, int objectOrClassId, int actionId, int targetPlayerId, int targetType, int targetUnitLevel)",
+    "param_count": 6,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to check unit actions for",
+        "default": null
+      },
+      {
+        "name": "objectOrClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object or class to check actions for",
+        "default": null
+      },
+      {
+        "name": "actionId",
+        "type": "int",
+        "required": true,
+        "desc": "The type of action to check for",
+        "default": null
+      },
+      {
+        "name": "targetPlayerId",
+        "type": "int",
+        "required": false,
+        "desc": "Check if the action is being performed on a unit (eg. attacking) of this player. Can use -1 to ignore this filter.",
+        "default": null
+      },
+      {
+        "name": "targetType",
+        "type": "int",
+        "required": false,
+        "desc": "Check if the action is being performed on a unit of this type. Values 9xx refer to classes. Can use -1 to ignore this filter.",
+        "default": null
+      },
+      {
+        "name": "targetUnitLevel",
+        "type": "int",
+        "required": false,
+        "desc": "Check if the action is being performed on a unit with this `Interface Kind` (look in the A.G.E.), eg: 3 - villagers, 4 - most military units. Can be used as an alternative to `targetType`. If both are used, will pick units that match either. Can use -1 to ignore this filter.",
+        "default": null
+      }
+    ],
+    "desc": "Checks and returns if any unit matching the set filters of the given player has the specified action."
+  },
+  {
+    "name": "xsIsObjectValid",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsIsObjectValid(int objectId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object ID to check",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to check the ID for",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the supplied object ID is valid for the given player (e.g. Gaia only units)"
+  },
+  {
+    "name": "xsGetPlayerNumberOfObjects",
+    "category": "Units and Objects",
+    "return_type": "int",
+    "prototype": "int xsGetPlayerNumberOfObjects(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the number of data objects for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of data objects for this player"
+  },
+  {
+    "name": "xsTrainObject",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsTrainObject(int buildingId, int objectId, int count)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to train the objects at",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to train",
+        "default": null
+      },
+      {
+        "name": "count",
+        "type": "int",
+        "required": true,
+        "desc": "The number of objects to queue",
+        "default": null
+      }
+    ],
+    "desc": "Queues the given number of objects at the specified building. The object must be available at the building and the player must have sufficient resources to queue all the units. If resources are insufficient to cover all of the units, only units which can be afforded are queued. Resources are deducted from the player for this. **Note**: The base ID of upgraded units must be used, i.e. to train an Arbalest at the Archery Range, the `objectId` specified needs to be of the Archer itself. Same as the editor effect."
+  },
+  {
+    "name": "xsSetUnitGatherPoint",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitGatherPoint(int buildingId, vector position, int unitId)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to set the gather point of",
+        "default": null
+      },
+      {
+        "name": "position",
+        "type": "vector",
+        "required": true,
+        "desc": "The position at which the gather point should be set",
+        "default": null
+      },
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": false,
+        "desc": "If specified, set the gather point on this unit. Takes priority over `position`",
+        "default": null
+      }
+    ],
+    "desc": "Sets the gather point of the given building to the specified location/unit"
+  },
+  {
+    "name": "xsGetUnitGatherPoint",
+    "category": "Units and Objects",
+    "return_type": "vector",
+    "prototype": "vector xsGetUnitGatherPoint(int buildingId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "buildingId",
+        "type": "int",
+        "required": true,
+        "desc": "The building to get the gather point for",
+        "default": null
+      }
+    ],
+    "desc": "Gets the gather point of the specified building. If the gather point is set on an object, the Z value of the vector contains the unit ID. In that case, the X and Y values should be ignored."
+  },
+  {
+    "name": "xsGetUnitCaption",
+    "category": "Units and Objects",
+    "return_type": "string",
+    "prototype": "string xsGetUnitCaption(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the caption for",
+        "default": null
+      }
+    ],
+    "desc": "Gets the specified unit's caption string."
+  },
+  {
+    "name": "xsSetUnitCaption",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitCaption(int unitId, string caption)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the caption for.",
+        "default": null
+      },
+      {
+        "name": "caption",
+        "type": "string",
+        "required": true,
+        "desc": "The caption string to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the specified unit's caption to the given string."
+  },
+  {
+    "name": "xsSetUnitName",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitName(int unitId, string name)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the name for",
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "desc": "The name to set to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's name."
+  },
+  {
+    "name": "xsGetUnitCivName",
+    "category": "Units and Objects",
+    "return_type": "string",
+    "prototype": "string xsGetUnitCivName(int unitId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the civ name for",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the civ name",
+        "default": null
+      }
+    ],
+    "desc": "Gets the given unit's civ name."
+  },
+  {
+    "name": "xsSetUnitCivName",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitCivName(int unitId, string name)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the civ name for",
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "desc": "The name to set as the civ name",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's civ name to the specified value."
+  },
+  {
+    "name": "xsGetUnitPlayerName",
+    "category": "Units and Objects",
+    "return_type": "string",
+    "prototype": "string xsGetUnitPlayerName(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the player name for",
+        "default": null
+      }
+    ],
+    "desc": "Gets the given unit's player name."
+  },
+  {
+    "name": "xsSetUnitPlayerName",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitPlayerName(int unitId, string name)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the player name for",
+        "default": null
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "desc": "The name to set the player name to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given unit's player name to the specified value."
+  },
+  {
+    "name": "xsSetObjectDescription",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetObjectDescription(int playerId, int objectId, string description)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the object description for",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the object to set the description for",
+        "default": null
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "desc": "The description to set",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given object's description to the specified value for the provided player."
+  },
+  {
+    "name": "xsGetUnitProperty",
+    "category": "Units and Objects",
+    "return_type": "float",
+    "prototype": "float xsGetUnitProperty(int unitId, int property, int typeOrPlayer)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to get the property for",
+        "default": null
+      },
+      {
+        "name": "property",
+        "type": "int",
+        "required": true,
+        "desc": "The property to get. See [cUnit Property Constants](../../constants/constants/#32-unit-property-constants)",
+        "default": null
+      },
+      {
+        "name": "typeOrPlayer",
+        "type": "int",
+        "required": false,
+        "desc": "Resource ID when getting attributes held or player when getting unit visibility",
+        "default": null
+      }
+    ],
+    "desc": "Gets the specified property for the given unit."
+  },
+  {
+    "name": "xsSetUnitProperty",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitProperty(int unitId, int property, float value, int typeOrForce)",
+    "param_count": 4,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the property for",
+        "default": null
+      },
+      {
+        "name": "property",
+        "type": "int",
+        "required": true,
+        "desc": "The property to set. See [cUnit Property Constants](../../constants/constants/#32-unit-property-constants)",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "float",
+        "required": true,
+        "desc": "The value to set the property to",
+        "default": null
+      },
+      {
+        "name": "typeOrForce",
+        "type": "int",
+        "required": false,
+        "desc": "Resource ID when setting attributes held or force when setting garrisoned in ID or unit visibility",
+        "default": null
+      }
+    ],
+    "desc": "Sets the specified property for the given unit to the provided value."
+  },
+  {
+    "name": "xsSetUnitOwner",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsSetUnitOwner(int unitId, int playerId, bool flashObject)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to set the owner for",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The new owner",
+        "default": null
+      },
+      {
+        "name": "flashObject",
+        "type": "bool",
+        "required": false,
+        "desc": "If false, do not flash the object on ownership change",
+        "default": null
+      }
+    ],
+    "desc": "Changes the owner of the given unit to the specified player. Same as the editor effect."
+  },
+  {
+    "name": "xsFlashUnit",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsFlashUnit(int unitId, int playerId, int soundName)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to flash",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set, flash only for this player. Otherwise flash for all players (Default: `#!xs -1`)",
+        "default": null
+      },
+      {
+        "name": "soundName",
+        "type": "int",
+        "required": false,
+        "desc": "Defaults to \"?capture_complete\"",
+        "default": null
+      }
+    ],
+    "desc": "Flashes the given unit. Same as the editor effect."
+  },
+  {
+    "name": "xsStopUnit",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsStopUnit(int unitId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to stop",
+        "default": null
+      }
+    ],
+    "desc": "Stops the unit. Same as the editor effect."
+  },
+  {
+    "name": "xsBuildUnit",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsBuildUnit(int unitIds, int objectId, vector location1, vector location2, bool isShiftQueue, bool isFormationCommand)",
+    "param_count": 6,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "unitIds",
+        "type": "int",
+        "required": true,
+        "desc": "The units to task",
+        "default": null
+      },
+      {
+        "name": "objectId",
+        "type": "int",
+        "required": true,
+        "desc": "The object to build",
+        "default": null
+      },
+      {
+        "name": "location1",
+        "type": "vector",
+        "required": true,
+        "desc": "The location to build at",
+        "default": null
+      },
+      {
+        "name": "location2",
+        "type": "vector",
+        "required": false,
+        "desc": "When building a wall, the second location to finish the wall at. (Default: `#!xs cInvalidVector`)",
+        "default": null
+      },
+      {
+        "name": "isShiftQueue",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, shift queue the units",
+        "default": null
+      },
+      {
+        "name": "isFormationCommand",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, issue a formation command to the units",
+        "default": null
+      }
+    ],
+    "desc": "Tasks the selected units to build the given object at the specified location. The target location must be visible, the building must be available to the selected units, and the player must have sufficient resources to construct the building. Resources are deducted upon building. Same as the editor effect"
+  },
+  {
+    "name": "xsTaskUnits",
+    "category": "Units and Objects",
+    "return_type": "bool",
+    "prototype": "bool xsTaskUnits(int unitIds, int actionType, vector location, int locationUnitId, bool isShiftQueue, bool isFormationCommand, bool shouldPlayUnloadSound, int patrolPoints)",
+    "param_count": 8,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "unitIds",
+        "type": "int",
+        "required": true,
+        "desc": "The units to task",
+        "default": null
+      },
+      {
+        "name": "actionType",
+        "type": "int",
+        "required": true,
+        "desc": "The action to issue. See [cActionType Constants](../../constants/constants/#38-action-type-constants \"Jump to: XS Scripting > Constant Reference > 38. Action Type Constants\")",
+        "default": null
+      },
+      {
+        "name": "location",
+        "type": "vector",
+        "required": false,
+        "desc": "The location at which to task the units",
+        "default": null
+      },
+      {
+        "name": "locationUnitId",
+        "type": "int",
+        "required": false,
+        "desc": "The unit to task the selected units to",
+        "default": null
+      },
+      {
+        "name": "isShiftQueue",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, shift queue the units",
+        "default": null
+      },
+      {
+        "name": "isFormationCommand",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, issue a formation command to the units",
+        "default": null
+      },
+      {
+        "name": "shouldPlayUnloadSound",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, play the unload sound when ungarrisoning units",
+        "default": null
+      },
+      {
+        "name": "patrolPoints",
+        "type": "int",
+        "required": false,
+        "desc": "Array of vectors. When tasking units to patrol, use this if multiple patrol points are desired. `isShiftQueue` must be set to `#!xs false` when using this.",
+        "default": null
+      }
+    ],
+    "desc": "Tasks the selected units to perform the given action. Same as the editor effect."
+  },
+  {
+    "name": "xsGetMapName",
+    "category": "map",
+    "return_type": "string",
+    "prototype": "string xsGetMapName(bool showFileExtension)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "showFileExtension",
+        "type": "bool",
+        "required": true,
+        "desc": "If this is set to true, then the returned name also contains the file extension",
+        "default": null
+      }
+    ],
+    "desc": "Returns the name of the map currently being played."
+  },
+  {
+    "name": "xsGetMapID",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetMapID()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the AI map type."
+  },
+  {
+    "name": "xsGetMapHeight",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetMapHeight()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the Height of the map."
+  },
+  {
+    "name": "xsGetMapWidth",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetMapWidth()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the Width of the map."
+  },
+  {
+    "name": "xsGetColorMood",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetColorMood()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current color mood of the map. Refer to the [Constant Reference](../../constants/constants/#21-color-mood \"Jump to: XS Scripting > Constant Reference > 21. Color Mood\") for all the different color mood IDs"
+  },
+  {
+    "name": "xsSetColorMood",
+    "category": "map",
+    "return_type": "bool",
+    "prototype": "bool xsSetColorMood(int colorMood, int interval)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "colorMood",
+        "type": "int",
+        "required": true,
+        "desc": "The color mood to set",
+        "default": null
+      },
+      {
+        "name": "interval",
+        "type": "int",
+        "required": false,
+        "desc": "The transition duration in seconds",
+        "default": null
+      }
+    ],
+    "desc": "Sets the color mood of the map with a transition time. Refer to the [Constant Reference](../../constants/constants/#21-color-mood \"Jump to: XS Scripting > Constant Reference > 21. Color Mood\") for all the different color mood IDs"
+  },
+  {
+    "name": "xsGetMapSeed",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetMapSeed()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the current RMS seed or -1 in the editor."
+  },
+  {
+    "name": "xsTriggerVariable",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsTriggerVariable(int variableId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "variableId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the variable to get the value of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the value of the variable of the given variable ID. Note: This only works in a custom scenario"
+  },
+  {
+    "name": "xsSetTriggerVariable",
+    "category": "map",
+    "return_type": "void",
+    "prototype": "void xsSetTriggerVariable(int variableId, int value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "variableId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the variable to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The value to set the variable to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the value of the variable of the given variable ID to the provided value. Note: This only works in a custom scenario"
+  },
+  {
+    "name": "xsGetMapTileAttribute",
+    "category": "map",
+    "return_type": "int",
+    "prototype": "int xsGetMapTileAttribute(int x, int y, int attributeId)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "x",
+        "type": "int",
+        "required": true,
+        "desc": "The X value of the tile to get the attribute of",
+        "default": null
+      },
+      {
+        "name": "y",
+        "type": "int",
+        "required": true,
+        "desc": "The Y value fo the tile to get the attribute of",
+        "default": null
+      },
+      {
+        "name": "attributeId",
+        "type": "int",
+        "required": true,
+        "desc": "The attribute to get. See [cTile constants](../../constants/constants/#30-map-tile-constants \"Jump To: XS > Constant Reference > 30. Map Tile Constants\")",
+        "default": null
+      }
+    ],
+    "desc": "Gets the specified attribute for the given tile."
+  },
+  {
+    "name": "xsGetNumPlayers",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetNumPlayers()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the number of players in the game"
+  },
+  {
+    "name": "xsGetTime",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetTime()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current game time - 1 in seconds"
+  },
+  {
+    "name": "xsGetGameTime",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetGameTime()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current game time in seconds"
+  },
+  {
+    "name": "xsGetWorldTime",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetWorldTime()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current game time in milliseconds"
+  },
+  {
+    "name": "xsGetTurn",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetTurn()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current game tick (called turn). Note: ticks may differ in games and replays"
+  },
+  {
+    "name": "xsGetVictoryType",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryType()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns an integer corresponding to different victory settings in game. These are:\n\n 0: Standard\n\n1: Conquest\n\n2: Time Limit\n\n3: Score\n\n4: Custom (scenarios only).\n\nLast Man Standing returns 0 as well."
+  },
+  {
+    "name": "xsGetVictoryPlayer",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryPlayer()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the number of the player with the highest score in a normal game. Returns the number of the player who owns 5 relics or has a wonder if standard victory is enabled. In a game like KoTH, returns the number of the player who owns the monument."
+  },
+  {
+    "name": "xsGetVictoryPlayerForSecondaryGameMode",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryPlayerForSecondaryGameMode()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns `1` when no secondary game mode is set. Returns the number of the player who owns the monument in game modes like KotH"
+  },
+  {
+    "name": "xsGetVictoryTime",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryTime()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "For game modes like KoTH and other game modes where there is a timer on the screen, it returns the amount of time left in half seconds. meaning if the value returned is 799, it means there are 399.5s remaining. Returns `-1` otherwise"
+  },
+  {
+    "name": "xsGetVictoryTimeForSecondaryGameMode",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryTimeForSecondaryGameMode()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "For game modes like KoTH and other game modes where there is a timer on the screen, it returns the amount of time left in half seconds. meaning if the value returned is 799, it means there are 399.5s remaining. Returns `-1` otherwise"
+  },
+  {
+    "name": "xsGetVictoryCondition",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryCondition()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns one of these constants: `cStandardVictory` `cWonderVictory` `cRelicVictory` `cKingOfTheHillVictory`"
+  },
+  {
+    "name": "xsGetVictoryConditionForSecondaryGameMode",
+    "category": "game info",
+    "return_type": "int",
+    "prototype": "int xsGetVictoryConditionForSecondaryGameMode()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns one of these constants: `cStandardVictory` `cWonderVictory` `cRelicVictory` `cKingOfTheHillVictory`"
+  },
+  {
+    "name": "xsGetCivName",
+    "category": "game info",
+    "return_type": "string",
+    "prototype": "string xsGetCivName(int civId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "civId",
+        "type": "int",
+        "required": true,
+        "desc": "The",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the civ name",
+        "default": null
+      }
+    ],
+    "desc": "Gets the given civ's name"
+  },
+  {
+    "name": "xsChatData",
+    "category": "ui",
+    "return_type": "void",
+    "prototype": "void xsChatData(string message, int value)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "message",
+        "type": "string",
+        "required": true,
+        "desc": "The message to display in chat",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": false,
+        "desc": "This value is inserted in place of any `%d` used in the message of the function",
+        "default": null
+      }
+    ],
+    "desc": "Shows the given message in the game chat"
+  },
+  {
+    "name": "xsGetLocale",
+    "category": "ui",
+    "return_type": "int",
+    "prototype": "int xsGetLocale()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the locale of the current player. See the [cLocale constants](../../constants/constants/#24-locale \"Jump To: XS > Constant Reference > 24. Locale\"). Note: this function returns a unique value for every player, and should only be used for strings/chat/UI related functionality, otherwise it will cause a desync."
+  },
+  {
+    "name": "xsGetString",
+    "category": "ui",
+    "return_type": "string",
+    "prototype": "string xsGetString(int stringId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "stringId",
+        "type": "int",
+        "required": true,
+        "desc": "The string ID to get",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the returned string based on the current langauge of the player. Note: Using this parameter will make this function possibly return a unique value for different players, and should only be used for strings/chat/UI related functionality, otherwise it will cause a desync.",
+        "default": null
+      }
+    ],
+    "desc": "Gets the string associated with a given string ID"
+  },
+  {
+    "name": "xsGetPlayerAttributeName",
+    "category": "ui",
+    "return_type": "string",
+    "prototype": "string xsGetPlayerAttributeName(int stringId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "stringId",
+        "type": "int",
+        "required": true,
+        "desc": "The resource ID to get the editor name for",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the returned string based on the current langauge of the player. Note: Using this parameter will make this function possibly return a unique value for different players, and should only be used for strings/chat/UI related functionality, otherwise it will cause a desync.",
+        "default": null
+      }
+    ],
+    "desc": ""
+  },
+  {
+    "name": "xsGetObjectAttributeName",
+    "category": "ui",
+    "return_type": "string",
+    "prototype": "string xsGetObjectAttributeName(int attributeId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "attributeId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the attribute to get the name for",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the returned string based on the current langauge of the player. Note: Using this parameter will make this function possibly return a unique value for different players, and should only be used for strings/chat/UI related functionality, otherwise it will cause a desync.",
+        "default": null
+      }
+    ],
+    "desc": ""
+  },
+  {
+    "name": "xsGetDamageClassName",
+    "category": "ui",
+    "return_type": "string",
+    "prototype": "string xsGetDamageClassName(int damageClassId, bool localized)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "damageClassId",
+        "type": "int",
+        "required": true,
+        "desc": "The ID of the damage class to get the name for",
+        "default": null
+      },
+      {
+        "name": "localized",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, localize the returned string based on the current langauge of the player. Note: Using this parameter will make this function possibly return a unique value for different players, and should only be used for strings/chat/UI related functionality, otherwise it will cause a desync.",
+        "default": null
+      }
+    ],
+    "desc": ""
+  },
+  {
+    "name": "xsPlaySound",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsPlaySound(string eventOrSoundFileName, int playerId, vector position, float angle, int unitId, bool global)",
+    "param_count": 6,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "eventOrSoundFileName",
+        "type": "string",
+        "required": true,
+        "desc": "The sound event name to fire for the given `unitId` or the sound file name to play",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, play for all players. Otherwise play only for the specified player.",
+        "default": null
+      },
+      {
+        "name": "position",
+        "type": "vector",
+        "required": false,
+        "desc": "If set, play a local sound at this position.",
+        "default": null
+      },
+      {
+        "name": "angle",
+        "type": "float",
+        "required": false,
+        "desc": "If set, play a directional sound from the specified position.",
+        "default": null
+      },
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": false,
+        "desc": "If set, play the sound from this unit.",
+        "default": null
+      },
+      {
+        "name": "global",
+        "type": "bool",
+        "required": false,
+        "desc": "If set, play the sound on the whole map.",
+        "default": null
+      }
+    ],
+    "desc": ""
+  },
+  {
+    "name": "xsDisplayInstructions",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsDisplayInstructions(string msg, int time, int sourcePlayer, int iconObjectId, int panelPosition, bool useTagColorForIcon, bool playNotificationSound, string soundFilename, int playerId)",
+    "param_count": 9,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "msg",
+        "type": "string",
+        "required": true,
+        "desc": "The message to show",
+        "default": null
+      },
+      {
+        "name": "time",
+        "type": "int",
+        "required": true,
+        "desc": "The time to show the instructions for in seconds",
+        "default": null
+      },
+      {
+        "name": "sourcePlayer",
+        "type": "int",
+        "required": true,
+        "desc": "The player to use for the icon's civ and colour",
+        "default": null
+      },
+      {
+        "name": "iconObjectId",
+        "type": "int",
+        "required": false,
+        "desc": "If set, shows the icon of this object on the instruction panel",
+        "default": null
+      },
+      {
+        "name": "panelPosition",
+        "type": "int",
+        "required": false,
+        "desc": "The location to show the instructions panel in. Default: `cPanelTop`. See the [cPanel constants](../../constants/constants/#23-panel \"Jump To: XS > Constant Reference > 23. Panel\")",
+        "default": null
+      },
+      {
+        "name": "useTagColorForIcon",
+        "type": "bool",
+        "required": false,
+        "desc": "If set, uses the `<TAG>` color used in `msg` for the icon as well.",
+        "default": null
+      },
+      {
+        "name": "playNotificationSound",
+        "type": "bool",
+        "required": false,
+        "desc": "If unset, do not play the instruction notification sound.",
+        "default": null
+      },
+      {
+        "name": "soundFilename",
+        "type": "string",
+        "required": false,
+        "desc": "If `playSound` is enabled, plays this sound file.",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, show for all players. Otherwise show only for the specified player.",
+        "default": null
+      }
+    ],
+    "desc": "Same as the Display Instructions editor effect."
+  },
+  {
+    "name": "xsClearInstructions",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsClearInstructions(int panelPosition, int playerId)",
+    "param_count": 2,
+    "min_param_count": 0,
+    "params": [
+      {
+        "name": "panelPosition",
+        "type": "int",
+        "required": false,
+        "desc": "The location to clear the instructions panel in. Default: `cPanelTop`. See the [cPanel constants](../../constants/constants/#24-panel \"Jump To: XS > Constant Reference > 24. Panel\")",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, clear for all players. Otherwise clear only for the specified player.",
+        "default": null
+      }
+    ],
+    "desc": "Same as the Clear Instructions editor effect."
+  },
+  {
+    "name": "xsDisplayTimer",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsDisplayTimer(int timerId, string msg, int time, int timerUnit, bool resetTimer, int playerId)",
+    "param_count": 6,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "timerId",
+        "type": "int",
+        "required": true,
+        "desc": "The timer ID to use to show the instructions for in seconds",
+        "default": null
+      },
+      {
+        "name": "msg",
+        "type": "string",
+        "required": true,
+        "desc": "The message to show. You may use <TIMER> or %d to substitute a formatted timer value",
+        "default": null
+      },
+      {
+        "name": "time",
+        "type": "int",
+        "required": true,
+        "desc": "The timeout for the timer",
+        "default": null
+      },
+      {
+        "name": "timerUnit",
+        "type": "int",
+        "required": false,
+        "desc": "The unit for the timer. Default: `cTimerUnitSeconds`, see the [cTimerUnit constants](../../constants/constants/#25-timer-unit \"Jump To: XS > Constant Reference > 25. Timer Unit\")",
+        "default": null
+      },
+      {
+        "name": "resetTimer",
+        "type": "bool",
+        "required": false,
+        "desc": "If unset, duplicate the timer. Note: Do not unset this unless you know what you're doing.",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, show for all players. Otherwise show only for the specified player.",
+        "default": null
+      }
+    ],
+    "desc": "Same as the Display Timer editor effect."
+  },
+  {
+    "name": "xsClearTimer",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsClearTimer(int timerId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "timerId",
+        "type": "int",
+        "required": true,
+        "desc": "The timer ID to clear",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, clear for all players. Otherwise clear only for the specified player.",
+        "default": null
+      }
+    ],
+    "desc": "Same as the Clear Timer editor effect."
+  },
+  {
+    "name": "xsUnsyncGetTimerTimeRemaining",
+    "category": "ui",
+    "return_type": "float",
+    "prototype": "float xsUnsyncGetTimerTimeRemaining(int timerId, int timerUnit, int playerId)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "timerId",
+        "type": "int",
+        "required": true,
+        "desc": "The timer ID to clear",
+        "default": null
+      },
+      {
+        "name": "timerUnit",
+        "type": "int",
+        "required": false,
+        "desc": "The unit for the timer. Default: `cTimerUnitSeconds`, see the [cTimerUnit constants](../../constants/constants/#25-timer-unit \"Jump To: XS > Constant Reference > 25. Timer Unit\")",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, clear for all players. Otherwise clear only for the specified player.",
+        "default": null
+      }
+    ],
+    "desc": "Gets the time remaining for this timer in the specified unit. Note: If a playerId other than `-1` is used, this can possibly return different values for different players and will cause a desync! Use with caution!"
+  },
+  {
+    "name": "xsSendChat",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsSendChat(string msg, int playerId, bool silent)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "msg",
+        "type": "string",
+        "required": true,
+        "desc": "The msg to send",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "If set to -1, send for all players. Otherwise send only for the specified player.",
+        "default": null
+      },
+      {
+        "name": "silent",
+        "type": "bool",
+        "required": false,
+        "desc": "If set, do not play the chat notification sound.",
+        "default": null
+      }
+    ],
+    "desc": "Gets the time remaining for this timer in the specified unit. Note: If a playerId other than `-1` is used, it can possibly return different values for different players and will cause a desync! Use with caution!"
+  },
+  {
+    "name": "xsUnsyncGetLocalPlayerId",
+    "category": "ui",
+    "return_type": "int",
+    "prototype": "int xsUnsyncGetLocalPlayerId()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the ID of the local player. The local player is the ID of the _current_ player, and it is different for every player. Do not use this for anything other than chat/UI things, as it will cause a desync!"
+  },
+  {
+    "name": "xsGetPlayerColorTag",
+    "category": "ui",
+    "return_type": "string",
+    "prototype": "string xsGetPlayerColorTag(int playerId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to get the colour prefix (<TAG>) for",
+        "default": null
+      }
+    ],
+    "desc": "Gets the colour prefix (e.g. <RED>) for a given player. See the [cColor constants](../../constants/constants/#26-color \"Jump To: XS > Constant Reference > 26. Color\")"
+  },
+  {
+    "name": "xsSetViewPosition",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsSetViewPosition(int playerId, vector position, int duration)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the view position for. Can be set to `#!xs -1` to apply to all players",
+        "default": null
+      },
+      {
+        "name": "position",
+        "type": "vector",
+        "required": true,
+        "desc": "The position to set the view to",
+        "default": null
+      },
+      {
+        "name": "duration",
+        "type": "int",
+        "required": false,
+        "desc": "If set, scroll to the destination in this amount of time",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given player's camera to the specified position. Same as the editor effect."
+  },
+  {
+    "name": "xsUnsyncGetViewPosition",
+    "category": "ui",
+    "return_type": "vector",
+    "prototype": "vector xsUnsyncGetViewPosition(int playerId)",
+    "param_count": 1,
+    "min_param_count": 0,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "When specified, only returns a valid vector if the local player matches this",
+        "default": null
+      }
+    ],
+    "desc": "Gets the local player's view position. Note that this is an unsync function and cannot be used raw in MP."
+  },
+  {
+    "name": "xsSetZoom",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsSetZoom(int playerId, float zoom, float duration)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the zoom for. Can be set to `#!xs -1` to apply to all players",
+        "default": null
+      },
+      {
+        "name": "zoom",
+        "type": "float",
+        "required": true,
+        "desc": "The zoom level to set to. Clamped between `#!xs 0.75` (Fully zoomed out) and `#!xs 1.25` (Fully zoomed in)",
+        "default": null
+      },
+      {
+        "name": "duration",
+        "type": "float",
+        "required": false,
+        "desc": "If specified, change the zoom to the target value in this amount of time.",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given player's zoom to the specified value."
+  },
+  {
+    "name": "xsUnsyncGetZoom",
+    "category": "ui",
+    "return_type": "float",
+    "prototype": "float xsUnsyncGetZoom(int playerId)",
+    "param_count": 1,
+    "min_param_count": 0,
+    "params": [
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "When specified, only returns a valid value if the local player matches this",
+        "default": null
+      }
+    ],
+    "desc": "Gets the local player's zoom. Note that this is an unsync function and cannot be used raw in MP."
+  },
+  {
+    "name": "xsUnsyncGetPlayerSelectedUnitIds",
+    "category": "ui",
+    "return_type": "int",
+    "prototype": "int xsUnsyncGetPlayerSelectedUnitIds(int arrayId, int playerId)",
+    "param_count": 2,
+    "min_param_count": 0,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": false,
+        "desc": "The array to use",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "When specified, only returns a valid value if the local player matches this",
+        "default": null
+      }
+    ],
+    "desc": "Returns an int array with the currently selected unit IDs for the local player. Note that this is an unsync function and cannot be used raw in MP."
+  },
+  {
+    "name": "xsUnsyncIsUnitVisible",
+    "category": "ui",
+    "return_type": "bool",
+    "prototype": "bool xsUnsyncIsUnitVisible(int unitId, bool allowInFog, int playerId)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "unitId",
+        "type": "int",
+        "required": true,
+        "desc": "The unit to check visibility for",
+        "default": null
+      },
+      {
+        "name": "allowInFog",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, allow check to pass even if the unit is only seen in the fog and not in the LoS.",
+        "default": null
+      },
+      {
+        "name": "playerId",
+        "type": "int",
+        "required": false,
+        "desc": "When specified, only returns a valid value if the local player matches this",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the specified unit is visible to the local player. Note that this is an unsync function and cannot be used raw in MP."
+  },
+  {
+    "name": "xsCreateFile",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsCreateFile(bool append)",
+    "param_count": 1,
+    "min_param_count": 0,
+    "params": [
+      {
+        "name": "append",
+        "type": "bool",
+        "required": false,
+        "desc": "Default: `#!xs true`. If set to `#!xs false`, this will overwrite any existing file with the same name.",
+        "default": null
+      }
+    ],
+    "desc": "Creates a new (or appends to an existing) `.xsdat` file with the same name as the RMS/scenario being played. After invoking this function, the writing functions can be used to write data to the file. Returns `#!xs true` if the file was successfully created. In a multiplayer game a file is created for each player, and subsequent writes will be duplicated to each player."
+  },
+  {
+    "name": "xsOpenFile",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsOpenFile(string filename)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "filename",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the file to open, without the `.xsdat` extension",
+        "default": null
+      }
+    ],
+    "desc": "Opens an existing `.xsdat`file in read only mode. After invoking this function, the reading functions can be used to read data from the file. Returns `#!xs true` if the file was successfully opened. In a multiplayer game, the file being read must exist for all players and contain the same data to avoid an out of sync error"
+  },
+  {
+    "name": "xsWriteString",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsWriteString(string data)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "data",
+        "type": "string",
+        "required": true,
+        "desc": "The string to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a string to the previously created `.xsdat` file. Causes an error if a file hasn't been opened before using. Returns `#!xs true` if the string was successfully written. A string is written to the file in two parts, an unsigned 32 bit integer (indicates the length of the string) followed by that many bytes making up the actual characters of the string"
+  },
+  {
+    "name": "xsWriteInt",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsWriteInt(int data)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "data",
+        "type": "int",
+        "required": true,
+        "desc": "The integer to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes an integer to the previously created `.xsdat` file. Causes an error if a file hasn't been opened before using. Returns `#!xs true` if the integer was successfully written. Integers are written as signed 32 bit numbers"
+  },
+  {
+    "name": "xsWriteFloat",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsWriteFloat(float data)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "data",
+        "type": "float",
+        "required": true,
+        "desc": "The float value to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a floating point number to the previously created `.xsdat` file. Causes an error if a file hasn't been opened before using. Returns `#!xs true` if the floating point number was successfully written. Floats are written in the 32 bit IEEE 754 format"
+  },
+  {
+    "name": "xsWriteVector",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsWriteVector(vector data)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "data",
+        "type": "vector",
+        "required": true,
+        "desc": "The vector to write",
+        "default": null
+      }
+    ],
+    "desc": "Writes a vector to the previously created `.xsdat` file. Causes an error if a file hasn't been opened before using. Returns `#!xs true` if the vector was successfully written. Vectors are written as 3 consecutive floating point numbers, one for each coordinate."
+  },
+  {
+    "name": "xsReadString",
+    "category": "File IO",
+    "return_type": "string",
+    "prototype": "string xsReadString()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads and returns a string from the previously opened `.xsdat` file. Note that this function does not check if the value being read is actually meant to be a string, which means the value being read is bit casted into a string regardless of what it originally was. This function also moves the file position forward by 4 bytes + the amount of bytes in the length of the string"
+  },
+  {
+    "name": "xsReadInt",
+    "category": "File IO",
+    "return_type": "int",
+    "prototype": "int xsReadInt()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads and returns an integer from the previously opened `.xsdat` file. Note that this function does not check if the value being read is actually meant to be an integer, which means the value being read is bit casted into an integer regardless of what it originally was. This function also moves the file position forward by 4 bytes"
+  },
+  {
+    "name": "xsReadFloat",
+    "category": "File IO",
+    "return_type": "float",
+    "prototype": "float xsReadFloat()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads and returns a float from the previously opened `.xsdat` file. Note that this function does not check if the value being read is actually meant to be a float, which means the value being read is bit casted into a float regardless of what it originally was. This function also moves the file position forward by 4 bytes"
+  },
+  {
+    "name": "xsReadVector",
+    "category": "File IO",
+    "return_type": "vector",
+    "prototype": "vector xsReadVector()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Reads and returns a vector from the previously opened `.xsdat` file. Note that this function does not check if the value being read is actually meant to be a vector, which means the value being read is bit casted into a vector regardless of what it originally was. This function also moves the file position forward by 12 bytes"
+  },
+  {
+    "name": "xsSetFilePosition",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsSetFilePosition(int byteOffset)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "byteOffset",
+        "type": "int",
+        "required": true,
+        "desc": "0 indexed byte offset to determine which byte to read and return from the file",
+        "default": null
+      }
+    ],
+    "desc": "Sets the byte (0-indexed) of the file that the next read function will start reading from."
+  },
+  {
+    "name": "xsOffsetFilePosition",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsOffsetFilePosition(int dataType, bool forward)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "dataType",
+        "type": "int",
+        "required": true,
+        "desc": "The [cOffset constants](../../constants/constants/#1-file-io \"Jump To: XS > Constant Reference > 1. File I/O\") can be used to specify the datatype used for the offset. Integers and floats are 4 bytes long, vectors are 12 bytes long and strings can be of variable length (specified by the 32 bit int preceding the chars of the string)",
+        "default": null
+      },
+      {
+        "name": "forward",
+        "type": "bool",
+        "required": false,
+        "desc": "Default: `#!xs true`. Setting this to `#!xs false` will make the file position move back",
+        "default": null
+      }
+    ],
+    "desc": "Moves the file position forward (or backward) relative to the current file position, and by an amount of bytes equivalent to reading the given data type"
+  },
+  {
+    "name": "xsCloseFile",
+    "category": "File IO",
+    "return_type": "bool",
+    "prototype": "bool xsCloseFile()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Close the currently opened or created file. Returns `#!xs true` if the file was successfully closed"
+  },
+  {
+    "name": "xsGetFilePosition",
+    "category": "File IO",
+    "return_type": "int",
+    "prototype": "int xsGetFilePosition()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the byte (0-indexed) of the file that the next read function will start reading from."
+  },
+  {
+    "name": "xsGetDataTypeSize",
+    "category": "File IO",
+    "return_type": "int",
+    "prototype": "int xsGetDataTypeSize(int type)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "type",
+        "type": "int",
+        "required": true,
+        "desc": "One of the `cOffsetXXX` constants may be used as a parameter",
+        "default": null
+      }
+    ],
+    "desc": "Returns the number of bytes used to store a given type value."
+  },
+  {
+    "name": "xsGetFileSize",
+    "category": "File IO",
+    "return_type": "int",
+    "prototype": "int xsGetFileSize()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Gets the size (in bytes) of the currently open file"
+  },
+  {
+    "name": "xsGetGoal",
+    "category": "AI Scripting",
+    "return_type": "int",
+    "prototype": "int xsGetGoal(int id)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true,
+        "desc": "The goal id/number to get for the current AI",
+        "default": null
+      }
+    ],
+    "desc": "Gets the goal id/number of the current AI"
+  },
+  {
+    "name": "xsGetStrategicNumber",
+    "category": "AI Scripting",
+    "return_type": "int",
+    "prototype": "int xsGetStrategicNumber(int id)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true,
+        "desc": "The SN to get for the current AI",
+        "default": null
+      }
+    ],
+    "desc": "Gets the SN of the current AI"
+  },
+  {
+    "name": "xsSetGoal",
+    "category": "AI Scripting",
+    "return_type": "void",
+    "prototype": "void xsSetGoal(int id, int value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true,
+        "desc": "The goal id/number to get for the current AI",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The value to set the goal id/number to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the goal id/number of the current AI"
+  },
+  {
+    "name": "xsSetStrategicNumber",
+    "category": "AI Scripting",
+    "return_type": "void",
+    "prototype": "void xsSetStrategicNumber(int id, int value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "id",
+        "type": "int",
+        "required": true,
+        "desc": "The SN to get for the current AI",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The value to set the SN to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the SN of the current AI"
+  },
+  {
+    "name": "xsGetAiSignal",
+    "category": "AI Scripting",
+    "return_type": "int",
+    "prototype": "int xsGetAiSignal(int signalId, bool useLegacyAi)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "signalId",
+        "type": "int",
+        "required": true,
+        "desc": "The signal to get the value of",
+        "default": null
+      },
+      {
+        "name": "useLegacyAi",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, use the legacy signal",
+        "default": null
+      }
+    ],
+    "desc": "Gets the given AI signal value."
+  },
+  {
+    "name": "xsSetAiSignal",
+    "category": "AI Scripting",
+    "return_type": "void",
+    "prototype": "void xsSetAiSignal(int signalId, int value, bool useLegacyAi)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "signalId",
+        "type": "int",
+        "required": true,
+        "desc": "The signal to set the value of",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "int",
+        "required": true,
+        "desc": "The value to set to",
+        "default": null
+      },
+      {
+        "name": "useLegacyAi",
+        "type": "bool",
+        "required": false,
+        "desc": "If true, use the legacy signal",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given AI signal value."
+  },
+  {
+    "name": "xsGetAiScriptGoal",
+    "category": "AI Scripting",
+    "return_type": "bool",
+    "prototype": "bool xsGetAiScriptGoal(int goalId)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "goalId",
+        "type": "int",
+        "required": true,
+        "desc": "The goal to check",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the given AI goal is set"
+  },
+  {
+    "name": "xsSetAiScriptGoal",
+    "category": "AI Scripting",
+    "return_type": "bool",
+    "prototype": "bool xsSetAiScriptGoal(int goalId, bool value)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "goalId",
+        "type": "int",
+        "required": true,
+        "desc": "The goal to set",
+        "default": null
+      },
+      {
+        "name": "value",
+        "type": "bool",
+        "required": true,
+        "desc": "The value to set the goal to",
+        "default": null
+      }
+    ],
+    "desc": "Sets the given AI goal to the specified value"
+  },
+  {
+    "name": "xsDumpArrays",
+    "category": "misc",
+    "return_type": "void",
+    "prototype": "void xsDumpArrays()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "This function is supposed to blogs out all XS arrays. Currently, it does absolutely nothing."
+  },
+  {
+    "name": "xsGetContextPlayer",
+    "category": "misc",
+    "return_type": "int",
+    "prototype": "int xsGetContextPlayer()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "Returns the current context player ID."
+  },
+  {
+    "name": "xsSetContextPlayer",
+    "category": "misc",
+    "return_type": "void",
+    "prototype": "void xsSetContextPlayer(int playerNumber)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "playerNumber",
+        "type": "int",
+        "required": true,
+        "desc": "The player to set the context player to",
+        "default": null
+      }
+    ],
+    "desc": "In other functions involving a `playerNumber` argument, the value of the context player is used if `-1` is passed as `playerNumber` to them. `xsEffectAmount` will use the value of the context player as its player if `-2` is passed to it as the player argument."
+  },
+  {
+    "name": "xsGetFunctionID",
+    "category": "misc",
+    "return_type": "int",
+    "prototype": "int xsGetFunctionID(string functionName)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "functionName",
+        "type": "string",
+        "required": true,
+        "desc": "The name of the function to get the hash of",
+        "default": null
+      }
+    ],
+    "desc": "Returns the hash of a given function. This function has no practical application and is probably for internal usage only."
+  },
+  {
+    "name": "xsBreakPoint",
+    "category": "misc",
+    "return_type": "void",
+    "prototype": "void xsBreakPoint()",
+    "param_count": 0,
+    "min_param_count": 0,
+    "params": [],
+    "desc": "This function is meant to add a break point to the execution of XS code for debugging. This used to cause a crash in crash earlier versions of DE."
+  },
+  {
+    "name": "xsAddRuntimeEvent",
+    "category": "misc",
+    "return_type": "bool",
+    "prototype": "bool xsAddRuntimeEvent(string runtimeName, string functionName, int functionArgument)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "runtimeName",
+        "type": "string",
+        "required": true,
+        "desc": "This is the name of the runtime to create the event in. This should be `\"Random Map\"` for RMS and `\"Scenario Triggers\"` for scenarios. Find which one to use in a general script by using the `#!xs xsGetMapName(true)` [function](./#101-xsgetmapname \"Jump To: Function Reference > xsGetMapName\") and checking the extension. To use with an AI, set the runtime name to \"Expert\" and pass the player number as the arg",
+        "default": null
+      },
+      {
+        "name": "functionName",
+        "type": "string",
+        "required": true,
+        "desc": "This is the name of a user defined function that takes a single integer argument",
+        "default": null
+      },
+      {
+        "name": "functionArgument",
+        "type": "int",
+        "required": true,
+        "desc": "This is an integer argument that is passed to the function given to the argument `functionName` when this event runs.",
+        "default": null
+      }
+    ],
+    "desc": "A runtime event is called after all the XS code has finished executing but before rules start executing. It calls the function `functionName` given to it with the `functionArgument` passed to it as a parameter. For programmers familiar with the terminology, this is basically a way to set a callback. It also returns true if the function name given to it exists, otherwise it returns false. Does not work with built-ins"
+  },
+  {
+    "name": "ord",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int ord(string character)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "character",
+        "type": "string",
+        "required": true,
+        "desc": "The character to get the ASCII ord value for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the ASCII ord value for the given character. Same as Python's `ord`"
+  },
+  {
+    "name": "chr",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string chr(int code)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "code",
+        "type": "int",
+        "required": true,
+        "desc": "The ASCII code to get the character for.",
+        "default": null
+      }
+    ],
+    "desc": "Returns the ASCII character for the given code. Same as Python's `chr`"
+  },
+  {
+    "name": "strLen",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int strLen(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to get the length for",
+        "default": null
+      }
+    ],
+    "desc": "Returns the length of the given string"
+  },
+  {
+    "name": "strCharAt",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strCharAt(string str, int index)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to index",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to get. Can be in the range `[-length, length)`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the `str[index]` as in Python or `\"\"` if the index is out of bounds."
+  },
+  {
+    "name": "strSubstring",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strSubstring(string str, int start, int end)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to substring",
+        "default": null
+      },
+      {
+        "name": "start",
+        "type": "int",
+        "required": true,
+        "desc": "The start index. Can be in the range `[-length, length)`",
+        "default": null
+      },
+      {
+        "name": "end",
+        "type": "int",
+        "required": true,
+        "desc": "The end index. Can be in the range `[-length, length)`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the `str[start:end]` as in Python or `\"\"` if the indices are out of bounds."
+  },
+  {
+    "name": "strContains",
+    "category": "strings",
+    "return_type": "bool",
+    "prototype": "bool strContains(string str, string substring)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to check",
+        "default": null
+      },
+      {
+        "name": "substring",
+        "type": "string",
+        "required": true,
+        "desc": "The sub string to check",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the given substring is contained in the provided string."
+  },
+  {
+    "name": "strStartsWith",
+    "category": "strings",
+    "return_type": "bool",
+    "prototype": "bool strStartsWith(string str, string prefix)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to check",
+        "default": null
+      },
+      {
+        "name": "prefix",
+        "type": "string",
+        "required": true,
+        "desc": "The prefix to check",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the given string starts with the provided prefix."
+  },
+  {
+    "name": "strEndsWith",
+    "category": "strings",
+    "return_type": "bool",
+    "prototype": "bool strEndsWith(string str, string suffix)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to check",
+        "default": null
+      },
+      {
+        "name": "suffix",
+        "type": "string",
+        "required": true,
+        "desc": "The suffix to check",
+        "default": null
+      }
+    ],
+    "desc": "Checks if the given string ends with the provided suffix."
+  },
+  {
+    "name": "strRemovePrefix",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strRemovePrefix(string str, string prefix)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to remove the prefix from",
+        "default": null
+      },
+      {
+        "name": "prefix",
+        "type": "string",
+        "required": true,
+        "desc": "The prefix to remove",
+        "default": null
+      }
+    ],
+    "desc": "Removes the prefix from the given string if present and returns a new string. Returns the original string otherwise."
+  },
+  {
+    "name": "strRemoveSuffix",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strRemoveSuffix(string str, string suffix)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to remove the suffix from",
+        "default": null
+      },
+      {
+        "name": "suffix",
+        "type": "string",
+        "required": true,
+        "desc": "The suffix to remove",
+        "default": null
+      }
+    ],
+    "desc": "Removes the suffix from the given string if present and returns a new string. Returns the original string otherwise."
+  },
+  {
+    "name": "strIndexOf",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int strIndexOf(string str, string substring, int fromIndex)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to check in",
+        "default": null
+      },
+      {
+        "name": "substring",
+        "type": "string",
+        "required": true,
+        "desc": "The substring to find the index of",
+        "default": null
+      },
+      {
+        "name": "fromIndex",
+        "type": "int",
+        "required": false,
+        "desc": "If set, check starting from this index",
+        "default": null
+      }
+    ],
+    "desc": "Finds the index of the given substring in the provided string. Returns -1 if not found"
+  },
+  {
+    "name": "strLastIndexOf",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int strLastIndexOf(string str, string substring, int fromIndex)",
+    "param_count": 3,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to check in",
+        "default": null
+      },
+      {
+        "name": "substring",
+        "type": "string",
+        "required": true,
+        "desc": "The substring to find the index of",
+        "default": null
+      },
+      {
+        "name": "fromIndex",
+        "type": "int",
+        "required": false,
+        "desc": "If set, check backwards starting from this index",
+        "default": null
+      }
+    ],
+    "desc": "Finds the index of the given substring in the provided string backwards. Returns -1 if not found"
+  },
+  {
+    "name": "strReplace",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strReplace(string str, string target, string replacement, int max)",
+    "param_count": 4,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to replace in",
+        "default": null
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "required": true,
+        "desc": "The substring to replace",
+        "default": null
+      },
+      {
+        "name": "replacement",
+        "type": "string",
+        "required": true,
+        "desc": "The replacement for the target",
+        "default": null
+      },
+      {
+        "name": "max",
+        "type": "int",
+        "required": false,
+        "desc": "If specified, only replace a max of these instances of the target string",
+        "default": null
+      }
+    ],
+    "desc": "Replaces the occurrences of the target in the given string with the replacement and returns it as a new string."
+  },
+  {
+    "name": "strInsert",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strInsert(string str, int index, string target)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to insert into",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to insert at",
+        "default": null
+      },
+      {
+        "name": "target",
+        "type": "string",
+        "required": true,
+        "desc": "The substring to insert",
+        "default": null
+      }
+    ],
+    "desc": "Inserts the given substring at the provided index in the specified string and returns a new string."
+  },
+  {
+    "name": "strRemove",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strRemove(string str, int index, int length)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to remove from",
+        "default": null
+      },
+      {
+        "name": "index",
+        "type": "int",
+        "required": true,
+        "desc": "The index to remove from",
+        "default": null
+      },
+      {
+        "name": "length",
+        "type": "int",
+        "required": true,
+        "desc": "The number of characters to remove",
+        "default": null
+      }
+    ],
+    "desc": "Removes the specified number of characters at the provided index in the given string and returns a new string."
+  },
+  {
+    "name": "strSplit",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int strSplit(string str, string delimiter, int max)",
+    "param_count": 3,
+    "min_param_count": 3,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to split",
+        "default": null
+      },
+      {
+        "name": "delimiter",
+        "type": "string",
+        "required": false,
+        "desc": "The string to split by. If unspecified, split at all characters.",
+        "default": null
+      },
+      {
+        "name": "max",
+        "type": "int",
+        "required": true,
+        "desc": "The maximum number of splits to make.",
+        "default": null
+      }
+    ],
+    "desc": "Returns an int ID for an array of strings."
+  },
+  {
+    "name": "strJoin",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strJoin(int arrayId, string delimiter)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "arrayId",
+        "type": "int",
+        "required": true,
+        "desc": "An int ID for an array of strings",
+        "default": null
+      },
+      {
+        "name": "delimiter",
+        "type": "string",
+        "required": true,
+        "desc": "The string to join the array with",
+        "default": null
+      }
+    ],
+    "desc": "Returns a joined string of the provided array interspaced with the given delimiter."
+  },
+  {
+    "name": "strTrim",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strTrim(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to trim",
+        "default": null
+      }
+    ],
+    "desc": "Removes whitespaces on both sides of the given string and returns a new string."
+  },
+  {
+    "name": "strTrimStart",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strTrimStart(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to trim",
+        "default": null
+      }
+    ],
+    "desc": "Removes whitespaces at the start of the given string and returns a new string."
+  },
+  {
+    "name": "strTrimEnd",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strTrimEnd(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to trim",
+        "default": null
+      }
+    ],
+    "desc": "Removes whitespaces at the end of the given string and returns a new string."
+  },
+  {
+    "name": "strToUpper",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strToUpper(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to convert to uppercase",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new string that is the given string converted to uppercase. Note that only ASCII characters are affected."
+  },
+  {
+    "name": "strToLower",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strToLower(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to convert to lowercase",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new string that is the given string converted to uppercase. Note that only ASCII characters are affected."
+  },
+  {
+    "name": "strReverse",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string strReverse(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to reverse",
+        "default": null
+      }
+    ],
+    "desc": "Returns a new string that is the original string backwards."
+  },
+  {
+    "name": "strToInt",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int strToInt(string str, int base, int defaultValue)",
+    "param_count": 3,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to parse as an `#!xs int`",
+        "default": null
+      },
+      {
+        "name": "base",
+        "type": "int",
+        "required": false,
+        "desc": "Defaults to `#!xs 10`",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "int",
+        "required": false,
+        "desc": "Defaults to `#!xs -1`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the string parsed as an `#!xs int` and returns the default value if it fails"
+  },
+  {
+    "name": "strToFloat",
+    "category": "strings",
+    "return_type": "float",
+    "prototype": "float strToFloat(string str, float defaultValue)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to parse as a `#!xs float`",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "float",
+        "required": false,
+        "desc": "Defaults to `#!xs -1.0`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the string parsed as a `#!xs float` and returns the default value if it fails"
+  },
+  {
+    "name": "hex",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int hex(string str, int defaultValue)",
+    "param_count": 2,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The hex string to parse. Digits may be separated by `'`",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "int",
+        "required": false,
+        "desc": "Defaults to `#!xs -1`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the signed 32-bit base-10 value for the given hex string and returns the default value if it fails"
+  },
+  {
+    "name": "bin",
+    "category": "strings",
+    "return_type": "int",
+    "prototype": "int bin(string str, int defaultValue)",
+    "param_count": 2,
+    "min_param_count": 2,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The bin string to parse. Digits may be separated by `'`",
+        "default": null
+      },
+      {
+        "name": "defaultValue",
+        "type": "int",
+        "required": true,
+        "desc": "Defaults to `#!xs -1`",
+        "default": null
+      }
+    ],
+    "desc": "Returns the signed 32-bit base-10 value for the given binary string and returns the default value if it fails"
+  },
+  {
+    "name": "fstr",
+    "category": "strings",
+    "return_type": "string",
+    "prototype": "string fstr(string str)",
+    "param_count": 1,
+    "min_param_count": 1,
+    "params": [
+      {
+        "name": "str",
+        "type": "string",
+        "required": true,
+        "desc": "The string to format",
+        "default": null
+      }
+    ],
+    "desc": "Formats the given string like a Python f-string. Note that Expressions are not allowed, and it is limited to variable names only.\n\nExample:\n```xs\nxsChatData(fstr(\"{colourTag}{player}: {msg}\")); // assuming that colourTag, player, and msg are valid variables here.\n```\n\nSimilar to Python, you may use `{{` and `}}` to escape the brackets themselves when passing a string to `fstr` when interpolation is not desired.\n\nThe strings passed to `fstr` do not need to be literal strings. This allows creating multi-language template strings in language files that can be fetched via `xsGetString` and then passed to `fstr` for interpretation.\n\nThe variable names used inside the `{}` must be valid identifiers and in scope, or the `{}` will be left unmodified in the output."
+  }
+]

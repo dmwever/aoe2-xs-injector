@@ -1,0 +1,14 @@
+[
+  {
+    "old_name": "xsGetLocalPlayerId",
+    "new_name": "xsUnsyncGetLocalPlayerId",
+    "update": "185872",
+    "note": "Renamed to the xsUnsync* prefix to mark it as local-only. It returns the local world player id and must not drive synced gameplay logic, or the game desyncs."
+  },
+  {
+    "old_name": "xsGetTimerTimeRemaining",
+    "new_name": "xsUnsyncGetTimerTimeRemaining",
+    "update": "185872",
+    "note": "Renamed to the xsUnsync* prefix. Timer state is local, so the returned value must not drive synced gameplay logic."
+  }
+]

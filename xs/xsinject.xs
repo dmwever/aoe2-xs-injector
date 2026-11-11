@@ -5,17 +5,20 @@
 // Every layout here mirrors xsinject/wire.py; change both together.
 //
 // Request:          [request id][call count], then per call [function id][argument count],
-//                   then per argument [tag][payload]. Tag 0 = literal (int only so far).
+//                   then per argument [tag][payload]. Tag 0 = literal, encoded as the parameter's
+//                   declared type: int, float, bool as int, vector as 3 floats, string as a uint32
+//                   byte length then raw bytes.
 // Response section: [body][body byte length][magic], body = [magic][request id][status]
 //                   [failed call #][failed argument #][entry count] ...entries
-// Entry:            [entry status], then the value when OK and the function is non-void.
-// All values are int32. -1 is a legal read value, so every read is bounded by xsGetFileSize().
+// Entry:            [entry status], then the value when OK and the function is non-void, written
+//                   by return type (bool as int).
+// Ints are int32 and floats IEEE 32-bit, little-endian. -1 is a legal read value, so every read
+// is bounded by xsGetFileSize(), and a string's length is checked before the string is read.
 //
 // The generated dispatch (xsinject_dispatch.xs) must sit next to this file; this file includes it.
 include "./xsinject_dispatch.xs";
 
 const int cXsInjectMagic = 441340760;       // 0x1A4E5358; a finder only, not a version (XS int literals max 9 digits)
-const int cXsInjectHeaderBytes = 24;        // six ints
 
 // Request status codes (wire).
 const int cXsInjectOK = 0;
@@ -48,6 +51,8 @@ int gXsInjectCallFn = -1;
 int gXsInjectCallArgc = -1;
 int gXsInjectCallArgBase = -1;
 
+int gXsInjectVectorArrays = 0;  // replacement vector arrays made so far; names each one uniquely
+
 // Where the last parse failed (-1 when n/a).
 int gXsInjectParseCall = -1;
 int gXsInjectParseArg = -1;
@@ -70,6 +75,21 @@ void xsInjectInit() {
     gXsInjectInitDone = true;
 }
 
+// xsArrayResizeVector returns false and leaves the array as it is in this build (observed live
+// 2026-11-11; the other resizes work). A vector array grows by being replaced with a bigger one,
+// at least doubling so few arrays are abandoned. Returns the array to use from now on.
+int xsInjectVectorArrayAtLeast(int arrayId = -1, int size = 1) {
+    int current = xsArrayGetSize(arrayId);
+    if (current >= size) {
+        return (arrayId);
+    }
+    if (size < current * 2) {
+        size = current * 2;
+    }
+    gXsInjectVectorArrays++;
+    return (xsArrayCreateVector(size, vector(0.0, 0.0, 0.0), "xsInjectVector" + gXsInjectVectorArrays));
+}
+
 // Sizes the staging arrays for up to `calls` calls and `args` arguments in all.
 void xsInjectResizeStaging(int calls = 0, int args = 0) {
     if (calls < 1) {
@@ -85,12 +105,48 @@ void xsInjectResizeStaging(int calls = 0, int args = 0) {
     xsArrayResizeFloat(gXsInjectResFloat, calls);
     xsArrayResizeBool(gXsInjectResBool, calls);
     xsArrayResizeString(gXsInjectResString, calls);
-    xsArrayResizeVector(gXsInjectResVector, calls);
+    gXsInjectResVector = xsInjectVectorArrayAtLeast(gXsInjectResVector, calls);
     xsArrayResizeInt(gXsInjectArgInt, args);
     xsArrayResizeFloat(gXsInjectArgFloat, args);
     xsArrayResizeBool(gXsInjectArgBool, args);
     xsArrayResizeString(gXsInjectArgString, args);
-    xsArrayResizeVector(gXsInjectArgVector, args);
+    gXsInjectArgVector = xsInjectVectorArrayAtLeast(gXsInjectArgVector, args);
+}
+
+// Reads one literal of type `paramType` at byte `pos` into argument slot `argIndex`. Returns the
+// position after it, or -1 when it would run past `size` (a string's length is checked first).
+int xsInjectReadLiteral(int paramType = 0, int argIndex = 0, int pos = 0, int size = 0) {
+    int length = 0;
+    if (paramType == cXsInjectTypeString) {
+        if (pos + 4 > size) {
+            return (-1);
+        }
+        length = xsReadInt();
+        if ((length < 0) || (length > size - pos - 4)) {
+            return (-1);
+        }
+        xsSetFilePosition(pos);
+        xsArraySetString(gXsInjectArgString, argIndex, xsReadString());
+        return (pos + 4 + length);
+    }
+    if (paramType == cXsInjectTypeVector) {
+        if (pos + 12 > size) {
+            return (-1);
+        }
+        xsArraySetVector(gXsInjectArgVector, argIndex, xsReadVector());
+        return (pos + 12);
+    }
+    if (pos + 4 > size) {
+        return (-1);
+    }
+    if (paramType == cXsInjectTypeFloat) {
+        xsArraySetFloat(gXsInjectArgFloat, argIndex, xsReadFloat());
+    } else if (paramType == cXsInjectTypeBool) {
+        xsArraySetBool(gXsInjectArgBool, argIndex, xsReadInt() != 0);
+    } else {
+        xsArraySetInt(gXsInjectArgInt, argIndex, xsReadInt());
+    }
+    return (pos + 4);
 }
 
 // Parses the open request file (positioned just after the request id) into staging. Returns a
@@ -139,10 +195,6 @@ int xsInjectParse(int size = 0) {
         if ((argc < xsInjectMinArgs(fid)) || (argc > xsInjectMaxArgs(fid))) {
             return (cXsInjectBadArgCount);
         }
-        // Only int and void results can be reported so far; refuse the rest before anything runs.
-        if ((xsInjectReturnType(fid) != cXsInjectTypeInt) && (xsInjectReturnType(fid) != cXsInjectTypeVoid)) {
-            return (cXsInjectUnknownFunction);
-        }
         xsArraySetInt(gXsInjectCallFn, call, fid);
         xsArraySetInt(gXsInjectCallArgc, call, argc);
         xsArraySetInt(gXsInjectCallArgBase, call, argBase);
@@ -158,15 +210,10 @@ int xsInjectParse(int size = 0) {
             if (tag != cXsInjectTagLiteral) {
                 return (cXsInjectBadTag);
             }
-            // Only int literals are parsed so far; the driver sends no other kind.
-            if (xsInjectParamType(fid, arg) != cXsInjectTypeInt) {
-                return (cXsInjectBadTag);
-            }
-            if (pos + 4 > size) {
+            pos = xsInjectReadLiteral(xsInjectParamType(fid, arg), argBase, pos, size);
+            if (pos < 0) {
                 return (cXsInjectTruncated);
             }
-            xsArraySetInt(gXsInjectArgInt, argBase, xsReadInt());
-            pos = pos + 4;
             argBase++;
             arg++;
         }
@@ -201,18 +248,24 @@ void xsInjectStoreResponse(int requestId = -1, int status = -1, int failedCall =
     gXsInjectRespEntryCount = entryCount;
 }
 
-// Byte length of the stored response's body.
-int xsInjectBodyBytes() {
-    int bytes = cXsInjectHeaderBytes;
-    int call = 0;
-    while (call < gXsInjectRespEntryCount) {
-        bytes = bytes + 4;
-        if (xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, call)) == cXsInjectTypeInt) {
-            bytes = bytes + 4;
+// Writes call #`call`'s result from its return type's array; a void call writes nothing.
+void xsInjectWriteResult(int call = 0) {
+    int returnType = xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, call));
+    if (returnType == cXsInjectTypeInt) {
+        xsWriteInt(xsArrayGetInt(gXsInjectResInt, call));
+    } else if (returnType == cXsInjectTypeFloat) {
+        xsWriteFloat(xsArrayGetFloat(gXsInjectResFloat, call));
+    } else if (returnType == cXsInjectTypeBool) {
+        if (xsArrayGetBool(gXsInjectResBool, call)) {
+            xsWriteInt(1);
+        } else {
+            xsWriteInt(0);
         }
-        call++;
+    } else if (returnType == cXsInjectTypeString) {
+        xsWriteString(xsArrayGetString(gXsInjectResString, call));
+    } else if (returnType == cXsInjectTypeVector) {
+        xsWriteVector(xsArrayGetVector(gXsInjectResVector, call));
     }
-    return (bytes);
 }
 
 void xsInjectWriteSectionBody() {
@@ -223,12 +276,10 @@ void xsInjectWriteSectionBody() {
     xsWriteInt(gXsInjectRespFailedCall);
     xsWriteInt(gXsInjectRespFailedArg);
     xsWriteInt(gXsInjectRespEntryCount);
-    // One entry per call, in call order; only int values are written so far.
+    // One entry per call, in call order.
     while (call < gXsInjectRespEntryCount) {
         xsWriteInt(cXsInjectEntryOK);
-        if (xsInjectReturnType(xsArrayGetInt(gXsInjectCallFn, call)) == cXsInjectTypeInt) {
-            xsWriteInt(xsArrayGetInt(gXsInjectResInt, call));
-        }
+        xsInjectWriteResult(call);
         call++;
     }
 }
@@ -238,8 +289,10 @@ void xsInjectWriteStandalone() {
     if (xsCreateFile(false) == false) {
         return;
     }
+    // A string's byte length isn't knowable in XS, so the body length is measured as written.
+    int bodyStart = xsGetFilePosition();
     xsInjectWriteSectionBody();
-    xsWriteInt(xsInjectBodyBytes());
+    xsWriteInt(xsGetFilePosition() - bodyStart);
     xsWriteInt(cXsInjectMagic);
     xsCloseFile();
 }

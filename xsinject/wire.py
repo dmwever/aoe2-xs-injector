@@ -1,5 +1,10 @@
-"""Byte layouts shared with the XS module (xs/xsinject.xs). All values are little-endian int32."""
+"""Byte layouts shared with the XS module (xs/xsinject.xs).
 
+Little-endian: ints int32, floats IEEE 32-bit, a vector three floats, bool an int, a string a
+uint32 byte length then raw bytes.
+"""
+
+import math
 import struct
 
 MAGIC = 0x1A4E5358  # 441340760; a finder only, not a version. XS int literals max out at 9 digits.
@@ -25,17 +30,88 @@ ENTRY_OK = 0
 LITERAL = 0  # argument tag; tag 1 (reference) arrives with references
 
 _INT = struct.Struct("<i")
+_UINT = struct.Struct("<I")
+_FLOAT = struct.Struct("<f")
+_VECTOR = struct.Struct("<3f")
 _HEADER = struct.Struct("<6i")  # magic, request id, status, failed call, failed arg, entry count
 
 
+def encode_value(xs_type, value):
+    """`value` in the wire layout of `xs_type`; the driver has already checked that it fits.
+
+    Bool crosses as int; a string is a uint32 byte length then its raw UTF-8 bytes.
+    """
+    if xs_type == "int":
+        return _INT.pack(value)
+    if xs_type == "bool":
+        return _INT.pack(1 if value else 0)
+    if xs_type == "float":
+        return _FLOAT.pack(value)
+    if xs_type == "vector":
+        return _VECTOR.pack(*value)
+    if xs_type == "string":
+        raw = value.encode("utf-8")
+        return _UINT.pack(len(raw)) + raw
+    raise ValueError(f"no wire layout for {xs_type!r}")
+
+
 def encode_request(request_id, calls):
-    """Request bytes for `calls`, a list of (function id, [int literal, ...])."""
+    """Request bytes for `calls`, a list of (function id, [(param type, literal), ...])."""
     out = [_INT.pack(request_id), _INT.pack(len(calls))]
     for fid, args in calls:
         out.append(_INT.pack(fid) + _INT.pack(len(args)))
-        for value in args:
-            out.append(_INT.pack(LITERAL) + _INT.pack(value))
+        for xs_type, value in args:
+            out.append(_INT.pack(LITERAL) + encode_value(xs_type, value))
     return b"".join(out)
+
+
+def fits_float32(value):
+    """Whether the number `value` is finite and within 32-bit float range."""
+    try:
+        if not math.isfinite(value):
+            return False
+        _FLOAT.pack(value)
+    except OverflowError:  # out of float32 range, or an int too big for a double
+        return False
+    return True
+
+
+def float32(value):
+    """The shortest decimal that is the same 32-bit float as `value` (0.1, not 0.10000000149)."""
+    if not math.isfinite(value):
+        return value
+    packed = _FLOAT.pack(value)
+    for digits in range(1, 10):
+        short = float(f"{value:.{digits}g}")
+        if _FLOAT.pack(short) == packed:
+            return short
+    return value
+
+
+def _decode_value(xs_type, data, pos):
+    """(value, next position) for one value of `xs_type` at `pos`, or None if it runs past `data`."""
+    if xs_type in ("int", "bool"):
+        if pos + 4 > len(data):
+            return None
+        value = _INT.unpack_from(data, pos)[0]
+        return (value != 0 if xs_type == "bool" else value), pos + 4
+    if xs_type == "float":
+        if pos + 4 > len(data):
+            return None
+        return float32(_FLOAT.unpack_from(data, pos)[0]), pos + 4
+    if xs_type == "vector":
+        if pos + 12 > len(data):
+            return None
+        return [float32(v) for v in _VECTOR.unpack_from(data, pos)], pos + 12
+    if xs_type == "string":
+        if pos + 4 > len(data):
+            return None
+        length = _UINT.unpack_from(data, pos)[0]
+        pos += 4
+        if pos + length > len(data):
+            return None
+        return data[pos : pos + length].decode("utf-8", errors="replace"), pos + length
+    return None
 
 
 def decode_entries(data, return_types):
@@ -51,10 +127,10 @@ def decode_entries(data, return_types):
         pos += 4
         value = None
         if status == ENTRY_OK and rtype != "void":
-            if rtype != "int" or pos + 4 > len(data):
+            decoded = _decode_value(rtype, data, pos)
+            if decoded is None:
                 return None
-            value = _INT.unpack_from(data, pos)[0]
-            pos += 4
+            value, pos = decoded
         entries.append((status, value))
     return entries if pos == len(data) else None
 

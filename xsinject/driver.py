@@ -17,7 +17,6 @@ DEFAULT_LOCK_TIMEOUT = 5.0
 
 SIGNATURES_PATH = Path(__file__).resolve().parent / "signatures.json"
 INT32 = range(-(2**31), 2**31)
-SUPPORTED_TYPES = {"int"}  # literal and return types the driver encodes and decodes so far
 
 
 def _result(request_id, status, message, failed_call=None, failed_argument=None, entries=None, **extra):
@@ -44,38 +43,70 @@ def signatures():
     return _signatures
 
 
-class _Invalid(Exception):
+class InvalidRequest(Exception):
+    """A request rejected before sending; `result` is its Invalid result."""
+
     def __init__(self, message, call=None, argument=None):
         super().__init__(message)
         self.call, self.argument = call, argument
 
+    @property
+    def result(self):
+        return invalid(str(self), self.call, self.argument)
+
+
+def _is_number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _literal_problem(xs_type, value):
+    """Why the JSON literal `value` can't be sent as `xs_type`, or None when it fits."""
+    shown = json.dumps(value)
+    if xs_type == "int":
+        if isinstance(value, bool) or not isinstance(value, int):
+            return f"expected an int literal, got {shown}"
+        if value not in INT32:
+            return f"{value} does not fit a 32-bit int"
+    elif xs_type == "float":
+        if not _is_number(value) or not wire.fits_float32(value):
+            return f"expected a finite 32-bit float literal, got {shown}"
+    elif xs_type == "bool":
+        if not isinstance(value, bool):
+            return f"expected a bool literal (true or false), got {shown}"
+    elif xs_type == "string":
+        if not isinstance(value, str):
+            return f"expected a string literal, got {shown}"
+    elif xs_type == "vector":
+        if not (isinstance(value, list) and len(value) == 3
+                and all(_is_number(v) and wire.fits_float32(v) for v in value)):
+            return f"expected a vector literal [x, y, z] of finite 32-bit floats, got {shown}"
+    else:
+        return f"{xs_type} parameters can't take a literal"
+    return None
+
 
 def _validate(calls):
-    """[(signature, [int literal, ...])] for a JSON request, or raise _Invalid naming the mistake."""
+    """[(signature, [(param type, literal), ...])] for a JSON request, or raise InvalidRequest naming the mistake."""
     if not isinstance(calls, list):
-        raise _Invalid("a request is a JSON array of calls")
+        raise InvalidRequest("a request is a JSON array of calls")
     sigs, checked = signatures(), []
     for n, call in enumerate(calls):
         if not isinstance(call, dict) or not isinstance(call.get("fn"), str) or not isinstance(call.get("args", []), list):
-            raise _Invalid(f'call #{n} must be {{"fn": <name>, "args": [...]}}', n)
+            raise InvalidRequest(f'call #{n} must be {{"fn": <name>, "args": [...]}}', n)
         name, args = call["fn"], call.get("args", [])
         sig = sigs.get(name)
         if sig is None:
-            raise _Invalid(f"call #{n}: unknown function {name!r}", n)
+            raise InvalidRequest(f"call #{n}: unknown function {name!r}", n)
         if not sig["min_args"] <= len(args) <= sig["max_args"]:
             want = str(sig["min_args"]) if sig["min_args"] == sig["max_args"] else f"{sig['min_args']}..{sig['max_args']}"
-            raise _Invalid(f"call #{n} ({name}): takes {want} arguments, got {len(args)}", n)
-        if sig["returns"] not in SUPPORTED_TYPES:
-            raise _Invalid(f"call #{n} ({name}): {sig['returns']} returns are not supported yet", n)
+            raise InvalidRequest(f"call #{n} ({name}): takes {want} arguments, got {len(args)}", n)
+        literals = []
         for k, (arg, param) in enumerate(zip(args, sig["params"])):
-            where = f"call #{n} ({name}), argument #{k} ({param['name']})"
-            if param["type"] not in SUPPORTED_TYPES:
-                raise _Invalid(f"{where}: {param['type']} parameters are not supported yet", n, k)
-            if isinstance(arg, bool) or not isinstance(arg, int):
-                raise _Invalid(f"{where}: expected an int literal, got {json.dumps(arg)}", n, k)
-            if arg not in INT32:
-                raise _Invalid(f"{where}: {arg} does not fit a 32-bit int", n, k)
-        checked.append((sig, list(args)))
+            problem = _literal_problem(param["type"], arg)
+            if problem is not None:
+                raise InvalidRequest(f"call #{n} ({name}), argument #{k} ({param['name']}): {problem}", n, k)
+            literals.append((param["type"], arg))
+        checked.append((sig, literals))
     return checked
 
 
@@ -218,8 +249,8 @@ def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_
     """
     try:
         checked = _validate(calls)
-    except _Invalid as e:
-        return invalid(str(e), e.call, e.argument)
+    except InvalidRequest as e:
+        return e.result
     try:
         profile = resolve_profile(profile)
     except ProfileError as e:
@@ -231,13 +262,31 @@ def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_
         return _result(request_id, "FileHeld", f"could not write {LAST_NAME} within {lock_timeout:g} s")
 
     before_send = _mtimes(profile, map)
-    data = wire.encode_request(request_id, [(sig["id"], args) for sig, args in checked])
+    data = _encode_checked(request_id, checked)
     if not _replace_with_retry(profile / REQUEST_NAME, data, lock_timeout, poll):
         return _result(
             request_id, "FileHeld",
             f"the game held {REQUEST_NAME} for {lock_timeout:g} s; nothing was sent",
         )
     return _await_response(profile, request_id, checked, before_send, map, timeout, poll)
+
+
+def _encode_checked(request_id, checked):
+    return wire.encode_request(request_id, [(sig["id"], args) for sig, args in checked])
+
+
+def encode(calls, *, profile=None):
+    """The request bytes `run` would send for `calls` now; nothing is sent.
+
+    The request id is the next one for the profile folder, or 1 when no profile resolves.
+    Raises InvalidRequest (whose `result` is the Invalid result) when validation fails.
+    """
+    checked = _validate(calls)
+    try:
+        request_id = next_request_id(resolve_profile(profile))
+    except ProfileError:
+        request_id = 1
+    return _encode_checked(request_id, checked)
 
 
 def ping(**options):

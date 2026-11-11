@@ -93,3 +93,33 @@ def test_run_reports_malformed_json_as_invalid(profile, capsys, monkeypatch):
     out = json.loads(capsys.readouterr().out)
     assert (code, out["status"]) == (1, "Invalid")
     assert not (profile / "xsinject.xsdat").exists()
+
+
+def test_encode_prints_the_request_bytes_without_sending(profile):
+    (profile / "xsinject.xsdat").write_bytes(i32(41, 0))
+    proc = subprocess.run(
+        [sys.executable, "-m", "xsinject", "encode", "-", "--profile", str(profile)],
+        input=b'[{"fn": "bitAnd", "args": [12, 10]}]', capture_output=True,
+    )
+    assert proc.returncode == 0
+    assert proc.stdout == i32(42, 1, 67, 2, 0, 12, 0, 10)  # the next id after the one in the request file
+    assert (profile / "xsinject.xsdat").read_bytes() == i32(41, 0), "nothing may be sent"
+    assert not (profile / "xsinject.last.json").exists()
+
+
+def test_encode_without_a_profile_uses_request_id_1(tmp_path):
+    proc = subprocess.run(
+        [sys.executable, "-m", "xsinject", "encode", "-", "--profile", str(tmp_path / "missing")],
+        input=b'[{"fn": "xsGetMapWidth"}]', capture_output=True,
+    )
+    assert proc.returncode == 0
+    assert proc.stdout == i32(1, 1, 175, 0)
+
+
+def test_encode_exits_nonzero_with_the_invalid_result(profile):
+    proc = subprocess.run(
+        [sys.executable, "-m", "xsinject", "encode", "-", "--profile", str(profile)],
+        input=b'[{"fn": "bitAnd", "args": [1, "2"]}]', capture_output=True,
+    )
+    assert proc.returncode == 1
+    assert json.loads(proc.stdout)["status"] == "Invalid"

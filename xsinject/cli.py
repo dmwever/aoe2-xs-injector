@@ -26,6 +26,11 @@ def _parser():
     run = sub.add_parser("run", help='send a request: a JSON array of {"fn": <name>, "args": [...]} calls')
     run.add_argument("request", help="file holding the request JSON, or - for stdin")
     _add_send_options(run)
+
+    encode = sub.add_parser("encode", help="print a request's bytes to stdout without sending it")
+    encode.add_argument("request", help="file holding the request JSON, or - for stdin")
+    encode.add_argument("--profile", help="profile folder whose request file gives the next request id "
+                        "(default: $XSINJECT_PROFILE, then auto-detect; id 1 when none is found)")
     return parser
 
 
@@ -43,8 +48,29 @@ def _read_request(source):
         return None, driver.invalid(f"could not read the request from {where}: {e}")
 
 
+def _encode(args):
+    """Writes the request bytes to stdout and returns 0, or returns the Invalid result."""
+    calls, result = _read_request(args.request)
+    if result is not None:
+        return result
+    try:
+        data = driver.encode(calls, profile=args.profile)
+    except driver.InvalidRequest as e:
+        return e.result
+    sys.stdout.flush()
+    sys.stdout.buffer.write(data)
+    sys.stdout.buffer.flush()
+    return None
+
+
 def main(argv=None):
     args = _parser().parse_args(argv)
+    if args.command == "encode":
+        result = _encode(args)
+        if result is None:
+            return 0
+        print(json.dumps(result, indent=2))
+        return 1
     options = dict(profile=args.profile, map=args.map, timeout=args.timeout, poll=args.poll,
                    lock_timeout=args.lock_timeout)
     if args.command == "ping":

@@ -63,7 +63,7 @@ def test_a_failure_message_names_the_function_at_the_failed_call(profile):
     with FakeModule(profile, failing):
         result = run(calls, profile=profile, **FAST)
     assert (result["status"], result["failed_call"], result["entries"]) == ("BadArgCount", 1, [])
-    assert result["message"] == "BadArgCount at call #1 (bitOr)"
+    assert result["message"].startswith("BadArgCount at call #1 (bitOr): ")
 
 
 def test_a_response_that_does_not_fit_the_calls_sent_is_undecodable(profile):

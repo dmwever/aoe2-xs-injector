@@ -71,3 +71,4 @@ def profile(tmp_path):
 
 
 FAST = {"timeout": 2.0, "poll": 0.02, "lock_timeout": 0.3}
+QUICK = {**FAST, "timeout": 0.3}  # for waits that are meant to time out

@@ -2,7 +2,7 @@ import json
 import os
 import struct
 
-from conftest import FAST, FakeModule, i32, section
+from conftest import FAST, QUICK, FakeModule, i32, section
 
 from xsinject import ping
 
@@ -90,8 +90,6 @@ def test_decodes_a_failure_header(profile):
     assert (result["failed_call"], result["failed_argument"]) == (0, None)
     assert "call #0" in result["message"]
 
-
-QUICK = {**FAST, "timeout": 0.3}
 
 
 def test_timeout_with_no_section_anywhere(profile):

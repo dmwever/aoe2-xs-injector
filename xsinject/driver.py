@@ -192,7 +192,8 @@ def _sections(profile, map_name, before_send):
     """(path, fresh, section) for every candidate file carrying a response section.
 
     `fresh` means the file changed since the `before_send` mtime snapshot. Comparing against the
-    file's own earlier mtime avoids mixing a precise clock with NTFS's coarser write times.
+    file's own earlier mtime avoids mixing a precise clock with NTFS's coarser write times. With no
+    snapshot (fetch), every section counts as fresh.
     """
     found = []
     for path in _candidate_files(profile, map_name):
@@ -203,9 +204,56 @@ def _sections(profile, map_name, before_send):
             continue
         sec = wire.find_section(data)
         if sec is not None:
-            fresh = before_send.get(path) != stat.st_mtime_ns
+            fresh = before_send is None or before_send.get(path) != stat.st_mtime_ns
             found.append((path, fresh, sec))
     return found
+
+
+_STALE_CORE = "the module's core is likely stale: re-include xs/xsinject.xs in the host"
+_DISAGREES = f"signatures.json says otherwise, so {_STALE_CORE}"
+# A literal read as a type other than the one sent misaligns every read after it.
+_MISREAD = f"a literal the module reads as another type does this too, so if the request looks right, {_STALE_CORE}"
+
+# Why the module gave each non-OK request status. The driver's validation blocks 3-7 and 9 before
+# sending, so reaching one means the module and driver disagree (or the bytes were crafted). Running
+# never gets here: a request stuck at Running ends as Timeout/stuck-running.
+_WHY = {
+    "Truncated": f"the request file ended before everything its counts promised was read; {_MISREAD}",
+    "UnknownFunction": f"the module has no function with this id; {_DISAGREES}",
+    "BadArgCount": f"the module does not accept this many arguments for this function; {_DISAGREES}",
+    "BadTag": f"the argument's tag is neither 0 (literal) nor 1 (reference); {_MISREAD}",
+    "BadReference": "the reference does not point to an earlier call in the request",
+    "ReferenceTypeMismatch": f"the referenced call's return type is not the parameter's type; {_DISAGREES}",
+    "TooLarge": "the calls ran, but the response would push the .xsdat past the game's 1,048,575-byte "
+                "write limit; split the request into smaller reads",
+    "TrailingBytes": f"bytes were left in the request file after the last call; {_MISREAD}",
+}
+
+
+def _argument_as_json(arg):
+    """An argument as the agent wrote it: the JSON literal, or {"ref": N}."""
+    return json.dumps({"ref": int(arg)} if isinstance(arg, wire.Reference) else arg)
+
+
+def _where(checked, failed_call, failed_arg):
+    """' at call #N (fn), argument #K (param = value)' as far as the request sent can name it."""
+    if failed_call is None:
+        return ""
+    where = f" at call #{failed_call}"
+    if not 0 <= failed_call < len(checked):
+        return where + (f", argument #{failed_arg}" if failed_arg is not None else "")
+    sig, args = checked[failed_call]
+    where += f" ({sig['name']})"
+    if failed_arg is not None:
+        where += f", argument #{failed_arg}"
+        if 0 <= failed_arg < len(args):
+            where += f" ({sig['params'][failed_arg]['name']} = {_argument_as_json(args[failed_arg][1])})"
+    return where
+
+
+def _failure_message(status, checked, failed_call, failed_arg):
+    why = _WHY.get(status, "the module returned a status this driver does not know")
+    return f"{status}{_where(checked, failed_call, failed_arg)}: {why}"
 
 
 def _from_section(request_id, sec, checked):
@@ -213,13 +261,7 @@ def _from_section(request_id, sec, checked):
     failed_call = None if sec["failed_call"] == -1 else sec["failed_call"]
     failed_arg = None if sec["failed_argument"] == -1 else sec["failed_argument"]
     if status != "OK":
-        message = status
-        if failed_call is not None:
-            message += f" at call #{failed_call}"
-            if 0 <= failed_call < len(checked):
-                message += f" ({checked[failed_call][0]['name']})"
-            if failed_arg is not None:
-                message += f", argument #{failed_arg}"
+        message = _failure_message(status, checked, failed_call, failed_arg)
         return _result(request_id, status, message, failed_call, failed_arg)
 
     decoded = None
@@ -228,8 +270,7 @@ def _from_section(request_id, sec, checked):
     if decoded is None:
         return _result(
             request_id, "Undecodable",
-            f"the response to request {request_id} does not fit the {len(checked)} calls sent; "
-            "the module's core is likely stale: re-include xs/xsinject.xs in the host",
+            f"the response to request {request_id} does not fit the {len(checked)} calls sent; {_STALE_CORE}",
         )
     entries = [
         {"call": n, "fn": sig["name"], "status": wire.ENTRY_STATUS.get(st, f"Unknown({st})"), "value": value}
@@ -297,6 +338,30 @@ def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_
             f"the game held {REQUEST_NAME} for {lock_timeout:g} s; nothing was sent",
         )
     return _await_response(profile, request_id, checked, before_send, map, timeout, poll)
+
+
+def fetch(*, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_POLL):
+    """Decode the current response against the last request sent (xsinject.last.json); nothing is sent.
+
+    Recovers a response that arrived after `run` timed out. Waits up to `timeout` like `run`, but any
+    section echoing the last request id counts, however old.
+    """
+    try:
+        profile = resolve_profile(profile)
+    except ProfileError as e:
+        return invalid(str(e))
+    try:
+        last = json.loads((profile / LAST_NAME).read_text(encoding="utf-8"))
+        request_id, calls = last["request_id"], last["calls"]
+    except FileNotFoundError:
+        return invalid(f"no {LAST_NAME} in {profile}: nothing has been sent from this profile folder")
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return invalid(f"could not read the last request from {LAST_NAME}: {e}")
+    try:
+        checked = _validate(calls)
+    except InvalidRequest as e:
+        return invalid(f"the last request in {LAST_NAME} no longer validates: {e}", e.call, e.argument)
+    return _await_response(profile, request_id, checked, None, map, timeout, poll)
 
 
 def _encode_checked(request_id, checked):

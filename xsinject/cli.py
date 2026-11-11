@@ -7,11 +7,15 @@ import sys
 from . import driver
 
 
-def _add_send_options(parser):
+def _add_wait_options(parser):
     parser.add_argument("--profile", help="profile folder (default: $XSINJECT_PROFILE, then auto-detect)")
     parser.add_argument("--map", help="stem of the .xsdat that holds the response (e.g. default1)")
     parser.add_argument("--timeout", type=float, default=driver.DEFAULT_TIMEOUT, help="seconds to wait for a response")
     parser.add_argument("--poll", type=float, default=driver.DEFAULT_POLL, help="seconds between response checks")
+
+
+def _add_send_options(parser):
+    _add_wait_options(parser)
     parser.add_argument("--lock-timeout", type=float, default=driver.DEFAULT_LOCK_TIMEOUT,
                         help="seconds to retry while the game holds the request file")
 
@@ -26,6 +30,9 @@ def _parser():
     run = sub.add_parser("run", help='send a request: a JSON array of {"fn": <name>, "args": [...]} calls')
     run.add_argument("request", help="file holding the request JSON, or - for stdin")
     _add_send_options(run)
+
+    fetch = sub.add_parser("fetch", help="decode the current response against the last request sent, sending nothing")
+    _add_wait_options(fetch)
 
     encode = sub.add_parser("encode", help="print a request's bytes to stdout without sending it")
     encode.add_argument("request", help="file holding the request JSON, or - for stdin")
@@ -71,13 +78,14 @@ def main(argv=None):
             return 0
         print(json.dumps(result, indent=2))
         return 1
-    options = dict(profile=args.profile, map=args.map, timeout=args.timeout, poll=args.poll,
-                   lock_timeout=args.lock_timeout)
-    if args.command == "ping":
-        result = driver.ping(**options)
+    options = dict(profile=args.profile, map=args.map, timeout=args.timeout, poll=args.poll)
+    if args.command == "fetch":
+        result = driver.fetch(**options)
+    elif args.command == "ping":
+        result = driver.ping(**options, lock_timeout=args.lock_timeout)
     else:
         calls, result = _read_request(args.request)
         if result is None:
-            result = driver.run(calls, **options)
+            result = driver.run(calls, **options, lock_timeout=args.lock_timeout)
     print(json.dumps(result, indent=2))
     return 0 if result["status"] == "OK" else 1

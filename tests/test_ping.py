@@ -28,7 +28,8 @@ def test_ping_writes_a_zero_call_request_and_saves_it_as_last_json(profile):
     with FakeModule(profile, standalone) as module:
         ping(profile=profile, **FAST)
     assert module.requests == [i32(1, 0)]
-    assert json.loads((profile / "xsinject.last.json").read_text()) == {"request_id": 1, "calls": []}
+    last = json.loads((profile / "xsinject.last.json").read_text())
+    assert (last["request_id"], last["calls"]) == (1, [])
 
 
 def test_next_ping_takes_the_next_id(profile):

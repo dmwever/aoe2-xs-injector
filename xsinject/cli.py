@@ -81,11 +81,13 @@ def main(argv=None):
     options = dict(profile=args.profile, map=args.map, timeout=args.timeout, poll=args.poll)
     if args.command == "fetch":
         result = driver.fetch(**options)
-    elif args.command == "ping":
-        result = driver.ping(**options, lock_timeout=args.lock_timeout)
     else:
-        calls, result = _read_request(args.request)
-        if result is None:
-            result = driver.run(calls, **options, lock_timeout=args.lock_timeout)
+        options["lock_timeout"] = args.lock_timeout  # only sends take the request file
+        if args.command == "ping":
+            result = driver.ping(**options)
+        else:
+            calls, result = _read_request(args.request)
+            if result is None:
+                result = driver.run(calls, **options)
     print(json.dumps(result, indent=2))
     return 0 if result["status"] == "OK" else 1

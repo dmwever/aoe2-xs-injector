@@ -19,6 +19,11 @@ def section(request_id, status=0, failed_call=-1, failed_arg=-1, entries=b"", en
     return body + i32(len(body), MAGIC)
 
 
+def failing(status, failed_call=-1, failed_arg=-1):
+    """A module that answers every request with a failed request status and no entries."""
+    return lambda rid: {"default1": section(rid, status=status, failed_call=failed_call, failed_arg=failed_arg)}
+
+
 def request_id_in(profile):
     data = (profile / "xsinject.xsdat").read_bytes()
     return struct.unpack("<i", data[:4])[0]

@@ -188,12 +188,21 @@ def _mtimes(profile, map_name):
     return mtimes
 
 
-def _sections(profile, map_name, before_send):
+def _changed_since(before_send):
+    """Freshness for run: the file changed since the `before_send` mtime snapshot. Comparing against
+    the file's own earlier mtime avoids mixing a precise clock with NTFS's coarser write times."""
+    return lambda path, mtime_ns: before_send.get(path) != mtime_ns
+
+
+def _written_after(sent_ns):
+    """Freshness for fetch: the file was written at or after the send, by filesystem time."""
+    return lambda path, mtime_ns: mtime_ns >= sent_ns
+
+
+def _sections(profile, map_name, is_fresh):
     """(path, fresh, section) for every candidate file carrying a response section.
 
-    `fresh` means the file changed since the `before_send` mtime snapshot. Comparing against the
-    file's own earlier mtime avoids mixing a precise clock with NTFS's coarser write times. With no
-    snapshot (fetch), every section counts as fresh.
+    `fresh` is `is_fresh(path, mtime_ns)`: whether the file was written after the request was sent.
     """
     found = []
     for path in _candidate_files(profile, map_name):
@@ -204,7 +213,7 @@ def _sections(profile, map_name, before_send):
             continue
         sec = wire.find_section(data)
         if sec is not None:
-            fresh = before_send is None or before_send.get(path) != stat.st_mtime_ns
+            fresh = is_fresh(path, stat.st_mtime_ns)
             found.append((path, fresh, sec))
     return found
 
@@ -279,10 +288,10 @@ def _from_section(request_id, sec, checked):
     return _result(request_id, "OK", "OK", entries=entries)
 
 
-def _await_response(profile, request_id, checked, before_send, map_name, timeout, poll):
+def _await_response(profile, request_id, checked, is_fresh, map_name, timeout, poll):
     deadline = time.monotonic() + timeout
     while True:
-        found = _sections(profile, map_name, before_send)
+        found = _sections(profile, map_name, is_fresh)
         ours = [(p, s) for p, fresh, s in found if fresh and s["request_id"] == request_id]
         final = [(p, s) for p, s in ours if s["status"] != wire.RUNNING]
         if len(final) > 1:
@@ -305,7 +314,9 @@ def _timeout(request_id, found, timeout):
     elif any(fresh and s["request_id"] == request_id and s["status"] == wire.RUNNING for _, fresh, s in found):
         diagnosis, why = "stuck-running", f"request {request_id} is still Running; a call likely stopped the rule"
     else:
-        diagnosis, why = "older-id", f"the response section has not caught up to request {request_id}"
+        answered = max(s["request_id"] for _, _, s in found)
+        diagnosis, why = "older-id", (f"the newest response section answers request {answered}; "
+                                      f"request {request_id} has not been answered")
     return _result(request_id, "Timeout", f"no response after {timeout:g} s: {why}", diagnosis=diagnosis)
 
 
@@ -326,7 +337,8 @@ def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_
         return invalid(str(e))
 
     request_id = next_request_id(profile)
-    last = json.dumps({"request_id": request_id, "calls": calls}, indent=2).encode("utf-8")
+    last = json.dumps({"request_id": request_id, "calls": calls, "signatures": [sig for sig, _ in checked]},
+                      indent=2).encode("utf-8")
     if not _replace_with_retry(profile / LAST_NAME, last, lock_timeout, poll):
         return _result(request_id, "FileHeld", f"could not write {LAST_NAME} within {lock_timeout:g} s")
 
@@ -337,31 +349,39 @@ def run(calls, *, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_
             request_id, "FileHeld",
             f"the game held {REQUEST_NAME} for {lock_timeout:g} s; nothing was sent",
         )
-    return _await_response(profile, request_id, checked, before_send, map, timeout, poll)
+    return _await_response(profile, request_id, checked, _changed_since(before_send), map, timeout, poll)
+
+
+def _checked_from_last(last):
+    """The checked request saved in xsinject.last.json, using the signatures it was sent with."""
+    checked = []
+    for sig, call in zip(last["signatures"], last["calls"], strict=True):
+        args = [wire.Reference(a["ref"]) if isinstance(a, dict) else a for a in call.get("args", [])]
+        checked.append((sig, [(param["type"], arg) for param, arg in zip(sig["params"], args)]))
+    return checked
 
 
 def fetch(*, profile=None, map=None, timeout=DEFAULT_TIMEOUT, poll=DEFAULT_POLL):
     """Decode the current response against the last request sent (xsinject.last.json); nothing is sent.
 
-    Recovers a response that arrived after `run` timed out. Waits up to `timeout` like `run`, but any
-    section echoing the last request id counts, however old.
+    Recovers a response that arrived after `run` timed out. Decodes with the signatures saved at send
+    time, so a regenerated signatures.json doesn't matter. Waits up to `timeout` like `run`; a section
+    counts when it echoes the last request id and was written after that request was sent.
     """
     try:
         profile = resolve_profile(profile)
     except ProfileError as e:
         return invalid(str(e))
+    path = profile / LAST_NAME
     try:
-        last = json.loads((profile / LAST_NAME).read_text(encoding="utf-8"))
-        request_id, calls = last["request_id"], last["calls"]
+        sent_ns = path.stat().st_mtime_ns
+        last = json.loads(path.read_text(encoding="utf-8"))
+        request_id, checked = last["request_id"], _checked_from_last(last)
     except FileNotFoundError:
         return invalid(f"no {LAST_NAME} in {profile}: nothing has been sent from this profile folder")
-    except (OSError, ValueError, KeyError, TypeError) as e:
-        return invalid(f"could not read the last request from {LAST_NAME}: {e}")
-    try:
-        checked = _validate(calls)
-    except InvalidRequest as e:
-        return invalid(f"the last request in {LAST_NAME} no longer validates: {e}", e.call, e.argument)
-    return _await_response(profile, request_id, checked, None, map, timeout, poll)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+        return invalid(f"could not read the last request from {LAST_NAME} (re-send it): {e!r}")
+    return _await_response(profile, request_id, checked, _written_after(sent_ns), map, timeout, poll)
 
 
 def _encode_checked(request_id, checked):

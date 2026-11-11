@@ -1,12 +1,13 @@
 """Failure reporting: every request status rendered from the request sent, Running, NotRun, and fetch."""
 
 import json
+import os
 
 import pytest
 
-from conftest import FAST, QUICK, FakeModule, i32, section
+from conftest import FAST, QUICK, FakeModule, failing, i32, section
 
-from xsinject import fetch, run
+from xsinject import driver, fetch, run
 from xsinject.cli import main
 
 WAIT = {"timeout": QUICK["timeout"], "poll": QUICK["poll"]}  # fetch takes no lock_timeout
@@ -15,10 +16,6 @@ CALLS = [
     {"fn": "xsGetMapWidth", "args": []},
     {"fn": "bitAnd", "args": [{"ref": 0}, 10]},
 ]
-
-
-def failing(status, failed_call=-1, failed_arg=-1):
-    return lambda rid: {"default1": section(rid, status=status, failed_call=failed_call, failed_arg=failed_arg)}
 
 
 def reported(profile, status, failed_call=-1, failed_arg=-1, calls=CALLS):
@@ -91,7 +88,6 @@ def test_a_response_stuck_at_running_times_out_as_stuck_running(profile):
     assert "still Running" in result["message"]
 
 
-
 def test_fetch_recovers_a_response_that_arrived_after_the_timeout(profile):
     late = run(CALLS, profile=profile, **QUICK)
     assert late["status"] == "Timeout"
@@ -113,7 +109,10 @@ def test_fetch_recovers_a_response_that_arrived_after_the_timeout(profile):
 
 
 def saved_last_request(profile, request_id=1, calls=CALLS):
-    (profile / "xsinject.last.json").write_text(json.dumps({"request_id": request_id, "calls": calls}))
+    """Send `calls` as request `request_id` with no module answering, so only fetch can pick it up."""
+    if request_id > 1:
+        (profile / "xsinject.xsdat").write_bytes(i32(request_id - 1, 0))
+    assert run(calls, profile=profile, **{**QUICK, "timeout": 0})["status"] == "Timeout"
 
 
 def test_fetch_with_nothing_sent_is_invalid(profile):
@@ -155,3 +154,28 @@ def test_cli_fetch_exits_nonzero_when_the_response_has_not_arrived(profile, caps
     saved_last_request(profile)
     code = main(["fetch", "--profile", str(profile), "--timeout", "0.2", "--poll", "0.02"])
     assert (code, json.loads(capsys.readouterr().out)["diagnosis"]) == (1, "no-section")
+
+
+def test_fetch_decodes_with_the_signatures_saved_at_send_time(profile, monkeypatch):
+    saved_last_request(profile)
+    monkeypatch.setattr(driver, "_signatures", {})  # signatures.json regenerated since the send
+    (profile / "default1.xsdat").write_bytes(section(1, entries=i32(0, 120, 0, 8), entry_count=2))
+    result = fetch(profile=profile, **WAIT)
+    assert (result["status"], [e["fn"] for e in result["entries"]]) == ("OK", ["xsGetMapWidth", "bitAnd"])
+
+
+def test_fetch_ignores_responses_written_before_the_send(profile):
+    for stem in ("default1", "XsTesting"):
+        stale = profile / f"{stem}.xsdat"
+        stale.write_bytes(section(1))
+        os.utime(stale, (1_000_000_000, 1_000_000_000))
+    saved_last_request(profile)
+    result = fetch(profile=profile, **WAIT)
+    assert (result["status"], result["diagnosis"]) == ("Timeout", "older-id")
+
+
+def test_a_timeout_names_the_request_the_response_section_answers(profile):
+    saved_last_request(profile, request_id=2)
+    (profile / "default1.xsdat").write_bytes(section(7))
+    result = fetch(profile=profile, **WAIT)
+    assert "request 7" in result["message"]

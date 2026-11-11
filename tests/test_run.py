@@ -1,6 +1,6 @@
 import json
 
-from conftest import FAST, FakeModule, i32, section
+from conftest import FAST, FakeModule, failing, i32, section
 
 from xsinject import run
 
@@ -31,7 +31,8 @@ def test_calls_are_encoded_as_function_id_argument_count_then_tagged_int_literal
     with FakeModule(profile, answering(4, 120)) as module:
         run(calls, profile=profile, **FAST)
     assert module.requests == [i32(1, 2, BIT_AND, 2, 0, 12, 0, -10, GET_MAP_WIDTH, 0)]
-    assert json.loads((profile / "xsinject.last.json").read_text()) == {"request_id": 1, "calls": calls}
+    last = json.loads((profile / "xsinject.last.json").read_text())
+    assert (last["request_id"], last["calls"]) == (1, calls)
 
 
 def test_every_call_gets_an_entry_in_call_order_and_minus_one_is_a_value(profile):
@@ -58,9 +59,8 @@ def test_args_may_be_omitted_for_a_zero_argument_function(profile):
 
 
 def test_a_failure_message_names_the_function_at_the_failed_call(profile):
-    failing = lambda rid: {"default1": section(rid, status=4, failed_call=1)}
     calls = [{"fn": "bitAnd", "args": [1, 2]}, {"fn": "bitOr", "args": [1, 2]}]
-    with FakeModule(profile, failing):
+    with FakeModule(profile, failing(4, failed_call=1)):
         result = run(calls, profile=profile, **FAST)
     assert (result["status"], result["failed_call"], result["entries"]) == ("BadArgCount", 1, [])
     assert result["message"].startswith("BadArgCount at call #1 (bitOr): ")

@@ -176,7 +176,7 @@ Any scenario or RMS can include the module. Ageipelago is the first and hardest 
 
 ### Ageipelago (cross-repo precondition, done under the `ageipelago` skill's rules)
 
-- `LocationCount` takes reserved field 24 (byte offset 92; reserved block 26 → 25). `AP_Write` counts non-`-1` ids in a first pass and writes exactly those; the client reads exactly that many and ignores trailing bytes. Minor `world_version` bump, protocol doc table updated, layout test modelled on the existing mercenary packet test.
+- `CurrentPacketLocationCount` takes reserved field 25 (byte offset 96; reserved block 25 → 24; field 24 went to `CheckedLocationsCount` first). `AP_Write` writes the filtered count and exactly those ids (`AddLocation` refuses `-1`, so no ids are skipped); the client reads exactly that many and ignores trailing bytes. No `world_version` bump while 0.3.0 is unshipped (ruling in ticket 11); protocol doc table updated, layout test modelled on the existing mercenary packet test.
 - The injector wiring ships commented out: the `#include`, `xsInjectUseHostWriter()` in `main()`, and the hook call just before `AP_Write`'s `xsCloseFile()`. A one-line comment points at the recipe in the injector's hosting doc.
 - Accepted: while `AP_SLOT_ID == -1`, `AP_Write` writes nothing, so an unconfigured install shows no response (`Timeout/no-section`).
 
